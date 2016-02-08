@@ -64,9 +64,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Face.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Rubik.h" />
-    <ClCompile Include="Source.cpp" />
+    <ClCompile Include="Rubik.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Face.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
