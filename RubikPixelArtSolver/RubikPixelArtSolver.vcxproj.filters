@@ -27,9 +27,21 @@
     <ClCompile Include="Face.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CornerFace.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EdgeFace.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Face.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CornerFace.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EdgeFace.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

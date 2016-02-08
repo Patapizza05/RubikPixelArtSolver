@@ -7,7 +7,7 @@ Rubik::Rubik() {
 	}
 }
 
-void Rubik::print() {
+void Rubik::printCube() {
 	std::cout << "Rubik Test" << std::endl;
 	std::cout << "Edges :" << std::endl;
 	for (int i = 0; i < 24; i++) {
@@ -20,5 +20,4 @@ void Rubik::print() {
 		std::cout << this->corners[i].number << "\t";
 	}
 	std::cout << std::endl;
-
 }
