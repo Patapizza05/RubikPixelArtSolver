@@ -6,6 +6,7 @@
 
 class EdgeFace : public Face {
 public:
+	EdgeFace(int, RubikColor);
 	int getEdge();
 };
 

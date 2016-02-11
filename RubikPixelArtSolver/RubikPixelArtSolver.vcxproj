@@ -49,6 +49,10 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -71,11 +75,13 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Rubik.h" />
     <ClCompile Include="Rubik.cpp" />
+    <ClCompile Include="RubikColor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CornerFace.h" />
     <ClInclude Include="EdgeFace.h" />
     <ClInclude Include="Face.h" />
+    <ClInclude Include="RubikColor.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

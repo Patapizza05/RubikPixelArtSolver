@@ -33,6 +33,9 @@
     <ClCompile Include="EdgeFace.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="RubikColor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Face.h">
@@ -42,6 +45,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="EdgeFace.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RubikColor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
