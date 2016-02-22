@@ -73,6 +73,7 @@ Rubik::~Rubik() {
 
 
 void Rubik::printCube() {
+	int number;
 	int lines[9][12] = {
 		{ -1, -1, -1, 6, 4, 7, -1, -1, -1, -1, -1, -1 },
 		{ -1, -1, -1, 6, 1, 7, -1, -1, -1, -1, -1, -1 },
@@ -87,7 +88,7 @@ void Rubik::printCube() {
 	int index;
 
 	for (int y = 0; y < 9; y++) {
-		
+
 		std::cout << std::endl;
 
 
@@ -96,7 +97,7 @@ void Rubik::printCube() {
 			index = lines[y][x];
 
 			if (index == -1) {
-				std::cout << " ";
+				std::cout << "  ";
 			}
 			else
 			{
@@ -104,11 +105,19 @@ void Rubik::printCube() {
 				{
 					if (x % 3 == 0 || x % 3 == 2)
 					{
-						std::cout << "c";
+						number = this->corners[lines[y][x]]->getNumber();
+						if (number < 10) {
+							std::cout << " ";
+						}
+						std::cout << number;
 					}
 					else
 					{
-						std::cout << "e";
+						number = this->edges[lines[y][x]]->getNumber();
+						if (number < 10) {
+							std::cout << " ";
+						}
+						std::cout << number;
 					}
 
 				}
@@ -116,11 +125,15 @@ void Rubik::printCube() {
 				{
 					if (x % 3 == 0 || x % 3 == 2)
 					{
-						std::cout << "e";
+						number = this->edges[lines[y][x]]->getNumber();
+						if (number < 10) {
+							std::cout << " ";
+						}
+						std::cout << number;
 					}
 					else
 					{
-						std::cout << "m";
+						std::cout << " m";
 					}
 				}
 			}
@@ -129,4 +142,55 @@ void Rubik::printCube() {
 
 		}
 	}
+}
+
+void Rubik::translate(Face * array[], int i1, int i2, int i3, int i4) {
+	Face * temp = array[i1];
+	array[i1] = array[i2];
+	array[i2] = array[i3];
+	array[i3] = array[i4];
+	array[i4] = temp;
+}
+
+void Rubik::R() {
+
+}
+
+void Rubik::Ri() {
+
+}
+//void R2();
+void Rubik::L() {
+
+}
+void Rubik::Li() {
+
+}
+//void L2();
+void Rubik::U() {
+
+}
+void Rubik::Ui() {
+
+}
+//void U2();
+void Rubik::B() {
+
+}
+void Rubik::Bi() {
+
+}
+//void B2();
+void Rubik::F() {
+
+}
+void Rubik::Fi() {
+
+}
+//void F2();
+void Rubik::D() {
+
+}
+void Rubik::Di() {
+
 }
