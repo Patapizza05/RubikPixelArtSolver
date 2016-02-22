@@ -6,6 +6,7 @@
 #include "Face.h"
 #include "CornerFace.h"
 #include "EdgeFace.h"
+#include "MiddleFace.h"
 #include <iostream>
 
 class Rubik {
@@ -36,13 +37,14 @@ class Rubik {
 	private:
 		CornerFace * corners[24];
 		EdgeFace * edges[24];
+		MiddleFace * middle[8];
 		void addEdge(int, int);
 		void addCorner(int, int);
+		void addMiddle(int, int);
 		void initCornersAndEdges(int[]);
 		void translate(Face * array[], int i1, int i2, int i3, int i4);
 		void translate(CornerFace * array[], int i1, int i2, int i3, int i4);
 		void translate(EdgeFace * array[], int i1, int i2, int i3, int i4);
-		
 };
 
 #endif

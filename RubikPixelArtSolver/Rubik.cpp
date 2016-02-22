@@ -48,6 +48,11 @@ void Rubik::initCornersAndEdges(int pieces[]) {
 						addEdge(index, pieces[i]);
 						i++;
 					}
+					else
+					{
+						addMiddle(index, pieces[i]);
+						i++;
+					}
 				}
 			}
 		}
@@ -62,6 +67,11 @@ void Rubik::addCorner(int i, int number)
 void Rubik::addEdge(int i, int number)
 {
 	this->edges[i] = new EdgeFace(number, RubikColor::RED);
+}
+
+void Rubik::addMiddle(int i, int number)
+{
+	this->middle[i] = new MiddleFace(number, RubikColor::RED);
 }
 
 Rubik::~Rubik() {
@@ -133,7 +143,8 @@ void Rubik::printCube() {
 					}
 					else
 					{
-						std::cout << " m";
+						number = this->middle[lines[y][x]]->getNumber();
+						std::cout << " " << number;
 					}
 				}
 			}
