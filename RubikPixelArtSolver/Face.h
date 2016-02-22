@@ -7,14 +7,13 @@
 class Face {
 	public:
 		Face(int,RubikColor);
-		/*
-			Couleur
-			Number				
-		*/
-		RubikColor color;
+		int getNumber() { return number; }
+		int getLockedPosition() { return lockedPosition; }
+		RubikColor getColor() { return color; }
+	protected:
+		int lockedPosition = -1;
 		int number;
-	private:
-
+		RubikColor color;
 };
 
 #endif
