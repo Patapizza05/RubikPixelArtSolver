@@ -32,14 +32,16 @@ class Rubik {
 		void D();
 		void Di();
 		//void D2();
-		CornerFace * corners[24];
-		void translate(Face * array[], int i1, int i2, int i3, int i4);
-	private:
 		
+	private:
+		CornerFace * corners[24];
 		EdgeFace * edges[24];
 		void addEdge(int, int);
 		void addCorner(int, int);
 		void initCornersAndEdges(int[]);
+		void translate(Face * array[], int i1, int i2, int i3, int i4);
+		void translate(CornerFace * array[], int i1, int i2, int i3, int i4);
+		void translate(EdgeFace * array[], int i1, int i2, int i3, int i4);
 		
 };
 
