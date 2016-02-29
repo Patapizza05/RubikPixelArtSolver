@@ -17,22 +17,33 @@ class Rubik {
 
 		void R();
 		void Ri();
-		//void R2();
+		void R2();
 		void L();
 		void Li();
-		//void L2();
+		void L2();
 		void U();
 		void Ui();
-		//void U2();
+		void U2();
 		void B();
 		void Bi();
-		//void B2();
+		void B2();
 		void F();
 		void Fi();
-		//void F2();
+		void F2();
 		void D();
 		void Di();
-		//void D2();
+		void D2();
+		void resolve();
+		void resolveMiddle();
+		void resolveEdges();
+		void resolveCorners();
+
+		void changeReferentialWhiteToGreen();
+
+		void changeReferentialWhiteToRed();
+		void changeReferentialWhiteToBlue();
+		void changeReferentialWhiteToOrange();
+		void changeReferentialWhiteToYellow();
 		
 	private:
 		CornerFace * corners[24];
@@ -45,6 +56,13 @@ class Rubik {
 		void translate(Face * array[], int i1, int i2, int i3, int i4);
 		void translate(CornerFace * array[], int i1, int i2, int i3, int i4);
 		void translate(EdgeFace * array[], int i1, int i2, int i3, int i4);
+		void translate(MiddleFace * array[], int i1, int i2, int i3, int i4);
+		void swap(Face * array[], int i1, int i2);
+		void changeReferential(RubikColor color);
+		void changeReferential(MiddleFace * m);
+
+
+
 };
 
 #endif

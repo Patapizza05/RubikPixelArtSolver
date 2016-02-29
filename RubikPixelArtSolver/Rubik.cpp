@@ -170,6 +170,16 @@ void Rubik::translate(EdgeFace * array[], int i1, int i2, int i3, int i4) {
 	this->translate((Face**)array, i1, i2, i3, i4);
 }
 
+void Rubik::translate(MiddleFace * array[], int i1, int i2, int i3, int i4) {
+	this->translate((Face**)array, i1, i2, i3, i4);
+}
+
+void Rubik::swap(Face * array[], int i1, int i2) {
+	Face * temp = array[i1];
+	array[i1] = array[i2];
+	array[i2] = temp;
+}
+
 void Rubik::Ri() {
 	translate(this->corners, 9, 15, 5, 3);
 	translate(this->corners, 7, 21, 19, 1);
@@ -185,7 +195,19 @@ void Rubik::R() {
 	translate(this->edges, 1,9,22,7);
 	translate(this->edges, 13,21,10,19);
 }
-//void R2();
+void Rubik::R2() {
+	swap((Face**)this->corners, 3, 15);
+	swap((Face**)this->corners, 5, 9);
+	swap((Face**)this->corners, 1, 21);
+	swap((Face**)this->corners, 19, 7);
+	swap((Face**)this->corners, 11, 23);
+	swap((Face**)this->corners, 13, 17);
+
+	swap((Face**)this->edges, 1, 22);
+	swap((Face**)this->edges, 9, 7);
+	swap((Face**)this->edges, 13, 10);
+	swap((Face**)this->edges, 21, 19);
+}
 void Rubik::Li() {
 	translate(this->corners, 16, 2, 4, 22);
 	translate(this->corners, 6, 0, 10, 12);
@@ -200,7 +222,19 @@ void Rubik::L() {
 	translate(this->edges, 11, 8, 3, 6);
 	translate(this->edges, 23, 20, 15, 18);
 }
-//void L2();
+void Rubik::L2() {
+	swap((Face**)this->corners, 22, 2);
+	swap((Face**)this->corners, 4,16);
+	swap((Face**)this->corners, 12,0);
+	swap((Face**)this->corners, 10,6);
+	swap((Face**)this->corners, 14,18);
+	swap((Face**)this->corners, 20,8);
+
+	swap((Face**)this->edges, 11,3);
+	swap((Face**)this->edges, 8,6);
+	swap((Face**)this->edges, 23,15);
+	swap((Face**)this->edges, 20,18);
+}
 void Rubik::Ui() {
 	translate(this->corners, 9, 16, 6, 7);
 	translate(this->corners, 1, 8, 22, 23);
@@ -215,7 +249,19 @@ void Rubik::U() {
 	translate(this->edges, 6, 12, 7, 4);
 	translate(this->edges, 19, 16, 18, 0);
 }
-//void U2();
+void Rubik::U2() {
+	swap((Face**)this->corners, 7,16);
+	swap((Face**)this->corners, 6,9);
+	swap((Face**)this->corners, 17, 14);
+	swap((Face**)this->corners, 15,0);
+	swap((Face**)this->corners, 23,8);
+	swap((Face**)this->corners, 22,1);
+
+	swap((Face**)this->edges,6,7);
+	swap((Face**)this->edges, 12,4);
+	swap((Face**)this->edges, 19, 18);
+	swap((Face**)this->edges, 16,0);
+}
 void Rubik::Bi() {
 	translate(this->corners, 7, 14, 4, 13);
 	translate(this->corners, 6, 20, 5, 23);
@@ -230,7 +276,19 @@ void Rubik::B() {
 	translate(this->edges, 10, 5, 23, 4);
 	translate(this->edges, 22, 17, 11, 16);
 }
-//void B2();
+void Rubik::B2() {
+	swap((Face**)this->corners,13,14);
+	swap((Face**)this->corners, 4,7);
+	swap((Face**)this->corners, 23,20);
+	swap((Face**)this->corners, 5,6);
+	swap((Face**)this->corners, 15,12);
+	swap((Face**)this->corners, 21,22);
+
+	swap((Face**)this->edges, 10,23);
+	swap((Face**)this->edges, 5,4);
+	swap((Face**)this->edges, 22,11);
+	swap((Face**)this->edges, 17,16);
+}
 void Rubik::Fi() {
 	translate(this->corners, 9, 11, 10, 8);
 	translate(this->corners, 16, 17, 19, 18);
@@ -245,7 +303,19 @@ void Rubik::F() {
 	translate(this->edges, 15, 14, 13, 12);
 	translate(this->edges, 3, 2, 1, 0);
 }
-//void F2();
+void Rubik::F2() {
+	swap((Face**)this->corners, 3, 12);
+	swap((Face**)this->corners, 13,18);
+	swap((Face**)this->corners, 2,21);
+	swap((Face**)this->corners, 11,20);
+	swap((Face**)this->corners, 19,4);
+	swap((Face**)this->corners, 5,10);
+
+	swap((Face**)this->edges, 2,17);
+	swap((Face**)this->edges, 21,20);
+	swap((Face**)this->edges, 14,5);
+	swap((Face**)this->edges, 9,8);
+}
 void Rubik::Di() {
 	translate(this->corners, 3, 13, 12, 18);
 	translate(this->corners, 2, 11, 21, 20);
@@ -260,3 +330,70 @@ void Rubik::D() {
 	translate(this->edges, 20, 17, 21, 2);
 	translate(this->edges, 8, 5, 9, 14);
 }
+
+void Rubik::resolve() {
+	resolveMiddle();
+	resolveEdges();
+	resolveCorners();
+}
+void Rubik::resolveMiddle() {
+
+}
+void Rubik::resolveEdges() {
+
+}
+void Rubik::resolveCorners() {
+
+}
+
+void Rubik::changeReferential(RubikColor color) {
+
+}
+
+void Rubik::changeReferential(MiddleFace * m) {
+
+}
+
+void Rubik::changeReferentialWhiteToGreen() {
+	F();
+	Bi();
+	this->translate(this->middle, 3,2,4,1);
+	this->translate(this->edges, 6,20,9,19);
+	this->translate(this->edges, 7,18,8,21);
+
+}
+void Rubik::changeReferentialWhiteToRed() {
+	Ri();
+	L();
+	this->translate(this->middle, 0,2,5,1);
+	this->translate(this->edges, 4,0,14,17);
+	this->translate(this->edges, 12,2,5,16);
+
+}
+void Rubik::changeReferentialWhiteToBlue() {
+	Fi();
+	B();
+	this->translate(this->middle, 3,1,4,2);
+	this->translate(this->edges, 6,19,9,20);
+	this->translate(this->edges, 7,21,8,18);
+}
+void Rubik::changeReferentialWhiteToOrange() {
+	R();
+	Li();
+	this->translate(this->middle, 0,1,5,2);
+	this->translate(this->edges, 4,17,14,0);
+	this->translate(this->edges, 12,16,5,2);
+}
+void Rubik::changeReferentialWhiteToYellow() {
+	R2();
+	L2();
+	this->swap((Face**)this->edges, 12, 5);
+	this->swap((Face**)this->edges, 4, 14);
+	this->swap((Face**)this->edges, 0, 17);
+	this->swap((Face**)this->edges, 2, 16);
+
+	this->swap((Face**)this->middle, 1, 2);
+	this->swap((Face**)this->middle, 0, 5);
+
+}
+
