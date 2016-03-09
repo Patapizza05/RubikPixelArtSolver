@@ -33,11 +33,11 @@ class Rubik {
 		void D();
 		void Di();
 		void D2();
-		void resolve();
-		void resolveMiddle();
-		void resolveEdges();
-		void resolveCorners();
-
+		void resolve(RubikColor colors[]);
+		void resolveMiddle(RubikColor color);
+		void resolveEdges(RubikColor colors[]);
+		void resolveCorners(RubikColor colors[]);
+		void error();
 		void changeReferentialWhiteToGreen();
 
 		void changeReferentialWhiteToRed();

@@ -61,17 +61,129 @@ void Rubik::initCornersAndEdges(int pieces[]) {
 
 void Rubik::addCorner(int i, int number)
 {
-	this->corners[i] = new CornerFace(number, RubikColor::RED);
+	RubikColor color;
+	switch (i) {
+	case 0:
+	case 1:
+	case 2:
+	case 3:
+		color = RubikColor::RED;
+		break;
+	case 6:
+	case 7:
+	case 9:
+	case 16:
+		color = RubikColor::WHITE;
+		break;
+	case 10:
+	case 19:
+	case 4:
+	case 5:
+		color = RubikColor::YELLOW;
+		break;
+	case 14:
+	case 8:
+	case 18:
+	case 20:
+		color = RubikColor::GREEN;
+		break;
+	case 17:
+	case 23:
+	case 13:
+	case 11:
+		color = RubikColor::BLUE;
+		break;
+	case 15:
+	case 22:
+	case 12:
+	case 21:
+		color = RubikColor::ORANGE;
+		break;
+	default:
+		error();
+		break;
+	}
+	this->corners[i] = new CornerFace(number, color);
 }
 
 void Rubik::addEdge(int i, int number)
 {
-	this->edges[i] = new EdgeFace(number, RubikColor::RED);
+	RubikColor color;
+	switch (i) {
+	case 0:
+	case 1:
+	case 2:
+	case 3:
+		color = RubikColor::RED;
+		break;
+	case 4:
+	case 7:
+	case 12:
+	case 6:
+		color = RubikColor::WHITE;
+		break;
+	case 14:
+	case 9:
+	case 5:
+	case 8:
+		color = RubikColor::YELLOW;
+		break;
+	case 18:
+	case 20:
+	case 23:
+	case 15:
+		color = RubikColor::GREEN;
+		break;
+	case 10:
+	case 13:
+	case 19:
+	case 21:
+		color = RubikColor::BLUE;
+		break;
+	case 11:
+	case 16:
+	case 17:
+	case 22:
+		color = RubikColor::ORANGE;
+		break;
+	default:
+		error();
+		break;
+	}
+	this->edges[i] = new EdgeFace(number, color);
 }
 
 void Rubik::addMiddle(int i, int number)
 {
-	this->middle[i] = new MiddleFace(number, RubikColor::RED);
+	RubikColor color;
+	switch (i) {
+	case 0:
+		color = RubikColor::RED;
+		break;
+	case 1:
+		color = RubikColor::WHITE;
+		break;
+	case 2:
+		color = RubikColor::YELLOW;
+		break;
+	case 3:
+		color = RubikColor::GREEN;
+		break;
+	case 4:
+		color = RubikColor::BLUE;
+		break;
+	case 5:
+		color = RubikColor::ORANGE;
+		break;
+	default:
+		error();
+		break;
+	}
+	this->middle[i] = new MiddleFace(number, color);
+}
+
+void Rubik::error() {
+	//exception
 }
 
 Rubik::~Rubik() {
@@ -119,7 +231,7 @@ void Rubik::printCube() {
 						if (number < 10) {
 							std::cout << " ";
 						}
-						std::cout << number;
+						std::cout << setcolor(RubikColor::WHITE) << number;
 					}
 					else
 					{
@@ -331,18 +443,43 @@ void Rubik::D() {
 	translate(this->edges, 8, 5, 9, 14);
 }
 
-void Rubik::resolve() {
-	resolveMiddle();
-	resolveEdges();
-	resolveCorners();
+void Rubik::resolve(RubikColor colors[]) {
+	resolveMiddle(colors[4]);
+	RubikColor edgesColors[4] = { colors[1], colors[3], colors[5], colors[7] };
+	RubikColor cornersColors[4] = { colors[0], colors[2], colors[6], colors[8] };
+	resolveEdges(edgesColors);
+	resolveCorners(cornersColors);
 }
-void Rubik::resolveMiddle() {
+void Rubik::resolveMiddle(RubikColor color) {
 
-}
-void Rubik::resolveEdges() {
+	switch (color) {
+	case RubikColor::RED:
+		this->changeReferentialWhiteToRed();
+		break;
+	case RubikColor::BLUE:
+		this->changeReferentialWhiteToBlue();
+		break;
+	case RubikColor::ORANGE:
+		this->changeReferentialWhiteToOrange();
+		break;
+	case RubikColor::GREEN:
+		this->changeReferentialWhiteToGreen();
+		break;
+	case RubikColor::YELLOW:
+		this->changeReferentialWhiteToYellow();
+		break;
+	default:
+		break;
 
+	}
 }
-void Rubik::resolveCorners() {
+void Rubik::resolveEdges(RubikColor colors[]) {
+	for (int i = 0; i < 4; i++) {
+		RubikColor color = colors[i];
+
+	}
+}
+void Rubik::resolveCorners(RubikColor colors[]) {
 
 }
 
