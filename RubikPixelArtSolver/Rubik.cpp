@@ -394,6 +394,6 @@ void Rubik::changeReferentialWhiteToYellow() {
 
 	this->swap((Face**)this->middle, 1, 2);
 	this->swap((Face**)this->middle, 0, 5);
-
+	//test
 }
 
