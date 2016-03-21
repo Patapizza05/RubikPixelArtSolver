@@ -60,6 +60,8 @@ class Rubik {
 		void swap(Face * array[], int i1, int i2);
 		void changeReferential(RubikColor color);
 		void changeReferential(MiddleFace * m);
+		int searchEdgeColorIndex(RubikColor color);
+		bool checkEdgeColor(int, RubikColor);
 
 
 

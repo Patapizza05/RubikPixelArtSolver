@@ -8,10 +8,11 @@ class Face {
 	public:
 		Face(int,RubikColor);
 		int getNumber() { return number; }
-		int getLockedPosition() { return lockedPosition; }
+		bool getLockedPosition() { return lockedPosition; }
+		void setLockedPosition(bool value) { lockedPosition = value; }
 		RubikColor getColor() { return color; }
 	protected:
-		int lockedPosition = -1;
+		bool lockedPosition = FALSE;
 		int number;
 		RubikColor color;
 };
