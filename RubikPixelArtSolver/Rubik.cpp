@@ -474,100 +474,163 @@ void Rubik::resolveMiddle(RubikColor color) {
 	}
 }
 void Rubik::resolveEdges(RubikColor colors[]) {
+
+	int solvedEdges = 0;
+
 	for (int i = 0; i < 4; i++) {
 		RubikColor color = colors[i]; //12 7 4 6
-		int index = this->searchEdgeColorIndex(color);
+		int index = this->searchEdgeColorIndex(color,solvedEdges);
 		std::cout << index << std::endl;
-		this->edges[index]->setLockedPosition(TRUE);
+		this->edges[index]->setLockedPosition(TRUE); //FIXME
+		solvedEdges++;
 
+		this->U();
 	}
 }
 
-int Rubik::searchEdgeColorIndex(RubikColor color) {
+int Rubik::searchEdgeColorIndex(RubikColor color, int solvedEdges) {
 
 	// 0
 
 	if (checkEdgeColor(12, color)) {
+		//No moves
 		return 12;
 	}
 
 	//1
 
 	if (checkEdgeColor(13, color)) {
+		this->Fi();
 		return 13;
 	}
 
 	if (checkEdgeColor(15, color)) {
+		this->F();
 		return 15;
 	}
 
-	if (checkEdgeColor(6, color)) {
+	if (checkEdgeColor(6, color) && solvedEdges == 0) {
+		this->Ui();
 		return 6;
-	}if (checkEdgeColor(7, color)) {
+	}
+	
+	if (checkEdgeColor(7, color) && solvedEdges == 0) {
+		this->U();
 		return 7;
 	}
 
 	//2
 
 	if (checkEdgeColor(21, color)) {
+		this->R();
+		this->Fi();
 		return 21;
 	}
 	
 	if (checkEdgeColor(20, color)) {
+		this->Li();
+		this->F();
 		return 20;
 	}
 
 	if (checkEdgeColor(3, color)) {
+		this->U();
+		this->Li();
+		this->Ui();
 		return 3;
-	}if (checkEdgeColor(11, color)) {
+	}
+	
+	if (checkEdgeColor(11, color)) {
+		this->U();
+		this->L();
+		Ui();
 		return 11;
 	}
 
 	if (checkEdgeColor(14, color)) {
+		this->F2();
 		return 14;
-	}if (checkEdgeColor(1, color)) {
+	}
+	
+	if (checkEdgeColor(1, color)) {
+		Ui();
+		R();
+		U();
 		return 1;
 	}
 
 	if (checkEdgeColor(22, color)) {
+		Ui();
+		Ri();
+		U();
 		return 22;
 	}
-	if (checkEdgeColor(4, color)) {
+
+	if (checkEdgeColor(4, color) && solvedEdges == 0) {
+		U2();
 		return 4;
 	}
 	
 	//3
 	
 	if (checkEdgeColor(9, color)) {
+		Di();
+		F2();
 		return 9;
 	}if (checkEdgeColor(10, color)) {
+		R2();
+		Fi();
 		return 10;
 	}if (checkEdgeColor(23, color)) {
+		L2();
+		F();
 		return 23;
 	}if (checkEdgeColor(8, color)) {
+		D();
+		F2();
 		return 8;
 	}if (checkEdgeColor(2, color)) {
+		D();
+		R();
+		Fi();
 		return 2;
 	}if (checkEdgeColor(17, color)) {
+		D(); Li(); F();
 		return 17;
 	}
 	
 	//4
 	
 	if (checkEdgeColor(5, color)) {
+		Di();
+		F2();
 		return 5;
-	}if (checkEdgeColor(18, color)) {
+	}if (checkEdgeColor(18, color)) { //FIXME : 2
+		L(); F();
 		return 18;
-	}if (checkEdgeColor(19, color)) {
+	}if (checkEdgeColor(19, color)) { //FIXME : 2
+		Ri(); Fi();
 		return 19;
 	}
 
 	//5
 
 	if (checkEdgeColor(0, color)) {
+		F2(); D(); R(); Fi(); Ri();
 		return 0;
 	}if (checkEdgeColor(16, color)) {
+		B2(); Di(); R(); Fi(); Ri();
 		return 16;
+	}
+
+	// 6
+
+	if (checkEdgeColor(4, color)) {
+		//Don't move top !
+	}if (checkEdgeColor(6, color)) {
+		//Don't move top !
+	}if (checkEdgeColor(7, color)) {
+		//Don't move top !
 	}
 	
 }
