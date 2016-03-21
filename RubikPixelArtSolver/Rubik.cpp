@@ -231,7 +231,7 @@ void Rubik::printCube() {
 						if (number < 10) {
 							std::cout << " ";
 						}
-						std::cout << setcolor(RubikColor::WHITE) << number;
+						std::cout << setcolor(this->corners[lines[y][x]]->getColor()) << number;
 					}
 					else
 					{
@@ -239,7 +239,7 @@ void Rubik::printCube() {
 						if (number < 10) {
 							std::cout << " ";
 						}
-						std::cout << number;
+						std::cout << setcolor(this->edges[lines[y][x]]->getColor()) << number;
 					}
 
 				}
@@ -251,12 +251,12 @@ void Rubik::printCube() {
 						if (number < 10) {
 							std::cout << " ";
 						}
-						std::cout << number;
+						std::cout << setcolor(this->edges[lines[y][x]]->getColor()) << number;
 					}
 					else
 					{
 						number = this->middle[lines[y][x]]->getNumber();
-						std::cout << " " << number;
+						std::cout << " " << setcolor(this->middle[lines[y][x]]->getColor()) << number;
 					}
 				}
 			}
