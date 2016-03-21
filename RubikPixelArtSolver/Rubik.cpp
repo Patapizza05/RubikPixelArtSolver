@@ -195,6 +195,7 @@ Rubik::~Rubik() {
 
 
 void Rubik::printCube() {
+
 	int number;
 	int lines[9][12] = {
 		{ -1, -1, -1, 6, 4, 7, -1, -1, -1, -1, -1, -1 },
@@ -416,17 +417,18 @@ void Rubik::F() {
 	translate(this->edges, 3, 2, 1, 0);
 }
 void Rubik::F2() {
-	swap((Face**)this->corners, 3, 12);
-	swap((Face**)this->corners, 13,18);
-	swap((Face**)this->corners, 2,21);
-	swap((Face**)this->corners, 11,20);
-	swap((Face**)this->corners, 19,4);
-	swap((Face**)this->corners, 5,10);
+	//Eror probleme !!!!!
+	swap((Face**)this->corners, 3, 0);
+	swap((Face**)this->corners, 2,1);
+	swap((Face**)this->corners, 8,11);
+	swap((Face**)this->corners, 10,9);
+	swap((Face**)this->corners, 18,17);
+	swap((Face**)this->corners, 19,16);
 
-	swap((Face**)this->edges, 2,17);
-	swap((Face**)this->edges, 21,20);
-	swap((Face**)this->edges, 14,5);
-	swap((Face**)this->edges, 9,8);
+	swap((Face**)this->edges, 2,0);
+	swap((Face**)this->edges, 3,1);
+	swap((Face**)this->edges, 15,13);
+	swap((Face**)this->edges, 14, 12);
 }
 void Rubik::Di() {
 	translate(this->corners, 3, 13, 12, 18);
@@ -441,6 +443,21 @@ void Rubik::D() {
 	translate(this->corners, 10, 4, 5, 19);
 	translate(this->edges, 20, 17, 21, 2);
 	translate(this->edges, 8, 5, 9, 14);
+}
+
+void Rubik::D2(){
+	
+	swap((Face**)this->corners, 3, 12);
+	swap((Face**)this->corners, 11, 20);
+	swap((Face**)this->corners, 19, 4);
+	swap((Face**)this->corners, 2, 21);
+	swap((Face**)this->corners, 18, 13);
+	swap((Face**)this->corners, 10, 5);
+
+	swap((Face**)this->edges, 2, 17);
+	swap((Face**)this->edges, 21, 20);
+	swap((Face**)this->edges, 14, 5);
+	swap((Face**)this->edges, 9, 8);
 }
 
 void Rubik::resolve(RubikColor colors[]) {
@@ -670,10 +687,185 @@ bool Rubik::checkEdgeColor(int index, RubikColor color) { //locked
 	return FALSE;
 }
 
+void Rubik::setLockedCorner(int index, bool value) {
+	int cornerIndex = index % 8;
+	this->corners[cornerIndex]->setLockedPosition(value);
+	this->corners[cornerIndex + 8]->setLockedPosition(value);
+	this->corners[cornerIndex + 16]->setLockedPosition(value);
+}
 
 void Rubik::resolveCorners(RubikColor colors[]) {
+	int solvedCorners = 0;
+
+	for (int i = 0; i < 4; i++) {
+		RubikColor color = colors[i]; //16 9 7 6
+		int index = this->searchCornerColorIndex(color, solvedCorners);
+		std::cout << index << std::endl;
+
+		switch (solvedCorners)
+		{
+		case 16:
+			this->setLockedEdge(16, TRUE);
+			break;
+		case 9:
+			this->setLockedEdge(9, TRUE);
+			break;
+		case 7:
+			this->setLockedEdge(7, TRUE);
+			break;
+		case 6:
+			this->setLockedEdge(6, TRUE);
+			break;
+		default:
+			break;
+		}
+
+		solvedCorners++;
+		this->U();
+	}
+}
+int Rubik::searchCornerColorIndex(RubikColor color, int solvedEdges) {
+
+	
+	if (checkCornerColor(0, color)) {
+		Fi(); Di(); F(); D2(); L(); Di(); Li();
+		return 0;
+	}
+
+	
+
+	if (checkCornerColor(1, color)) {
+		F(); D(); Fi(); D2(); Ri(); D(); R();
+		return 1;
+	}
+
+	if (checkCornerColor(2, color)) {
+		D(); L(); Di(); Li();
+		return 2;
+	}
+
+	if (checkCornerColor(3, color))  {
+		D2(); Fi(); D(); F();
+		return 3;
+	}
+
+	if (checkCornerColor(11, color)) {
+		L(); Di(); Li();
+		return 11;
+	}
+
+
+	if (checkCornerColor(12, color)) {
+		Fi(); D(); F();
+		return 12;
+	}
+
+	if (checkCornerColor(13, color)) {
+		Di(); L(); Di(); Li();
+		return 13;
+	}
+
+	if (checkCornerColor(18, color)) {
+		Di(); Fi(); D(); F();
+		return 18;
+	}
+
+	if (checkCornerColor(20, color)) {
+		D2(); L(); Di();  Li();
+		return 20;
+	}
+
+	if (checkCornerColor(21, color)) {
+		Di(); L(); Di(); Li();
+		return 21;
+	}
+
+	if (checkCornerColor(4, color)) { //mm combinaison pour 5, 10, 19
+		Fi(); D(); F(); L(); D(); Li(); D2(); Fi(); D(); F();
+		return 4;
+	}
+
+	if (checkCornerColor(5, color)) {
+		D(); Fi(); D(); F(); L(); D(); Li(); D2(); Fi(); D(); F();
+		return 5;
+	}
+
+	if (checkCornerColor(10, color)) {
+		Di(); Fi(); D(); F(); L(); D(); Li(); D2(); Fi(); D(); F();
+		return 10;
+	}
+
+	if (checkCornerColor(6, color)) {
+		B(); D2(); L(); Di(); Li();
+		return 6;
+
+	}if (checkCornerColor(7, color)) {
+		Bi(); D(); Fi(); D(); F();
+		return 7;
+	}
+
+	if (checkCornerColor(8, color)) {
+		L(); D(); Li(); D2(); Fi(); D(); F();
+		return 8;
+
+	}if (checkCornerColor(9, color)) {
+		Ri(); Di(); R(); Di(); Fi(); D(); F();
+		return 9;
+
+	}if (checkCornerColor(11, color)) {
+		L(); Di(); Li();
+		return 11;
+
+	}if (checkCornerColor(12, color)) {
+		Fi(); D(); F();
+		return 12;
+
+	}if (checkCornerColor(13, color)) {
+		Di(); L(); Di(); Li();
+		return 13;
+
+	}if (checkCornerColor(14, color)) {
+		Li(); Di(); L(); D(); Fi(); D(); F();
+		return 14;
+	}
+
+	if (checkCornerColor(15, color)) {
+		Bi(); Di(); B(); L(); Di(); Li();
+		return 15;
+	}
+
+	if (checkCornerColor(17, color)) {
+		Ri(); L(); Di(); Li(); R();
+		return 17;
+
+	}
+	if (checkCornerColor(16, color)) {
+		//No moves
+		return 16;
+	}
+
+	if (checkCornerColor(22, color)) {
+		B(); Fi(); D(); Bi(); F();
+		return 22;
+
+	}if (checkCornerColor(23, color)) {
+		R(); D(); Fi(); D(); F(); Ri();
+		return 23;
+
+	}if (checkCornerColor(19, color)) {
+		D2(); Fi(); D(); F(); L(); D(); Li(); D2(); Fi(); D(); F();
+		return 19;
+	}
 
 }
+bool Rubik::checkCornerColor(int index, RubikColor color) { //locked
+	if (this->corners[index]->getLockedPosition() == FALSE && this->corners[index]->getColor() == color)
+	{
+		return TRUE;
+	}
+	return FALSE;
+}
+
 
 void Rubik::changeReferential(RubikColor color) {
 

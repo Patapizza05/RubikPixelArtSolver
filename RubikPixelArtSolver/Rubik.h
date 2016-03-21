@@ -63,9 +63,9 @@ class Rubik {
 		int searchEdgeColorIndex(RubikColor color, int solvedEdges);
 		bool checkEdgeColor(int, RubikColor);
 		void setLockedEdge(int index, bool value);
-
-
-
+		int searchCornerColorIndex(RubikColor color, int solvedEdges);
+		bool checkCornerColor(int, RubikColor);
+		void setLockedCorner(int index, bool value);
 };
 
 #endif
