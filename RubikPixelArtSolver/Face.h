@@ -9,7 +9,7 @@ class Face {
 		Face(int,RubikColor);
 		int getNumber() { return number; }
 		bool getLockedPosition() { return lockedPosition; }
-		void setLockedPosition(bool value) { lockedPosition = value; }
+		void setLockedPosition(bool value);
 		RubikColor getColor() { return color; }
 	protected:
 		bool lockedPosition = FALSE;

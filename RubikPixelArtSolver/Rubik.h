@@ -62,6 +62,7 @@ class Rubik {
 		void changeReferential(MiddleFace * m);
 		int searchEdgeColorIndex(RubikColor color, int solvedEdges);
 		bool checkEdgeColor(int, RubikColor);
+		void setLockedEdge(int index, bool value);
 
 
 
