@@ -37,13 +37,3 @@ int main(int argc, char* argv[]) {
 	free(rubik);
 	return 0;
 }
-
-/*using namespace std;
-#include "RubikColor.h"
-
-int main(int argc, char *argv[])
-{
-	cout << "standard text" << setcolor(RED) << " red text" << setcolor(GREEN) << "green text" << setcolor(YELLOW) << "yellow text" << endl;
-
-	cin.get();
-}*/
