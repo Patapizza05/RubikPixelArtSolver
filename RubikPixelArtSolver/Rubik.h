@@ -8,6 +8,8 @@
 #include "EdgeFace.h"
 #include "MiddleFace.h"
 #include <iostream>
+#include <vector>
+#include <string>
 
 class Rubik {
 	public:
@@ -49,6 +51,8 @@ class Rubik {
 		CornerFace * corners[24];
 		EdgeFace * edges[24];
 		MiddleFace * middle[8];
+		std::vector<std::string> moves;
+
 		void addEdge(int, int);
 		void addCorner(int, int);
 		void addMiddle(int, int);

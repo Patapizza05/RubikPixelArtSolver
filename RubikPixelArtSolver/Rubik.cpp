@@ -299,6 +299,7 @@ void Rubik::Ri() {
 	translate(this->corners, 17, 23, 13, 11);
 	translate(this->edges, 7, 22, 9, 1);
 	translate(this->edges, 19, 10, 21, 13);
+	this->moves.push_back("Ri");
 }
 
 void Rubik::R() {
@@ -307,6 +308,7 @@ void Rubik::R() {
 	translate(this->corners,11,13,23,17);
 	translate(this->edges, 1,9,22,7);
 	translate(this->edges, 13,21,10,19);
+	this->moves.push_back("R");
 }
 void Rubik::R2() {
 	swap((Face**)this->corners, 3, 15);
@@ -320,6 +322,8 @@ void Rubik::R2() {
 	swap((Face**)this->edges, 9, 7);
 	swap((Face**)this->edges, 13, 10);
 	swap((Face**)this->edges, 21, 19);
+
+	this->moves.push_back("R2");
 }
 void Rubik::Li() {
 	translate(this->corners, 16, 2, 4, 22);
@@ -327,6 +331,8 @@ void Rubik::Li() {
 	translate(this->corners, 8, 18, 20, 14);
 	translate(this->edges, 6, 3, 8, 11);
 	translate(this->edges, 18, 15, 20, 23);
+
+	this->moves.push_back("Li");
 }
 void Rubik::L() {
 	translate(this->corners, 22, 4, 2, 16);
@@ -334,6 +340,8 @@ void Rubik::L() {
 	translate(this->corners, 14, 20, 18, 8);
 	translate(this->edges, 11, 8, 3, 6);
 	translate(this->edges, 23, 20, 15, 18);
+
+	this->moves.push_back("L");
 }
 void Rubik::L2() {
 	swap((Face**)this->corners, 22, 2);
@@ -347,6 +355,8 @@ void Rubik::L2() {
 	swap((Face**)this->edges, 8,6);
 	swap((Face**)this->edges, 23,15);
 	swap((Face**)this->edges, 20,18);
+
+	this->moves.push_back("L2");
 }
 void Rubik::Ui() {
 	translate(this->corners, 9, 16, 6, 7);
@@ -354,6 +364,8 @@ void Rubik::Ui() {
 	translate(this->corners, 0, 14, 15, 17);
 	translate(this->edges, 4, 7, 12, 6);
 	translate(this->edges, 0, 18, 16, 19);
+
+	this->moves.push_back("Ui");
 }
 void Rubik::U() {
 	translate(this->corners, 7, 6, 16, 9);
@@ -361,6 +373,7 @@ void Rubik::U() {
 	translate(this->corners, 17, 15, 14, 0);
 	translate(this->edges, 6, 12, 7, 4);
 	translate(this->edges, 19, 16, 18, 0);
+	this->moves.push_back("U");
 }
 void Rubik::U2() {
 	swap((Face**)this->corners, 7,16);
@@ -374,6 +387,8 @@ void Rubik::U2() {
 	swap((Face**)this->edges, 12,4);
 	swap((Face**)this->edges, 19, 18);
 	swap((Face**)this->edges, 16,0);
+
+	this->moves.push_back("U2");
 }
 void Rubik::Bi() {
 	translate(this->corners, 7, 14, 4, 13);
@@ -381,6 +396,8 @@ void Rubik::Bi() {
 	translate(this->corners, 22, 12, 21, 15);
 	translate(this->edges, 4, 23, 5, 10);
 	translate(this->edges, 16, 11, 17, 22);
+
+	this->moves.push_back("Bi");
 }
 void Rubik::B() {
 	translate(this->corners, 13, 4, 14, 7);
@@ -388,6 +405,8 @@ void Rubik::B() {
 	translate(this->corners, 15, 21, 12, 22);
 	translate(this->edges, 10, 5, 23, 4);
 	translate(this->edges, 22, 17, 11, 16);
+
+	this->moves.push_back("B");
 }
 void Rubik::B2() {
 	swap((Face**)this->corners,13,14);
@@ -401,6 +420,8 @@ void Rubik::B2() {
 	swap((Face**)this->edges, 5,4);
 	swap((Face**)this->edges, 22,11);
 	swap((Face**)this->edges, 17,16);
+
+	this->moves.push_back("B2");
 }
 void Rubik::Fi() {
 	translate(this->corners, 9, 11, 10, 8);
@@ -408,6 +429,8 @@ void Rubik::Fi() {
 	translate(this->corners, 0, 1, 3, 2);
 	translate(this->edges, 12, 13, 14, 15);
 	translate(this->edges, 0, 1, 2, 3);
+
+	this->moves.push_back("Fi");
 }
 void Rubik::F() {
 	translate(this->corners, 8, 10, 11, 9);
@@ -415,9 +438,11 @@ void Rubik::F() {
 	translate(this->corners, 2, 3, 1, 0);
 	translate(this->edges, 15, 14, 13, 12);
 	translate(this->edges, 3, 2, 1, 0);
+
+	this->moves.push_back("F");
 }
 void Rubik::F2() {
-	//Eror probleme !!!!!
+	//FIXME ?
 	swap((Face**)this->corners, 3, 0);
 	swap((Face**)this->corners, 2,1);
 	swap((Face**)this->corners, 8,11);
@@ -429,6 +454,8 @@ void Rubik::F2() {
 	swap((Face**)this->edges, 3,1);
 	swap((Face**)this->edges, 15,13);
 	swap((Face**)this->edges, 14, 12);
+
+	this->moves.push_back("F2");
 }
 void Rubik::Di() {
 	translate(this->corners, 3, 13, 12, 18);
@@ -436,6 +463,8 @@ void Rubik::Di() {
 	translate(this->corners, 19, 5, 4, 10);
 	translate(this->edges, 2, 21, 17, 20);
 	translate(this->edges, 14, 9, 5, 8);
+
+	this->moves.push_back("Di");
 }
 void Rubik::D() {
 	translate(this->corners, 18, 12, 13, 3);
@@ -443,6 +472,8 @@ void Rubik::D() {
 	translate(this->corners, 10, 4, 5, 19);
 	translate(this->edges, 20, 17, 21, 2);
 	translate(this->edges, 8, 5, 9, 14);
+
+	this->moves.push_back("D");
 }
 
 void Rubik::D2(){
@@ -458,12 +489,16 @@ void Rubik::D2(){
 	swap((Face**)this->edges, 21, 20);
 	swap((Face**)this->edges, 14, 5);
 	swap((Face**)this->edges, 9, 8);
+
+	this->moves.push_back("D2");
 }
 
 void Rubik::resolve(RubikColor colors[]) {
 	resolveMiddle(colors[4]);
-	RubikColor edgesColors[4] = { colors[1], colors[3], colors[5], colors[7] };
-	RubikColor cornersColors[4] = { colors[0], colors[2], colors[6], colors[8] };
+	//RubikColor edgesColors[4] = { colors[1], colors[3], colors[5], colors[7] };
+
+	RubikColor edgesColors[4] = { colors[7], colors[5], colors[1], colors[3] };
+	RubikColor cornersColors[4] = { colors[6], colors[8], colors[2], colors[0] };
 	resolveEdges(edgesColors);
 	resolveCorners(cornersColors);
 }
@@ -487,8 +522,9 @@ void Rubik::resolveMiddle(RubikColor color) {
 		break;
 	default:
 		break;
-
 	}
+
+	this->printCube();
 }
 
 void Rubik::setLockedEdge(int index, bool value) {
@@ -504,20 +540,22 @@ void Rubik::resolveEdges(RubikColor colors[]) {
 	for (int i = 0; i < 4; i++) {
 		RubikColor color = colors[i]; //12 7 4 6
 		int index = this->searchEdgeColorIndex(color,solvedEdges);
-		std::cout << index << std::endl;
+
+		std::cout << std::endl;
+		std::cout << "Edge :" << index << std::endl;
 
 		switch (solvedEdges)
 		{
-			case 12:
+			case 0:
 				this->setLockedEdge(12, TRUE);
 				break;
-			case 7: 
+			case 1: 
 				this->setLockedEdge(7, TRUE);
 				break;
-			case 4:
+			case 2:
 				this->setLockedEdge(4, TRUE);
 				break;
-			case 6:
+			case 3:
 				this->setLockedEdge(6, TRUE);
 				break;
 			default:
@@ -526,7 +564,15 @@ void Rubik::resolveEdges(RubikColor colors[]) {
 
 		solvedEdges++;
 		this->U();
+
+		std::cout << std::endl;
+		for (int i = 0; i < this->moves.size(); i++) {
+			std::cout << moves[i] << " ";
+		}
+		this->printCube();
 	}
+
+
 }
 
 int Rubik::searchEdgeColorIndex(RubikColor color, int solvedEdges) {
@@ -700,20 +746,21 @@ void Rubik::resolveCorners(RubikColor colors[]) {
 	for (int i = 0; i < 4; i++) {
 		RubikColor color = colors[i]; //16 9 7 6
 		int index = this->searchCornerColorIndex(color, solvedCorners);
-		std::cout << index << std::endl;
+		std::cout << std::endl;
+		std::cout << "Corner : " << index << std::endl;
 
 		switch (solvedCorners)
 		{
-		case 16:
+		case 0:
 			this->setLockedEdge(16, TRUE);
 			break;
-		case 9:
+		case 1:
 			this->setLockedEdge(9, TRUE);
 			break;
-		case 7:
+		case 2:
 			this->setLockedEdge(7, TRUE);
 			break;
-		case 6:
+		case 3:
 			this->setLockedEdge(6, TRUE);
 			break;
 		default:
@@ -722,10 +769,21 @@ void Rubik::resolveCorners(RubikColor colors[]) {
 
 		solvedCorners++;
 		this->U();
+
+		std::cout << std::endl;
+		for (int i = 0; i < this->moves.size(); i++) {
+			std::cout << moves[i] << " ";
+		}
+		this->printCube();
 	}
+
 }
 int Rubik::searchCornerColorIndex(RubikColor color, int solvedEdges) {
 
+	if (checkCornerColor(16, color)) {
+		//No moves
+		return 16;
+	}
 	
 	if (checkCornerColor(0, color)) {
 		Fi(); Di(); F(); D2(); L(); Di(); Li();
@@ -735,7 +793,9 @@ int Rubik::searchCornerColorIndex(RubikColor color, int solvedEdges) {
 	
 
 	if (checkCornerColor(1, color)) {
-		F(); D(); Fi(); D2(); Ri(); D(); R();
+		//F D2 Fi Fi D F
+		F(); D2(); F2(); D(); F();
+
 		return 1;
 	}
 
@@ -796,7 +856,7 @@ int Rubik::searchCornerColorIndex(RubikColor color, int solvedEdges) {
 	}
 
 	if (checkCornerColor(6, color)) {
-		B(); D2(); L(); Di(); Li();
+		B(); D2(); L(); Di(); Li(); //FIXME
 		return 6;
 
 	}if (checkCornerColor(7, color)) {
@@ -838,10 +898,6 @@ int Rubik::searchCornerColorIndex(RubikColor color, int solvedEdges) {
 		Ri(); L(); Di(); Li(); R();
 		return 17;
 
-	}
-	if (checkCornerColor(16, color)) {
-		//No moves
-		return 16;
 	}
 
 	if (checkCornerColor(22, color)) {
