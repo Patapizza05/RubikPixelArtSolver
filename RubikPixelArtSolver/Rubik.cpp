@@ -1,6 +1,8 @@
 #include "Rubik.h"
 #include "RubikColor.h"
 
+#define DEBUG 0
+
 Rubik::Rubik(int pieces[]) 	
 {
 	initCornersAndEdges(pieces);
@@ -524,7 +526,7 @@ void Rubik::resolveMiddle(RubikColor color) {
 		break;
 	}
 
-	this->printCube();
+	if (DEBUG) this->printCube();
 }
 
 void Rubik::setLockedEdge(int index, bool value) {
@@ -544,7 +546,7 @@ void Rubik::resolveEdges(RubikColor colors[]) {
 		std::cout << std::endl;
 		std::cout << "Edge :" << index << std::endl;
 
-		switch (solvedEdges)
+		/*switch (solvedEdges)
 		{
 			case 0:
 				this->setLockedEdge(12, TRUE);
@@ -560,16 +562,21 @@ void Rubik::resolveEdges(RubikColor colors[]) {
 				break;
 			default:
 				break;
-		}
+		}*/
+		this->setLockedEdge(12, TRUE);
 
 		solvedEdges++;
 		this->U();
 
-		std::cout << std::endl;
-		for (int i = 0; i < this->moves.size(); i++) {
-			std::cout << moves[i] << " ";
+		if (DEBUG) {
+			std::cout << std::endl;
+			for (int i = 0; i < this->moves.size(); i++) {
+				std::cout << moves[i] << " ";
+			}
+			this->printCube();
 		}
-		this->printCube();
+
+
 	}
 
 
@@ -691,7 +698,7 @@ int Rubik::searchEdgeColorIndex(RubikColor color, int solvedEdges) {
 		Fi();
 		return 2;
 	}if (checkEdgeColor(17, color)) {
-		D(); Li(); F();
+		D(); Li(); F(); L();
 		return 17;
 	}
 	
@@ -749,7 +756,7 @@ void Rubik::resolveCorners(RubikColor colors[]) {
 		std::cout << std::endl;
 		std::cout << "Corner : " << index << std::endl;
 
-		switch (solvedCorners)
+		/*switch (solvedCorners)
 		{
 		case 0:
 			this->setLockedEdge(16, TRUE);
@@ -765,16 +772,19 @@ void Rubik::resolveCorners(RubikColor colors[]) {
 			break;
 		default:
 			break;
-		}
+		}*/
+		this->setLockedCorner(16, TRUE);
 
 		solvedCorners++;
 		this->U();
 
-		std::cout << std::endl;
-		for (int i = 0; i < this->moves.size(); i++) {
-			std::cout << moves[i] << " ";
+		if (DEBUG) {
+			std::cout << std::endl;
+			for (int i = 0; i < this->moves.size(); i++) {
+				std::cout << moves[i] << " ";
+			}
+			this->printCube();
 		}
-		this->printCube();
 	}
 
 }
