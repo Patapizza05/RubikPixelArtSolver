@@ -616,14 +616,12 @@ int Rubik::searchEdgeColorIndex(RubikColor color, int solvedEdges) {
 	//2
 
 	if (checkEdgeColor(21, color)) {
-		this->R();
-		this->Fi();
+		R(); Fi(); Ri();
 		return 21;
 	}
 	
 	if (checkEdgeColor(20, color)) {
-		this->Li();
-		this->F();
+		Li(); F(); L();
 		return 20;
 	}
 
@@ -693,9 +691,7 @@ int Rubik::searchEdgeColorIndex(RubikColor color, int solvedEdges) {
 		F2();
 		return 8;
 	}if (checkEdgeColor(2, color)) {
-		D();
-		R();
-		Fi();
+		D(); R(); Fi(); Ri();
 		return 2;
 	}if (checkEdgeColor(17, color)) {
 		D(); Li(); F(); L();

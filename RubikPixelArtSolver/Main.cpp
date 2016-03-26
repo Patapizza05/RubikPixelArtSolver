@@ -24,9 +24,9 @@ int main(int argc, char* argv[]) {
 
 	Rubik* rubik = new Rubik(pieces);
 	RubikColor colors[9] = { 
-		RubikColor::WHITE, RubikColor::RED, RubikColor::WHITE,
-		RubikColor::RED, RubikColor::WHITE, RubikColor::RED, 
-		RubikColor::WHITE, RubikColor::RED, RubikColor::WHITE
+		RubikColor::GREEN, RubikColor::GREEN, RubikColor::GREEN,
+		RubikColor::GREEN, RubikColor::WHITE, RubikColor::GREEN,
+		RubikColor::GREEN, RubikColor::GREEN, RubikColor::GREEN
 	};
 
 	/* The colors are specified this way :
