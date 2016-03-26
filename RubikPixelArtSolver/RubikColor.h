@@ -6,15 +6,19 @@
 #include <windows.h>
 #include <iomanip>
 
-enum RubikColor { DARKBLUE = 1, DARKGREEN, DARKTEAL, DARKRED, DARKPINK, DARKYELLOW, GRAY, DARKGRAY, TEAL /*BLUE*/, GREEN, BLUE /*TEAL*/, RED, ORANGE /*PINK*/, YELLOW, WHITE };
+enum RubikColor { WHITE = 1, GREEN, RED, BLUE, ORANGE, YELLOW };
+
+enum ConsoleColor { DARKBLUE_ = 1, DARKGREEN_, DARKTEAL_, DARKRED_, DARKPINK_, DARKYELLOW_, GRAY_, DARKGRAY_, BLUE_, GREEN_, TEAL_, RED_, PINK_, YELLOW_, WHITE_ };
+
+ConsoleColor translate(RubikColor color);
 
 struct setcolor
 {
-	RubikColor _c;
+	ConsoleColor _c;
 	HANDLE _console_handle;
 	//TODO : Ajouter la couleur orange
 	setcolor(RubikColor c, HANDLE console_handle = GetStdHandle(STD_OUTPUT_HANDLE))
-		: _c(c), _console_handle(0)
+		: _c(translate(c)), _console_handle(0)
 	{
 		_console_handle = console_handle;
 	}

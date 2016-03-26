@@ -7,3 +7,23 @@ std::basic_ostream<char> &operator<<(std::basic_ostream<char> &s, const setcolor
 	SetConsoleTextAttribute(ref._console_handle, ref._c);
 	return s;
 }
+
+ConsoleColor translate(RubikColor color) {
+	switch (color) {
+		case RubikColor::WHITE:
+			return ConsoleColor::WHITE_;
+		case RubikColor::GREEN:
+			return ConsoleColor::GREEN_;
+		case RubikColor::RED:
+			return ConsoleColor::RED_;
+		case RubikColor::BLUE:
+			return ConsoleColor::BLUE_;
+		case RubikColor::ORANGE:
+			return ConsoleColor::PINK_;
+		case RubikColor::YELLOW:
+			return ConsoleColor::YELLOW_;
+	}
+
+	return ConsoleColor::WHITE_;
+	
+}
