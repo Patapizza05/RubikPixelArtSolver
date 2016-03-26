@@ -16,6 +16,7 @@ class Rubik {
 		Rubik(int[]);
 		~Rubik();
 		void printCube();
+		bool checkRubik(RubikColor colors[]);
 
 		void R();
 		void Ri();
@@ -46,6 +47,8 @@ class Rubik {
 		void changeReferentialWhiteToBlue();
 		void changeReferentialWhiteToOrange();
 		void changeReferentialWhiteToYellow();
+
+		std::vector<std::string> getMoves() { return moves; }
 		
 	private:
 		CornerFace * corners[24];

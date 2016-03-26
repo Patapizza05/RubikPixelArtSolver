@@ -271,6 +271,37 @@ void Rubik::printCube() {
 	std::cout << setcolor(RubikColor::WHITE) << std::endl;
 }
 
+bool Rubik::checkRubik(RubikColor colors[]) {
+	int rotate = 0;
+	bool result = false;
+	int i = 0;
+	while (!result && rotate < 4) {
+		if (this->corners[6]->getColor() == colors[i++] 
+				&& this->edges[4]->getColor() == colors[i++] 
+					&& this->corners[7]->getColor() == colors[i++]
+			&& this->edges[6]->getColor() == colors[i++] 
+				&& this->middle[1]->getColor() == colors[i++] 
+					&& this->edges[7]->getColor() == colors[i++]
+			&& this->corners[16]->getColor() == colors[i++] 
+				&& this->edges[12]->getColor() == colors[i++]
+					&& this->corners[9]->getColor() == colors[i++])
+		{
+			result = true;
+		}
+		rotate++;
+		U();
+	}
+
+	/*while (rotate < 0)
+	{
+		Ui();
+		rotate--;
+	}*/
+
+
+	return result;
+}
+
 void Rubik::translate(Face * array[], int i1, int i2, int i3, int i4) {
 	Face * temp = array[i1];
 	array[i1] = array[i2];
@@ -558,10 +589,7 @@ void Rubik::resolveEdges(RubikColor colors[]) {
 			std::cout << "--------------------------------------------------------" << std::endl;
 		}
 
-
 	}
-
-
 }
 
 int Rubik::searchEdgeColorIndex(RubikColor color, int solvedEdges) {
@@ -792,8 +820,9 @@ int Rubik::searchCornerColorIndex(RubikColor color, int solvedEdges) {
 	}
 
 	if (checkCornerColor(13, color)) {
-		Di(); L(); Di(); Li();
+		D(); Fi(); D(); F();
 		return 13;
+
 	}
 
 	if (checkCornerColor(18, color)) {
@@ -850,10 +879,6 @@ int Rubik::searchCornerColorIndex(RubikColor color, int solvedEdges) {
 	}if (checkCornerColor(12, color)) {
 		Fi(); D(); F();
 		return 12;
-
-	}if (checkCornerColor(13, color)) {
-		Di(); L(); Di(); Li();
-		return 13;
 
 	}if (checkCornerColor(14, color)) {
 		Li(); Di(); L(); D(); Fi(); D(); F();
