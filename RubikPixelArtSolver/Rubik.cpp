@@ -1,7 +1,7 @@
 #include "Rubik.h"
 #include "RubikColor.h"
 
-#define DEBUG 1
+#define DEBUG 0
 
 Rubik::Rubik(int pieces[]) 	
 {
@@ -190,9 +190,10 @@ void Rubik::error() {
 
 Rubik::~Rubik() {
 	for (int i = 0; i < 24; i++) {
-		free(this->corners[i]);
-		free(this->edges[i]);
+		delete this->corners[i];
+		delete this->edges[i];
 	}
+	this->moves.clear();
 }
 
 
@@ -860,7 +861,7 @@ int Rubik::searchCornerColorIndex(RubikColor color, int solvedEdges) {
 		return 6;
 
 	}if (checkCornerColor(7, color)) {
-		Bi(); D(); Fi(); D(); F();
+		Bi(); D(); Fi(); D(); F(); B();
 		return 7;
 	}
 

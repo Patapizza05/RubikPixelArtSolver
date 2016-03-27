@@ -23,7 +23,7 @@ void resolveOneCube(int pieces[], RubikColor colors[], struct TestResults * pRes
 		std::cout << setcolor(RubikColor::RED) << "FAILED" << setcolor(RubikColor::WHITE) << "(passed " << pResults->passed << ", failed " << pResults->failed << ")" << std::endl;
 		std::cout << "Expected colors :" << std::endl;
 		for (int i = 0; i < 9; i++) {
-			std::cout << setcolor(colors[i]) << i;
+			std::cout << setcolor(colors[i]) << "#";
 			if (i % 3 == 2) {
 				std::cout << std::endl;
 			}
@@ -42,7 +42,7 @@ void resolveOneCube(int pieces[], RubikColor colors[], struct TestResults * pRes
 		rubik->printCube();
 		getchar();
 	}
-	free(rubik);
+	delete rubik;
 }
 
 void resolveTest(int pieces[]) {
@@ -59,14 +59,23 @@ void resolveTest(int pieces[]) {
 			colors[1] = rubikColors[i2];
 			for (int i3 = 0; i3 < 6; i3++) {
 				colors[2] = rubikColors[i3];
+
 				for (int i4 = 0; i4 < 6; i4++) {
 					colors[3] = rubikColors[i4];
 					for (int i5 = 0; i5 < 6; i5++) {
 						colors[4] = rubikColors[i5];
+
+						std::cout << "RESULTS" << std::endl;
+						std::cout << "Number of tests : " << results.passed + results.failed << std::endl;
+						std::cout << "Passed : " << results.passed << std::endl;
+						std::cout << "Failed : " << results.failed << std::endl;
+						std::cout << std::endl;
+
 						for (int i6 = 0; i6 < 6; i6++) {
 							colors[5] = rubikColors[i6];
 							for (int i7 = 0; i7 < 6; i7++) {
 								colors[6] = rubikColors[i7];
+
 								for (int i8 = 0; i8 < 6; i8++) {
 									colors[7] = rubikColors[i8];
 									for (int i9 = 0; i9 < 6; i9++) {
@@ -112,8 +121,8 @@ void solveOneCube(int pieces[]) {
 	Rubik* rubik = new Rubik(pieces);
 	RubikColor colors[9] = {
 		RubikColor::WHITE, RubikColor::WHITE, RubikColor::WHITE,
-		RubikColor::WHITE, RubikColor::WHITE, RubikColor::WHITE,
-		RubikColor::GREEN, RubikColor::YELLOW, RubikColor::WHITE
+		RubikColor::WHITE, RubikColor::GREEN, RubikColor::WHITE,
+		RubikColor::WHITE, RubikColor::RED, RubikColor::WHITE
 	};
 
 	/*The colors are specified this way :
@@ -127,7 +136,7 @@ void solveOneCube(int pieces[]) {
 
 	std::cout << "Expected colors :" << std::endl;
 	for (int i = 0; i < 9; i++) {
-		std::cout << setcolor(colors[i]) << i;
+		std::cout << setcolor(colors[i]) << "#";
 		if (i % 3 == 2) {
 			std::cout << std::endl;
 		}
@@ -146,15 +155,15 @@ void solveOneCube(int pieces[]) {
 	rubik->printCube();
 	getchar();
 
-	free(rubik);
+	delete rubik;
 }
 
 int main(int argc, char* argv[]) {
 
 	int pieces[54] = { 6, 4, 7, 6, 1, 7, 16, 12, 9, 14, 18, 8, 0, 0, 1, 17, 19, 23, 15, 16, 22, 23, 3, 15, 3, 0, 1, 13, 4, 10, 22, 5, 11, 20, 20, 18, 2, 2, 3, 11, 21, 13, 21, 17, 12, 10, 14, 19, 8, 2, 9, 4, 5, 5 };
 
-	solveOneCube(pieces);
+	resolveTest(pieces);
 
-	//resolveTest(pieces);
+	//solveOneCube(pieces);
 	return 0;
 }
