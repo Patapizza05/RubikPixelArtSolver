@@ -16,6 +16,7 @@ class Rubik {
 		Rubik(int[]);
 		~Rubik();
 		void printCube();
+		static bool Rubik::debug;
 		bool checkRubik(RubikColor colors[]);
 
 		void R();

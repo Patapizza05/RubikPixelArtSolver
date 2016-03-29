@@ -1,6 +1,6 @@
 
 #include "Rubik.h"
-
+#include "ResolutionException.h"
 
 
 struct TestResults {
@@ -40,7 +40,8 @@ void resolveOneCube(int pieces[], RubikColor colors[], struct TestResults * pRes
 
 		std::cout << setcolor(RubikColor::WHITE) << "---------------------------------------------" << std::endl;
 		rubik->printCube();
-		getchar();
+		//getchar();
+		throw ResolutionException("Incorrect resolution", colors);
 	}
 	delete rubik;
 }
@@ -100,7 +101,7 @@ void resolveTest(int pieces[]) {
 
 }
 
-void solveOneCube(int pieces[]) {
+void solveOneCube(int pieces[], RubikColor colors[]) {
 	/* The numbers are specified this way
 
 				01 02 03
@@ -119,11 +120,6 @@ void solveOneCube(int pieces[]) {
 
 
 	Rubik* rubik = new Rubik(pieces);
-	RubikColor colors[9] = {
-		RubikColor::WHITE, RubikColor::WHITE, RubikColor::WHITE,
-		RubikColor::WHITE, RubikColor::GREEN, RubikColor::WHITE,
-		RubikColor::WHITE, RubikColor::RED, RubikColor::WHITE
-	};
 
 	/*The colors are specified this way :
 	1 2 3
@@ -162,8 +158,28 @@ int main(int argc, char* argv[]) {
 
 	int pieces[54] = { 6, 4, 7, 6, 1, 7, 16, 12, 9, 14, 18, 8, 0, 0, 1, 17, 19, 23, 15, 16, 22, 23, 3, 15, 3, 0, 1, 13, 4, 10, 22, 5, 11, 20, 20, 18, 2, 2, 3, 11, 21, 13, 21, 17, 12, 10, 14, 19, 8, 2, 9, 4, 5, 5 };
 
-	resolveTest(pieces);
+	Rubik::debug = false;
+	try {
+		resolveTest(pieces);
+	}
+	catch (ResolutionException ex)
+	{
+		Rubik::debug = true;
+		solveOneCube(pieces, ex.getColors());
+	}
 
-	//solveOneCube(pieces);
+	/*Rubik rubik(pieces);
+	rubik.changeReferentialWhiteToRed();
+	rubik.printCube();
+	getchar();*/
+
+	/*RubikColor colors[9] = {
+		RubikColor::WHITE, RubikColor::WHITE, RubikColor::WHITE,
+		RubikColor::WHITE, RubikColor::GREEN, RubikColor::WHITE,
+		RubikColor::WHITE, RubikColor::RED, RubikColor::WHITE
+	};
+	solveOneCube(pieces, colors);*/
+
+	
 	return 0;
 }

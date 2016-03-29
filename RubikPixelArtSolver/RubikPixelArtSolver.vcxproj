@@ -83,6 +83,7 @@
     <ClInclude Include="EdgeFace.h" />
     <ClInclude Include="Face.h" />
     <ClInclude Include="MiddleFace.h" />
+    <ClInclude Include="ResolutionException.h" />
     <ClInclude Include="RubikColor.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

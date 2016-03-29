@@ -1,7 +1,7 @@
 #include "Rubik.h"
 #include "RubikColor.h"
 
-#define DEBUG 0
+bool Rubik::debug = false;
 
 Rubik::Rubik(int pieces[]) 	
 {
@@ -559,7 +559,7 @@ void Rubik::resolveMiddle(RubikColor color) {
 		break;
 	}
 
-	if (DEBUG) this->printCube();
+	if (Rubik::debug) this->printCube();
 }
 
 void Rubik::setLockedEdge(int index, bool value) {
@@ -575,13 +575,13 @@ void Rubik::resolveEdges(RubikColor colors[]) {
 	for (int i = 0; i < 4; i++) {
 		RubikColor color = colors[i]; //12 7 4 6
 		int index = this->searchEdgeColorIndex(color,solvedEdges);
-		if (DEBUG) std::cout << "Edge : Number " << this->edges[index]->getNumber() << " at position " << index << std::endl;
+		if (Rubik::debug) std::cout << "Edge : Number " << this->edges[index]->getNumber() << " at position " << index << std::endl;
 
 		this->setLockedEdge(12, TRUE);
 		solvedEdges++;
 		this->U();
 
-		if (DEBUG) {
+		if (Rubik::debug) {
 			std::cout << std::endl;
 			for (unsigned int i = 0; i < this->moves.size(); i++) {
 				std::cout << moves[i] << " ";
@@ -691,6 +691,7 @@ int Rubik::searchEdgeColorIndex(RubikColor color, int solvedEdges) {
 	}if (checkEdgeColor(10, color)) {
 		R2();
 		Fi();
+		R2();
 		return 10;
 	}if (checkEdgeColor(23, color)) {
 		L2();
@@ -712,7 +713,7 @@ int Rubik::searchEdgeColorIndex(RubikColor color, int solvedEdges) {
 	//4
 	
 	if (checkEdgeColor(5, color)) {
-		Di();
+		D2();
 		F2();
 		return 5;
 	}
@@ -760,14 +761,14 @@ void Rubik::resolveCorners(RubikColor colors[]) {
 	for (int i = 0; i < 4; i++) {
 		RubikColor color = colors[i]; //16 9 7 6
 		int index = this->searchCornerColorIndex(color, solvedCorners);
-		if (DEBUG) std::cout << "Corner : Number " << this->corners[index]->getNumber() << " at position " << index << std::endl;
+		if (Rubik::debug) std::cout << "Corner : Number " << this->corners[index]->getNumber() << " at position " << index << std::endl;
 
 		this->setLockedCorner(16, TRUE);
 
 		solvedCorners++;
 		this->U();
 
-		if (DEBUG) {
+		if (Rubik::debug) {
 			std::cout << std::endl;
 			for (unsigned int i = 0; i < this->moves.size(); i++) {
 				std::cout << moves[i] << " ";
@@ -857,7 +858,7 @@ int Rubik::searchCornerColorIndex(RubikColor color, int solvedEdges) {
 	}
 
 	if (checkCornerColor(6, color)) {
-		B(); D2(); L(); Di(); Li(); //FIXME
+		B(); D2(); Bi(); L(); Di(); Li(); 
 		return 6;
 
 	}if (checkCornerColor(7, color)) {
@@ -882,7 +883,8 @@ int Rubik::searchCornerColorIndex(RubikColor color, int solvedEdges) {
 		return 12;
 
 	}if (checkCornerColor(14, color)) {
-		Li(); Di(); L(); D(); Fi(); D(); F();
+		//Li(); Di(); L(); D(); Fi(); D(); F();
+		Li(); D2(); L2(); Di(); Li();
 		return 14;
 	}
 
@@ -937,8 +939,8 @@ void Rubik::changeReferentialWhiteToGreen() {
 
 }
 void Rubik::changeReferentialWhiteToRed() {
-	Ri();
-	L();
+	R();
+	Li();
 	this->translate(this->middle, 0,2,5,1);
 	this->translate(this->edges, 4,0,14,17);
 	this->translate(this->edges, 12,2,5,16);
@@ -952,8 +954,8 @@ void Rubik::changeReferentialWhiteToBlue() {
 	this->translate(this->edges, 7,21,8,18);
 }
 void Rubik::changeReferentialWhiteToOrange() {
-	R();
-	Li();
+	Ri();
+	L();
 	this->translate(this->middle, 0,1,5,2);
 	this->translate(this->edges, 4,17,14,0);
 	this->translate(this->edges, 12,16,5,2);

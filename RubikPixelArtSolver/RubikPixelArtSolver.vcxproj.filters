@@ -56,5 +56,8 @@
     <ClInclude Include="MiddleFace.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ResolutionException.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
