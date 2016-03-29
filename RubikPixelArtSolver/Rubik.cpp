@@ -193,6 +193,9 @@ Rubik::~Rubik() {
 		delete this->corners[i];
 		delete this->edges[i];
 	}
+	for (int i = 0; i < 6; i++) {
+		delete this->middle[i];
+	}
 	this->moves.clear();
 }
 

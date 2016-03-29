@@ -63,8 +63,7 @@ void resolveTest(int pieces[]) {
 
 				for (int i4 = 0; i4 < 6; i4++) {
 					colors[3] = rubikColors[i4];
-					for (int i5 = 0; i5 < 6; i5++) {
-						colors[4] = rubikColors[i5];
+					
 
 						std::cout << "RESULTS" << std::endl;
 						std::cout << "Number of tests : " << results.passed + results.failed << std::endl;
@@ -81,6 +80,8 @@ void resolveTest(int pieces[]) {
 									colors[7] = rubikColors[i8];
 									for (int i9 = 0; i9 < 6; i9++) {
 										colors[8] = rubikColors[i9];
+										for (int i5 = 0; i5 < 6; i5++) {
+											colors[4] = rubikColors[i5];
 
 										resolveOneCube(pieces, colors, &results);
 									}
