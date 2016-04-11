@@ -77,6 +77,7 @@
     <ClCompile Include="Rubik.h" />
     <ClCompile Include="Rubik.cpp" />
     <ClCompile Include="RubikColor.cpp" />
+    <ClCompile Include="TestCampaign.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CornerFace.h" />
@@ -85,6 +86,7 @@
     <ClInclude Include="MiddleFace.h" />
     <ClInclude Include="ResolutionException.h" />
     <ClInclude Include="RubikColor.h" />
+    <ClInclude Include="TestCampaign.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
