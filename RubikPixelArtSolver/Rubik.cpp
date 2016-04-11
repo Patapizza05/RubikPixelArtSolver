@@ -822,221 +822,208 @@ void Rubik::resolveEdges(RubikColor colors[]) {
 
 int Rubik::searchEdgeColorIndex(RubikColor color, int solvedEdges) {
 
-	// 0
-
-	if (checkEdgeColor(12, color)) {
+	if (checkEdgeColor(12, color)) { //0
 		//No moves
 		return 12;
 	}
 
-	//1
-
-	if (checkEdgeColor(13, color)) {
-		this->Fi();
+	if (checkEdgeColor(13, color)) { //1
+		Fi();
 		return 13;
 	}
 
-	if (checkEdgeColor(15, color)) {
-		this->F();
+	if (checkEdgeColor(15, color)) { //1
+		F();
 		return 15;
 	}
 
-	if (checkEdgeColor(6, color) && solvedEdges == 0) {
-		this->Ui();
+	if (checkEdgeColor(6, color) && solvedEdges == 0) { //1
+		Ui();
 		return 6;
 	}
 	
-	if (checkEdgeColor(7, color) && solvedEdges == 0) {
-		this->U();
+	if (checkEdgeColor(7, color) && solvedEdges == 0) { //1
+		U();
 		return 7;
 	}
 
-	//1.5
-
-	if (checkEdgeColor(14, color)) {
+	if (checkEdgeColor(14, color)) { //1.5
 		F2();
 		return 14;
 	}
 
-	if (checkEdgeColor(4, color) && solvedEdges == 0) {
+	if (checkEdgeColor(4, color) && solvedEdges == 0) { //1.5
 		U2();
 		return 4;
 	}
 
-	//2
-
-	if (checkEdgeColor(21, color) && !this->edges[7]->getLockedPosition()) {
+	if (checkEdgeColor(21, color) && !this->edges[7]->getLockedPosition()) { //2
 		R(); Fi();
 		return 21;
 	}
 	
-	if (checkEdgeColor(20, color) && !this->edges[6]->getLockedPosition()) {
+	if (checkEdgeColor(20, color) && !this->edges[6]->getLockedPosition()) { //2
 		Li(); F();
 		return 20;
 	}
 
-	if (checkEdgeColor(3, color) && solvedEdges == 0) {
+	if (checkEdgeColor(3, color) && solvedEdges == 0) { //2
 		Li(); Ui();
 		return 3;
 	}
 	
-	if (checkEdgeColor(11, color) && solvedEdges == 0) {
+	if (checkEdgeColor(11, color) && solvedEdges == 0) { //2
 		L(); Ui();
 		return 11;
 	}
 
-	if (checkEdgeColor(1, color) && solvedEdges == 0) {
+	if (checkEdgeColor(1, color) && solvedEdges == 0) { //2
 		R(); U();
 		return 1;
 	}
 
-	if (checkEdgeColor(22, color) && solvedEdges == 0) {
+	if (checkEdgeColor(22, color) && solvedEdges == 0) { //2
 		Ri(); U();
 		return 22;
 	}
 
-	if (checkEdgeColor(18, color)) {
+	if (checkEdgeColor(18, color)) { //2
 		L(); F();
 		return 18;
 	}
 	
-	if (checkEdgeColor(19, color)) {
+	if (checkEdgeColor(19, color)) { //2
 		Ri(); Fi();
 		return 19;
 	}
 	
 	//2.5
 	
-	if (checkEdgeColor(9, color)) {
+	if (checkEdgeColor(9, color)) { //2.5
 		Di(); F2();
 		return 9;
 	}
 
-	if (checkEdgeColor(10, color) && !this->edges[7]->getLockedPosition()) {
+	if (checkEdgeColor(10, color) && !this->edges[7]->getLockedPosition()) { //2.5
 		R2(); Fi();
 		return 10;
 	}
 
-	if (checkEdgeColor(23, color) && !this->edges[6]->getLockedPosition()) {
+	if (checkEdgeColor(23, color) && !this->edges[6]->getLockedPosition()) { //2.5
 		L2(); F();
 		return 23;
 	}
 
-	if (checkEdgeColor(8, color)) {
+	if (checkEdgeColor(8, color)) { //2.5
 		D(); F2();
 		return 8;
 	}
 
 	//2.8
 
-	if (checkEdgeColor(5, color)) {
+	if (checkEdgeColor(5, color)) { //2.8
 		D2(); F2();
 		return 5;
 	}
 
 	//3
 
-	if (checkEdgeColor(21, color)) { //7 is locked
+	if (checkEdgeColor(21, color)) { //3 //7 is locked
 		R(); Fi(); Ri();
 		return 21;
 	}
 
-	if (checkEdgeColor(20, color)) { //6 is locked
+	if (checkEdgeColor(20, color)) { //3 //6 is locked
 		Li(); F(); L();
 		return 20;
 	}
 
-	if (checkEdgeColor(3, color)) {
+	if (checkEdgeColor(3, color)) { //3
 		U(); Li(); Ui();
 		return 3;
 	}
 
-	if (checkEdgeColor(11, color)) {
+	if (checkEdgeColor(11, color)) { //3
 		U(); L(); Ui();
 		return 11;
 	}
 
-	if (checkEdgeColor(1, color)) {
+	if (checkEdgeColor(1, color)) { //3
 		Ui(); R(); U();
 		return 1;
 	}
 
-	if (checkEdgeColor(22, color)) {
+	if (checkEdgeColor(22, color)) { //3
 		Ui(); Ri(); U();
 		return 22;
 	}
 
-	if (checkEdgeColor(2, color) && !this->edges[7]->getLockedPosition()) {
+	if (checkEdgeColor(2, color) && !this->edges[7]->getLockedPosition()) { //3
 		D(); R(); Fi();
 		return 2;
 	}
 
-	if (checkEdgeColor(17, color) && !this->edges[6]->getLockedPosition()) {
+	if (checkEdgeColor(17, color) && !this->edges[6]->getLockedPosition()) { //3
 		D(); Li(); F();
 		return 17;
 	}
-
-	//4
 	
-	if (checkEdgeColor(10, color)) {
+	if (checkEdgeColor(10, color)) { //3.8
 		R2(); Fi(); R2();
 		return 10;
 	}
 
-	if (checkEdgeColor(23, color)) {
+	if (checkEdgeColor(23, color)) { //3.8
 		L2(); F(); L2();
 		return 23;
 	}
 	
-	if (checkEdgeColor(2, color)) {
+	if (checkEdgeColor(2, color)) { //4
 		D(); R(); Fi(); Ri();
 		return 2;
 	}
 	
-	if (checkEdgeColor(17, color)) {
+	if (checkEdgeColor(17, color)) { //4
 		D(); Li(); F(); L();
 		return 17;
 	}
 
-
-	//5
-
-	if (checkEdgeColor(0, color) && !this->edges[7]->getLockedPosition())
+	if (checkEdgeColor(0, color) && !this->edges[7]->getLockedPosition()) //4.5
 	{
 		F2(); D(); R(); Fi();
 		return 0;
 	}
 
-	if (checkEdgeColor(16, color) && !this->edges[16]->getLockedPosition()) {
+	if (checkEdgeColor(16, color) && !this->edges[16]->getLockedPosition()) { //4.5
 		B2(); Di(); R(); Fi();
 		return 16;
 	}
 
-	if (checkEdgeColor(0, color)) {
+	if (checkEdgeColor(0, color)) { //5.5
 		F2(); D(); R(); Fi(); Ri();
 		return 0;
 	}
 	
-	if (checkEdgeColor(16, color)) {
+	if (checkEdgeColor(16, color)) { //5.5
 		B2(); Di(); R(); Fi(); Ri();
 		return 16;
 	}
 
 	// 6
 
-	if (checkEdgeColor(4, color)) {
+	if (checkEdgeColor(4, color)) { //7
 		//Don't move top !
 		Ri(); L(); Bi(); R(); Li(); R(); Fi();
 		return 4;
 	}
 	
-	if (checkEdgeColor(6, color)) {
+	if (checkEdgeColor(6, color)) { //9
 		//Don't move top !
 		F(); Bi(); L(); Fi(); B(); D(); R(); Fi(); Ri();
 		return 6;
 	}
 	
-	if (checkEdgeColor(7, color)) {
+	if (checkEdgeColor(7, color)) { //9
 		//Don't move top !
 		Fi(); B(); Ri(); F(); Bi(); D(); R(); Fi(); Ri();
 		return 7;
@@ -1083,135 +1070,139 @@ void Rubik::resolveCorners(RubikColor colors[]) {
 	}
 
 }
-int Rubik::searchCornerColorIndex(RubikColor color, int solvedEdges) {
+int Rubik::searchCornerColorIndex(RubikColor color, int solvedCorners) {
 
-	if (checkCornerColor(16, color)) {
+	if (checkCornerColor(16, color)) { //0
 		//No moves
 		return 16;
 	}
-	
-	if (checkCornerColor(0, color)) {
-		Fi(); Di(); F(); D2(); L(); Di(); Li();
-		return 0;
-	}
 
-	
-
-	if (checkCornerColor(1, color)) {
-		//F D2 Fi Fi D F
-		F(); D2(); F2(); D(); F();
-
-		return 1;
-	}
-
-	if (checkCornerColor(2, color)) {
-		D(); L(); Di(); Li();
-		return 2;
-	}
-
-	if (checkCornerColor(3, color))  {
-		D2(); Fi(); D(); F();
-		return 3;
-	}
-
-	if (checkCornerColor(11, color)) {
+	if (checkCornerColor(11, color)) { //3
 		L(); Di(); Li();
 		return 11;
 	}
 
-
-	if (checkCornerColor(12, color)) {
+	if (checkCornerColor(12, color)) { //3
 		Fi(); D(); F();
 		return 12;
 	}
 
-	if (checkCornerColor(13, color)) {
-		D(); Fi(); D(); F();
-		return 13;
-
+	if (checkCornerColor(11, color)) { //3
+		L(); Di(); Li();
+		return 11;
 	}
 
-	if (checkCornerColor(18, color)) {
+	if (checkCornerColor(12, color)) { //3
+		Fi(); D(); F();
+		return 12;
+	}
+
+	if (checkCornerColor(2, color)) { //4
+		D(); L(); Di(); Li();
+		return 2;
+	}
+	
+	if (checkCornerColor(13, color)) { //4
+		D(); Fi(); D(); F();
+		return 13;
+	}
+
+	if (checkCornerColor(18, color)) { //4
 		Di(); Fi(); D(); F();
 		return 18;
 	}
 
-	if (checkCornerColor(20, color)) {
-		D2(); L(); Di();  Li();
-		return 20;
-	}
-
-	if (checkCornerColor(21, color)) {
+	if (checkCornerColor(21, color)) { //4
 		Di(); L(); Di(); Li();
 		return 21;
 	}
 
-	if (checkCornerColor(4, color)) { //mm combinaison pour 5, 10, 19
-		Fi(); D(); F(); L(); D(); Li(); D2(); Fi(); D(); F();
-		return 4;
+	if (checkCornerColor(20, color)) { //4.5
+		D2(); L(); Di();  Li();
+		return 20;
 	}
 
-	if (checkCornerColor(5, color)) {
-		D(); Fi(); D(); F(); L(); D(); Li(); D2(); Fi(); D(); F();
-		return 5;
+	if (checkCornerColor(3, color))  { //4.5
+		D2(); Fi(); D(); F();
+		return 3;
 	}
 
-	if (checkCornerColor(10, color)) {
-		Di(); Fi(); D(); F(); L(); D(); Li(); D2(); Fi(); D(); F();
-		return 10;
-	}
-
-	if (checkCornerColor(6, color)) {
-		B(); D2(); Bi(); L(); Di(); Li(); 
-		return 6;
-
-	}if (checkCornerColor(7, color)) {
-		Bi(); D(); Fi(); D(); F(); B();
-		return 7;
-	}
-
-	if (checkCornerColor(8, color)) {
-		L(); D(); Li(); D2(); Fi(); D(); F();
-		return 8;
-
-	}if (checkCornerColor(9, color)) {
-		Ri(); Di(); R(); Di(); Fi(); D(); F();
-		return 9;
-
-	}if (checkCornerColor(11, color)) {
-		L(); Di(); Li();
-		return 11;
-
-	}if (checkCornerColor(12, color)) {
-		Fi(); D(); F();
-		return 12;
-
-	}if (checkCornerColor(14, color)) {
-		//Li(); Di(); L(); D(); Fi(); D(); F();
-		Li(); D2(); L2(); Di(); Li();
-		return 14;
-	}
-
-	if (checkCornerColor(15, color)) {
-		Bi(); Di(); B(); L(); Di(); Li();
-		return 15;
-	}
-
-	if (checkCornerColor(17, color)) {
+	if (checkCornerColor(17, color)) { //5
 		Ri(); L(); Di(); Li(); R();
 		return 17;
 
 	}
 
-	if (checkCornerColor(22, color)) {
+	if (checkCornerColor(22, color)) { //5
 		B(); Fi(); D(); Bi(); F();
 		return 22;
+	}
 
-	}if (checkCornerColor(23, color)) {
+	if (checkCornerColor(1, color)) { //5.8
+		F(); D2(); F2(); D(); F();
+		return 1;
+	}
+
+
+	if (checkCornerColor(14, color)) { //5.8
+		Li(); D2(); L2(); Di(); Li();
+		return 14;
+	}
+
+	if (checkCornerColor(7, color)) { //6
+		Bi(); D(); Fi(); D(); F(); B();
+		return 7;
+	}
+
+	if (checkCornerColor(15, color)) { //6
+		Bi(); Di(); B(); L(); Di(); Li();
+		return 15;
+	}
+
+	if (checkCornerColor(23, color)) { //6
 		R(); D(); Fi(); D(); F(); Ri();
 		return 23;
 
-	}if (checkCornerColor(19, color)) {
+	}
+
+	if (checkCornerColor(6, color)) { //6.5
+		B(); D2(); Bi(); L(); Di(); Li();
+		return 6;
+
+	}
+
+	if (checkCornerColor(0, color)) { //7.5
+		Fi(); Di(); F(); D2(); L(); Di(); Li();
+		return 0;
+	}
+
+	if (checkCornerColor(8, color)) { //7.5
+		L(); D(); Li(); D2(); Fi(); D(); F();
+		return 8;
+
+	}
+
+	if (checkCornerColor(9, color)) { //7.5
+		Ri(); Di(); R(); Di(); Fi(); D(); F();
+		return 9;
+	}
+
+	if (checkCornerColor(4, color)) { //10.5 //mm combinaison pour 5, 10, 19
+		Fi(); D(); F(); L(); D(); Li(); D2(); Fi(); D(); F();
+		return 4;
+	}
+
+	if (checkCornerColor(5, color)) { //11.5
+		D(); Fi(); D(); F(); L(); D(); Li(); D2(); Fi(); D(); F();
+		return 5;
+	}
+
+	if (checkCornerColor(10, color)) { //11.5
+		Di(); Fi(); D(); F(); L(); D(); Li(); D2(); Fi(); D(); F();
+		return 10;
+	}
+
+	if (checkCornerColor(19, color)) { //11.8
 		D2(); Fi(); D(); F(); L(); D(); Li(); D2(); Fi(); D(); F();
 		return 19;
 	}

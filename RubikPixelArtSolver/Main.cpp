@@ -6,6 +6,7 @@
 struct TestResults {
 	int passed;
 	int failed;
+	int nbMoves;
 };
 
 
@@ -17,6 +18,7 @@ void resolveOneCube(int pieces[], RubikColor colors[], struct TestResults * pRes
 	if (rubik->checkRubik(colors))
 	{
 		pResults->passed++;
+		pResults->nbMoves += rubik->getMoves().size();
 	}
 	else {
 		pResults->failed++;
@@ -50,6 +52,7 @@ void resolveTest(int pieces[]) {
 	struct TestResults results;
 	results.failed = 0;
 	results.passed = 0;
+	results.nbMoves = 0;
 
 	RubikColor rubikColors[6] = { RubikColor::WHITE, RubikColor::GREEN, RubikColor::RED, RubikColor::BLUE, RubikColor::ORANGE, RubikColor::YELLOW };
 	RubikColor colors[9];
@@ -69,6 +72,7 @@ void resolveTest(int pieces[]) {
 						std::cout << "Number of tests : " << results.passed + results.failed << std::endl;
 						std::cout << "Passed : " << results.passed << std::endl;
 						std::cout << "Failed : " << results.failed << std::endl;
+						if (results.passed > 0) std::cout << "Average : " << results.nbMoves / (results.passed) << std::endl;
 						std::cout << std::endl;
 
 						for (int i6 = 0; i6 < 6; i6++) {
