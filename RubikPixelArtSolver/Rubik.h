@@ -62,7 +62,7 @@ class Rubik {
 		void resolveMiddle(RubikColor color);
 		void resolveEdges(RubikColor colors[]);
 		void resolveCorners(RubikColor colors[]);
-		void error();
+		void error(std::string);
 		void changeReferentialWhiteToGreen();
 
 		void changeReferentialWhiteToRed();

@@ -183,21 +183,21 @@ int main(int argc, char* argv[]) {
 
 	Rubik::debug = false;
 
-	/*try {
+	try {
 		resolveTest(pieces);
 	}
 	catch (ResolutionException ex)
 	{
 		Rubik::debug = true;
 		solveOneCube(pieces, ex.getColors());
-	}*/
+	}
 
-	RubikColor colors[9] = {
+	/*RubikColor colors[9] = {
 		RubikColor::BLUE, RubikColor::BLUE, RubikColor::BLUE,
 		RubikColor::YELLOW, RubikColor::BLUE, RubikColor::BLUE,
 		RubikColor::BLUE, RubikColor::BLUE, RubikColor::BLUE
 	};
-	solveOneCube(pieces, colors);
+	solveOneCube(pieces, colors);*/
 
 	
 	return 0;
