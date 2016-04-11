@@ -157,8 +157,8 @@ void solveOneCube(int pieces[], RubikColor colors[]) {
 
 int main(int argc, char* argv[]) {
 
-	//int pieces[54] = { 6, 4, 7, 6, 1, 7, 16, 12, 9, 14, 18, 8, 0, 0, 1, 17, 19, 23, 15, 16, 22, 23, 3, 15, 3, 0, 1, 13, 4, 10, 22, 5, 11, 20, 20, 18, 2, 2, 3, 11, 21, 13, 21, 17, 12, 10, 14, 19, 8, 2, 9, 4, 5, 5 };
-	int pieces[54] = { 8, 16, 22,
+	int pieces[54] = { 6, 4, 7, 6, 1, 7, 16, 12, 9, 14, 18, 8, 0, 0, 1, 17, 19, 23, 15, 16, 22, 23, 3, 15, 3, 0, 1, 13, 4, 10, 22, 5, 11, 20, 20, 18, 2, 2, 3, 11, 21, 13, 21, 17, 12, 10, 14, 19, 8, 2, 9, 4, 5, 5 };
+	/*int pieces[54] = { 8, 16, 22,
 						18, 1, 19,
 						1, 1, 23,
 		16, 6, 17, 9, 13, 15, 7, 7, 14, 6, 4, 0,
@@ -167,29 +167,24 @@ int main(int argc, char* argv[]) {
 						13, 21, 11,
 						3, 2, 22,
 						2, 23, 20
-	};
+	};*/
 
 	Rubik::debug = false;
-	try {
+	/*try {
 		resolveTest(pieces);
 	}
 	catch (ResolutionException ex)
 	{
 		Rubik::debug = true;
 		solveOneCube(pieces, ex.getColors());
-	}
+	}*/
 
-	/*Rubik rubik(pieces);
-	rubik.changeReferentialWhiteToRed();
-	rubik.printCube();
-	getchar();*/
-
-	/*RubikColor colors[9] = {
-		RubikColor::WHITE, RubikColor::WHITE, RubikColor::WHITE,
-		RubikColor::WHITE, RubikColor::GREEN, RubikColor::WHITE,
-		RubikColor::WHITE, RubikColor::RED, RubikColor::WHITE
+	RubikColor colors[9] = {
+		RubikColor::BLUE, RubikColor::BLUE, RubikColor::BLUE,
+		RubikColor::YELLOW, RubikColor::BLUE, RubikColor::BLUE,
+		RubikColor::BLUE, RubikColor::BLUE, RubikColor::BLUE
 	};
-	solveOneCube(pieces, colors);*/
+	solveOneCube(pieces, colors);
 
 	
 	return 0;

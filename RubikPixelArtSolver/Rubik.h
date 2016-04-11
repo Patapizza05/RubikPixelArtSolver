@@ -49,6 +49,8 @@ class Rubik {
 		void changeReferentialWhiteToOrange();
 		void changeReferentialWhiteToYellow();
 
+		void optimise();
+
 		std::vector<std::string> getMoves() { return moves; }
 		
 	private:
@@ -74,6 +76,8 @@ class Rubik {
 		int searchCornerColorIndex(RubikColor color, int solvedEdges);
 		bool checkCornerColor(int, RubikColor);
 		void setLockedCorner(int index, bool value);
+
+		int shortenMoves(int);
 };
 
 #endif

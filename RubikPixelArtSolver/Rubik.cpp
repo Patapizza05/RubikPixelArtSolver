@@ -9,6 +9,7 @@ Rubik::Rubik(int pieces[])
 }
 
 void Rubik::initCornersAndEdges(int pieces[]) {
+	int index;
 	int lines[9][12] = {
 		{ -1, -1, -1, 6, 4, 7, -1, -1, -1, -1, -1, -1 },
 		{ -1, -1, -1, 6, 1, 7, -1, -1, -1, -1, -1, -1 },
@@ -20,8 +21,6 @@ void Rubik::initCornersAndEdges(int pieces[]) {
 		{ -1, -1, -1, 8, 2, 9, -1, -1, -1, -1, -1, -1 },
 		{ -1, -1, -1, 4, 5, 5, -1, -1, -1, -1, -1, -1 }
 	};
-
-	int index;
 	int i = 0;
 	for (int y = 0; y < 9; y++) {
 		for (int x = 0; x < 12; x++) {
@@ -203,6 +202,7 @@ Rubik::~Rubik() {
 void Rubik::printCube() {
 
 	int number;
+	int index;
 	int lines[9][12] = {
 		{ -1, -1, -1, 6, 4, 7, -1, -1, -1, -1, -1, -1 },
 		{ -1, -1, -1, 6, 1, 7, -1, -1, -1, -1, -1, -1 },
@@ -214,7 +214,6 @@ void Rubik::printCube() {
 		{ -1, -1, -1, 8, 2, 9, -1, -1, -1, -1, -1, -1 },
 		{ -1, -1, -1, 4, 5, 5, -1, -1, -1, -1, -1, -1 }
 	};
-	int index;
 
 	for (int y = 0; y < 9; y++) {
 
@@ -539,6 +538,7 @@ void Rubik::resolve(RubikColor colors[]) {
 	RubikColor cornersColors[4] = { colors[6], colors[8], colors[2], colors[0] };
 	resolveEdges(edgesColors);
 	resolveCorners(cornersColors);
+	optimise();
 }
 void Rubik::resolveMiddle(RubikColor color) {
 
@@ -976,3 +976,104 @@ void Rubik::changeReferentialWhiteToYellow() {
 	//test
 }
 
+void Rubik::optimise() {
+	int size = this->moves.size();
+
+	if (size < 2)
+	{
+		return;
+	}
+
+	if (Rubik::debug) {
+		std::cout << "Optimising" << std::endl;
+		printCube();
+		std::cout << std::endl;
+		for (unsigned int i = 0; i < this->moves.size(); i++) {
+			std::cout << moves[i] << " ";
+		}
+		this->printCube();
+		std::cout << "--------------------------------------------------------" << std::endl;
+	}
+
+	int index = 0;
+	while (index < size - 1) {
+		index = index >= 0 ? index : 0;
+		index = index + 1 - shortenMoves(index);
+		size = this->moves.size();
+	}
+}
+
+int Rubik::shortenMoves(int i1)
+{
+	std::string m1 = this->moves[i1];
+	int i2 = i1 + 1;
+	std::string m2 = this->moves[i2];
+
+	int size1 = m1.size();
+	int size2 = m2.size();
+
+	if (m1[0] == m2[0])
+	{
+		if (size1 == 1 && size2 == 1)//R R
+		{
+			m1 += "2";
+			this->moves.erase(this->moves.begin() + i2);
+			return 1;
+		}
+		else if (size1 == 1 && size2 == 2)//R ; Ri ou R2
+		{
+			if (m2[1] == 'i')//R ; Ri
+			{
+				this->moves.erase(this->moves.begin() + i1);
+				this->moves.erase(this->moves.begin() + i2);
+				return 2;
+			}
+			else //R ; R2
+			{
+				m1 += "i";
+				this->moves.erase(this->moves.begin() + i2);
+				return 1;
+			}
+		}
+		else if (size1 == 2 && size2 == 1)//Ri ou R2; R
+		{
+			if (m1[1] == 'i')//Ri ; R
+			{
+				this->moves.erase(this->moves.begin() + i1);
+				this->moves.erase(this->moves.begin() + i2);
+				return 2;
+			}
+			else //R2 ; R
+			{
+				m1[1] = 'i';
+				this->moves.erase(this->moves.begin() + i2);
+				return 1;
+			}
+		}
+		else if (size1 == 2 && size2 == 2)//Ri ou R2 ; Ri ou R2
+		{
+			if (m1 == m2)  //Ri ; Ri ou R2 ; R2
+			{
+				if (m1[1] == 'i') //Ri ; Ri
+				{
+					m1[1] = '2';
+					this->moves.erase(this->moves.begin() + i2);
+					return 1;
+				}
+				else //R2 ; R2
+				{
+					this->moves.erase(this->moves.begin() + i1);
+					this->moves.erase(this->moves.begin() + i2);
+					return 2;
+				}
+			}
+			else //Ri ; R2 ou R2 ; Ri
+			{
+				m1 = m1[0];
+				this->moves.erase(this->moves.begin() + i2);
+				return 1;
+			}
+		}
+	}
+	return 0;
+}
