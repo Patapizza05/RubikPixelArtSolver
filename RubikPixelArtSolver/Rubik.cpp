@@ -203,6 +203,7 @@ void Rubik::addMiddle(int i, int number)
 
 void Rubik::error() {
 	//exception
+	std::cout << "ERREUR" << std::endl;
 }
 
 Rubik::~Rubik() {
@@ -798,6 +799,9 @@ void Rubik::resolveEdges(RubikColor colors[]) {
 	for (int i = 0; i < 4; i++) {
 		RubikColor color = colors[i]; //12 7 4 6
 		int index = this->searchEdgeColorIndex(color,solvedEdges);
+		if (index == -1) {
+			error();
+		}
 		if (Rubik::debug) std::cout << "Edge : Number " << this->edges[index]->getNumber() << " at position " << index << std::endl;
 
 		this->setLockedEdge(12, TRUE);
@@ -849,27 +853,41 @@ int Rubik::searchEdgeColorIndex(RubikColor color, int solvedEdges) {
 
 	//2
 
-	if (checkEdgeColor(21, color)) {
-		R(); Fi(); Ri();
+	if (checkEdgeColor(21, color) && !this->edges[7]->getLockedPosition()) {
+		R(); Fi();
 		return 21;
 	}
+
+	if (checkEdgeColor(21, color)) { //7 is locked
+		R(); Fi(); Ri();
+	}
 	
-	if (checkEdgeColor(20, color)) {
+	if (checkEdgeColor(20, color) && !this->edges[6]->getLockedPosition()) {
+		Li(); F();
+		return 20;
+	}
+
+	if (checkEdgeColor(20, color)) { //6 is locked
 		Li(); F(); L();
 		return 20;
 	}
 
+	if (checkEdgeColor(3, color) && solvedEdges == 0) {
+		Li(); Ui();
+		return 3;
+	}
+
 	if (checkEdgeColor(3, color)) {
-		this->U();
-		this->Li();
-		this->Ui();
+		U(); Li(); Ui();
 		return 3;
 	}
 	
+	if (checkEdgeColor(11, color) && solvedEdges == 0) {
+		L(); Ui();
+	}
+
 	if (checkEdgeColor(11, color)) {
-		this->U();
-		this->L();
-		Ui();
+		U(); L(); Ui();
 		return 11;
 	}
 
@@ -877,18 +895,22 @@ int Rubik::searchEdgeColorIndex(RubikColor color, int solvedEdges) {
 		this->F2();
 		return 14;
 	}
+
+	if (checkEdgeColor(1, color) && solvedEdges == 0) {
+		R(); U();
+	}
 	
 	if (checkEdgeColor(1, color)) {
-		Ui();
-		R();
-		U();
+		Ui(); R(); U();
 		return 1;
 	}
 
+	if (checkEdgeColor(22, color) && solvedEdges == 0) {
+		Ri(); U();
+	}
+
 	if (checkEdgeColor(22, color)) {
-		Ui();
-		Ri();
-		U();
+		Ui(); Ri(); U();
 		return 22;
 	}
 
@@ -900,7 +922,9 @@ int Rubik::searchEdgeColorIndex(RubikColor color, int solvedEdges) {
 	if (checkEdgeColor(18, color)) {
 		L(); F();
 		return 18;
-	}if (checkEdgeColor(19, color)) {
+	}
+	
+	if (checkEdgeColor(19, color)) {
 		Ri(); Fi();
 		return 19;
 	}
@@ -908,27 +932,50 @@ int Rubik::searchEdgeColorIndex(RubikColor color, int solvedEdges) {
 	//3
 	
 	if (checkEdgeColor(9, color)) {
-		Di();
-		F2();
+		Di(); F2();
 		return 9;
-	}if (checkEdgeColor(10, color)) {
-		R2();
-		Fi();
-		R2();
+	}
+
+	if (checkEdgeColor(10, color) && !this->edges[7]->getLockedPosition()) {
+		R2(); Fi();
 		return 10;
-	}if (checkEdgeColor(23, color)) {
-		L2();
-		F();
-		L2();
+	}
+
+	if (checkEdgeColor(10, color)) {
+		R2(); Fi(); R2();
+		return 10;
+	}
+
+	if (checkEdgeColor(23, color) && !this->edges[6]->getLockedPosition()) {
+		L2(); F();
 		return 23;
-	}if (checkEdgeColor(8, color)) {
-		D();
-		F2();
+	}
+	
+	if (checkEdgeColor(23, color)) {
+		L2(); F(); L2();
+		return 23;
+	}
+	
+	if (checkEdgeColor(8, color)) {
+		D(); F2();
 		return 8;
-	}if (checkEdgeColor(2, color)) {
+	}
+
+	if (checkEdgeColor(2, color) && !this->edges[7]->getLockedPosition()) {
+		D(); R(); Fi();
+	}
+	
+	if (checkEdgeColor(2, color)) {
 		D(); R(); Fi(); Ri();
 		return 2;
-	}if (checkEdgeColor(17, color)) {
+	}
+
+	if (checkEdgeColor(17, color) && !this->edges[6]->getLockedPosition()) {
+		D(); Li(); F();
+		return 17;
+	}
+	
+	if (checkEdgeColor(17, color)) {
 		D(); Li(); F(); L();
 		return 17;
 	}
@@ -943,10 +990,24 @@ int Rubik::searchEdgeColorIndex(RubikColor color, int solvedEdges) {
 
 	//5
 
+	if (checkEdgeColor(0, color) && !this->edges[7]->getLockedPosition())
+	{
+		F2(); D(); R(); Fi(); Ri();
+		return 0;
+	}
+
 	if (checkEdgeColor(0, color)) {
 		F2(); D(); R(); Fi(); Ri();
 		return 0;
-	}if (checkEdgeColor(16, color)) {
+	}
+
+
+	if (checkEdgeColor(16, color) && !this->edges[16]->getLockedPosition()) {
+		B2(); Di(); R(); Fi();
+		return 16;
+	}
+	
+	if (checkEdgeColor(16, color)) {
 		B2(); Di(); R(); Fi(); Ri();
 		return 16;
 	}
@@ -955,12 +1016,22 @@ int Rubik::searchEdgeColorIndex(RubikColor color, int solvedEdges) {
 
 	if (checkEdgeColor(4, color)) {
 		//Don't move top !
-	}if (checkEdgeColor(6, color)) {
-		//Don't move top !
-	}if (checkEdgeColor(7, color)) {
-		//Don't move top !
+		Ri(); L(); Bi(); R(); Li(); R(); Fi();
+		return 4;
 	}
 	
+	if (checkEdgeColor(6, color)) {
+		//Don't move top !
+		F(); Bi(); L(); Fi(); B(); D(); R(); Fi(); Ri();
+		return 6;
+	}
+	
+	if (checkEdgeColor(7, color)) {
+		//Don't move top !
+		Fi(); B(); Ri(); F(); Bi(); D(); R(); Fi(); Ri();
+		return 7;
+	}
+	return -1;
 }
 
 bool Rubik::checkEdgeColor(int index, RubikColor color) { //locked
