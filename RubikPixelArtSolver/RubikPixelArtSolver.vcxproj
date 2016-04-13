@@ -74,6 +74,8 @@
     <ClCompile Include="Face.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MiddleFace.cpp" />
+    <ClCompile Include="Robot.cpp" />
+    <ClCompile Include="RobotState.cpp" />
     <ClCompile Include="Rubik.h" />
     <ClCompile Include="Rubik.cpp" />
     <ClCompile Include="RubikColor.cpp" />
@@ -85,6 +87,8 @@
     <ClInclude Include="Face.h" />
     <ClInclude Include="MiddleFace.h" />
     <ClInclude Include="ResolutionException.h" />
+    <ClInclude Include="Robot.h" />
+    <ClInclude Include="RobotState.h" />
     <ClInclude Include="RubikColor.h" />
     <ClInclude Include="TestCampaign.h" />
   </ItemGroup>

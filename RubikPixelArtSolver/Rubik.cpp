@@ -1369,3 +1369,11 @@ int Rubik::shortenMoves(int i1)
 	}
 	return 0;
 }
+
+std::vector<std::string> Rubik::translateToRobotMoves() {
+	Robot robot;
+	for (unsigned int i = 0; i < this->moves.size(); i++) {
+		robot.addMove(this->moves[i]);
+	}
+	return robot.rmoves;
+}

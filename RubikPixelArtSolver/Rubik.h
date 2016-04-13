@@ -7,6 +7,8 @@
 #include "CornerFace.h"
 #include "EdgeFace.h"
 #include "MiddleFace.h"
+#include "Robot.h"
+#include "RobotState.h"
 #include <iostream>
 #include <vector>
 #include <string>
@@ -30,7 +32,6 @@
 #define _D "D"
 #define _Di "Di"
 #define _D2 "D2"
-
 
 class Rubik {
 	public:
@@ -71,6 +72,8 @@ class Rubik {
 		void changeReferentialWhiteToYellow();
 
 		void optimise();
+
+		std::vector<std::string> translateToRobotMoves();
 
 		std::vector<std::string> getMoves() { return moves; }
 		
