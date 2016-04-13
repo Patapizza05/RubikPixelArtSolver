@@ -146,7 +146,7 @@ void Robot::addMove(std::string rubikMove) {
 			}
 		}
 		else if (this->state.referential == _R) {
-			Bi(); H3(); Ui(); D3();
+			Bi(); H3(); Ui();
 			if (state.referential == _U) {
 				//Done
 			}
