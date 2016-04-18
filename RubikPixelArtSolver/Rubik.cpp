@@ -9,21 +9,27 @@ Rubik::Rubik(int pieces[])
 	movesDictionary[_R] = _R;
 	movesDictionary[_Ri] = _Ri;
 	movesDictionary[_R2] = _R2;
+
 	movesDictionary[_L] = _L;
 	movesDictionary[_Li] = _Li;
 	movesDictionary[_L2] = _L2;
+
 	movesDictionary[_U] = _U;
 	movesDictionary[_Ui] = _Ui;
 	movesDictionary[_U2] = _U2;
+
 	movesDictionary[_B] = _B;
 	movesDictionary[_Bi] = _Bi;
 	movesDictionary[_B2] = _B2;
+
 	movesDictionary[_F] = _F;
 	movesDictionary[_Fi] = _Fi;
 	movesDictionary[_F2] = _F2;
+
 	movesDictionary[_D] = _D;
 	movesDictionary[_Di] = _Di;
 	movesDictionary[_D2] = _D2;
+
 }
 
 void Rubik::initCornersAndEdges(int pieces[]) {
@@ -559,7 +565,6 @@ void Rubik::D2(bool isAddToMoves){
 	swap((Face**)this->corners, 2, 21);
 	swap((Face**)this->corners, 18, 13);
 	swap((Face**)this->corners, 10, 5);
-
 	swap((Face**)this->edges, 2, 17);
 	swap((Face**)this->edges, 21, 20);
 	swap((Face**)this->edges, 14, 5);
@@ -567,10 +572,6 @@ void Rubik::D2(bool isAddToMoves){
 
 	if (isAddToMoves)
 		addMove(this->movesDictionary[_D2]);
-}
-
-void Rubik::addMove(std::string move) {
-	this->moves.push_back(move);
 }
 
 void Rubik::resolve(RubikColor colors[]) {
@@ -581,7 +582,7 @@ void Rubik::resolve(RubikColor colors[]) {
 	RubikColor cornersColors[4] = { colors[6], colors[8], colors[2], colors[0] };
 	resolveEdges(edgesColors);
 	resolveCorners(cornersColors);
-	optimise();
+	//optimise();
 }
 void Rubik::resolveMiddle(RubikColor color) {
 
@@ -672,24 +673,24 @@ void Rubik::middle_TurnCubeRight() { //White to blue
 
 	std::map<std::string, std::string> tempMap(movesDictionary);
 	//Dictionary
-	movesDictionary[movesDictionary[_R]] = tempMap[_D];
-	movesDictionary[movesDictionary[_Ri]] = tempMap[_Di];
-	movesDictionary[movesDictionary[_R2]] = tempMap[_D2];
-	movesDictionary[movesDictionary[_L]] = tempMap[_U];
-	movesDictionary[movesDictionary[_Li]] = tempMap[_Ui];
-	movesDictionary[movesDictionary[_L2]] = tempMap[_U2];
-	movesDictionary[movesDictionary[_U]] = tempMap[_R];
-	movesDictionary[movesDictionary[_Ui]] = tempMap[_Ri];
-	movesDictionary[movesDictionary[_U2]] = tempMap[_R2];
-	/*movesDictionary[movesDictionary[_B]] = movesDictionary[_B];
-	movesDictionary[movesDictionary[_Bi]] = movesDictionary[_Bi];
-	movesDictionary[movesDictionary[_B2]] = movesDictionary[_B2];
-	movesDictionary[movesDictionary[_F]] = movesDictionary[_F];
-	movesDictionary[movesDictionary[_Fi]] = movesDictionary[_Fi];
-	movesDictionary[movesDictionary[_F2]] = movesDictionary[_F2];*/
-	movesDictionary[movesDictionary[_D]] = tempMap[_L];
-	movesDictionary[movesDictionary[_Di]] = tempMap[_Li];
-	movesDictionary[movesDictionary[_D2]] = tempMap[_L2];
+	movesDictionary[_R] = tempMap[_D];
+	movesDictionary[_Ri] = tempMap[_Di];
+	movesDictionary[_R2] = tempMap[_D2];
+	movesDictionary[_L] = tempMap[_U];
+	movesDictionary[_Li] = tempMap[_Ui];
+	movesDictionary[_L2] = tempMap[_U2];
+	movesDictionary[_U] = tempMap[_R];
+	movesDictionary[_Ui] = tempMap[_Ri];
+	movesDictionary[_U2] = tempMap[_R2];
+	/*movesDictionary[_B] = movesDictionary[_B];
+	movesDictionary[_Bi] = movesDictionary[_Bi];
+	movesDictionary[_B2] = movesDictionary[_B2];
+	movesDictionary[_F] = movesDictionary[_F];
+	movesDictionary[_Fi] = movesDictionary[_Fi];
+	movesDictionary[_F2] = movesDictionary[_F2];*/
+	movesDictionary[_D] = tempMap[_L];
+	movesDictionary[_Di] = tempMap[_Li];
+	movesDictionary[_D2] = tempMap[_L2];
 
 }
 
@@ -708,18 +709,18 @@ void Rubik::middle_TurnCubeUp() { //White to orange
 	movesDictionary[movesDictionary[_L]] = movesDictionary[_L];
 	movesDictionary[movesDictionary[_Li]] = movesDictionary[_Li];
 	movesDictionary[movesDictionary[_L2]] = movesDictionary[_L2];*/
-	movesDictionary[movesDictionary[_U]] = tempMap[_B];
-	movesDictionary[movesDictionary[_Ui]] = tempMap[_Bi];
-	movesDictionary[movesDictionary[_U2]] = tempMap[_B2];
-	movesDictionary[movesDictionary[_B]] = tempMap[_D];
-	movesDictionary[movesDictionary[_Bi]] = tempMap[_Di];
-	movesDictionary[movesDictionary[_B2]] = tempMap[_D2];
-	movesDictionary[movesDictionary[_F]] = tempMap[_U];
-	movesDictionary[movesDictionary[_Fi]] = tempMap[_Ui];
-	movesDictionary[movesDictionary[_F2]] = tempMap[_U2];
-	movesDictionary[movesDictionary[_D]] = tempMap[_F];
-	movesDictionary[movesDictionary[_Di]] = tempMap[_Fi];
-	movesDictionary[movesDictionary[_D2]] = tempMap[_F2];
+	movesDictionary[_U] = tempMap[_B];
+	movesDictionary[_Ui] = tempMap[_Bi];
+	movesDictionary[_U2] = tempMap[_B2];
+	movesDictionary[_B] = tempMap[_D];
+	movesDictionary[_Bi] = tempMap[_Di];
+	movesDictionary[_B2] = tempMap[_D2];
+	movesDictionary[_F] = tempMap[_U];
+	movesDictionary[_Fi] = tempMap[_Ui];
+	movesDictionary[_F2] = tempMap[_U2];
+	movesDictionary[_D] = tempMap[_F];
+	movesDictionary[_Di] = tempMap[_Fi];
+	movesDictionary[_D2] = tempMap[_F2];
 }
 
 void Rubik::middle_TurnCubeDown() { //White to red
@@ -730,6 +731,7 @@ void Rubik::middle_TurnCubeDown() { //White to red
 	this->translate(this->edges, 12, 2, 5, 16);
 
 	std::map<std::string, std::string> tempMap(movesDictionary);
+
 	//Dictionary
 	/*movesDictionary[movesDictionary[_R]] = movesDictionary[_R];
 	movesDictionary[movesDictionary[_Ri]] = movesDictionary[_Ri];
@@ -737,18 +739,19 @@ void Rubik::middle_TurnCubeDown() { //White to red
 	movesDictionary[movesDictionary[_L]] = movesDictionary[_L];
 	movesDictionary[movesDictionary[_Li]] = movesDictionary[_Li];
 	movesDictionary[movesDictionary[_L2]] = movesDictionary[_L2];*/
-	movesDictionary[movesDictionary[_U]] = tempMap[_F];
-	movesDictionary[movesDictionary[_Ui]] = tempMap[_Fi];
-	movesDictionary[movesDictionary[_U2]] = tempMap[_F2];
-	movesDictionary[movesDictionary[_B]] = tempMap[_U];
-	movesDictionary[movesDictionary[_Bi]] = tempMap[_Ui];
-	movesDictionary[movesDictionary[_B2]] = tempMap[_U2];
-	movesDictionary[movesDictionary[_F]] = tempMap[_D];
-	movesDictionary[movesDictionary[_Fi]] = tempMap[_Di];
-	movesDictionary[movesDictionary[_F2]] = tempMap[_D2];
-	movesDictionary[movesDictionary[_D]] = tempMap[_B];
-	movesDictionary[movesDictionary[_Di]] = tempMap[_Bi];
-	movesDictionary[movesDictionary[_D2]] = tempMap[_B2];
+	movesDictionary[_U] = tempMap[_F];
+	movesDictionary[_Ui] = tempMap[_Fi];
+	movesDictionary[_U2] = tempMap[_F2];
+	movesDictionary[_B] = tempMap[_U];
+	movesDictionary[_Bi] = tempMap[_Ui];
+	movesDictionary[_B2] = tempMap[_U2];
+	movesDictionary[_F] = tempMap[_D];
+	movesDictionary[_Fi] = tempMap[_Di];
+	movesDictionary[_F2] = tempMap[_D2];
+	movesDictionary[_D] = tempMap[_B];
+	movesDictionary[_Di] = tempMap[_Bi];
+	movesDictionary[_D2] = tempMap[_B2];
+
 }
 void Rubik::middle_TurnCubeLeft() { //White to green
 	F(FALSE);
@@ -759,24 +762,25 @@ void Rubik::middle_TurnCubeLeft() { //White to green
 
 	std::map<std::string, std::string> tempMap(movesDictionary);
 	//Dictionary
-	movesDictionary[movesDictionary[_R]] = tempMap[_U];
-	movesDictionary[movesDictionary[_Ri]] = tempMap[_Ui];
-	movesDictionary[movesDictionary[_R2]] = tempMap[_U2];
-	movesDictionary[movesDictionary[_L]] = tempMap[_D];
-	movesDictionary[movesDictionary[_Li]] = tempMap[_Di];
-	movesDictionary[movesDictionary[_L2]] = tempMap[_D2];
-	movesDictionary[movesDictionary[_U]] = tempMap[_L];
-	movesDictionary[movesDictionary[_Ui]] = tempMap[_Li];
-	movesDictionary[movesDictionary[_U2]] = tempMap[_L2];
-	/*movesDictionary[movesDictionary[_B]] = movesDictionary[_B];
-	movesDictionary[movesDictionary[_Bi]] = movesDictionary[_Bi];
-	movesDictionary[movesDictionary[_B2]] = movesDictionary[_B2];
-	movesDictionary[movesDictionary[_F]] = movesDictionary[_F];
-	movesDictionary[movesDictionary[_Fi]] = movesDictionary[_Fi];
-	movesDictionary[movesDictionary[_F2]] = movesDictionary[_F2];*/
-	movesDictionary[movesDictionary[_D]] = movesDictionary[_R];
-	movesDictionary[movesDictionary[_Di]] = movesDictionary[_Ri];
-	movesDictionary[movesDictionary[_D2]] = movesDictionary[_R2];
+
+	movesDictionary[_R] = tempMap[_U];
+	movesDictionary[_Ri] = tempMap[_Ui];
+	movesDictionary[_R2] = tempMap[_U2];
+	movesDictionary[_L] = tempMap[_D];
+	movesDictionary[_Li] = tempMap[_Di];
+	movesDictionary[_L2] = tempMap[_D2];
+	movesDictionary[_U] = tempMap[_L];
+	movesDictionary[_Ui] = tempMap[_Li];
+	movesDictionary[_U2] = tempMap[_L2];
+	/*movesDictionary[_B] = movesDictionary[_B];
+	movesDictionary[_Bi] = movesDictionary[_Bi];
+	movesDictionary[_B2] = movesDictionary[_B2];
+	movesDictionary[_F] = movesDictionary[_F];
+	movesDictionary[_Fi] = movesDictionary[_Fi];
+	movesDictionary[_F2] = movesDictionary[_F2];*/
+	movesDictionary[_D] = tempMap[_R];
+	movesDictionary[_Di] = tempMap[_Ri];
+	movesDictionary[_D2] = tempMap[_R2];
 
 }
 
@@ -1370,10 +1374,84 @@ int Rubik::shortenMoves(int i1)
 	return 0;
 }
 
+void Rubik::addMove(std::string m2) {
+	if (this->moves.size() <= 0) {
+		this->moves.push_back(m2);
+		return;
+	}
+
+	int i1 = this->moves.size() - 1;
+	std::string m1 = this->moves[i1];
+
+	int size1 = m1.size();
+	int size2 = m2.size();
+
+	if (m1[0] == m2[0])
+	{
+		if (size1 == 1 && size2 == 1)//R R
+		{
+			this->moves[i1] += "2";
+			return;
+		}
+		else if (size1 == 1 && size2 == 2)//R ; Ri ou R2
+		{
+			if (m2[1] == 'i')//R ; Ri
+			{
+				this->moves.erase(this->moves.begin() + i1);
+				return;
+			}
+			else //R ; R2
+			{
+				this->moves[i1] += "i";
+				return;
+			}
+		}
+		else if (size1 == 2 && size2 == 1)//Ri ou R2; R
+		{
+			if (m1[1] == 'i')//Ri ; R
+			{
+				this->moves.erase(this->moves.begin() + i1);
+				return;
+			}
+			else //R2 ; R
+			{
+				this->moves[i1][1] = 'i';
+				return;
+			}
+		}
+		else if (size1 == 2 && size2 == 2)//Ri ou R2 ; Ri ou R2
+		{
+			if (m1 == m2)  //Ri ; Ri ou R2 ; R2
+			{
+				if (m1[1] == 'i') //Ri ; Ri
+				{
+					this->moves[i1][1] = '2';
+					return;
+				}
+				else //R2 ; R2
+				{
+					this->moves.erase(this->moves.begin() + i1);
+					return;
+				}
+			}
+			else //Ri ; R2 ou R2 ; Ri
+			{
+				this->moves[i1] = m1[0];
+				return;
+			}
+		}
+	}
+
+	this->moves.push_back(m2);
+
+}
+
 std::vector<std::string> Rubik::translateToRobotMoves() {
 	Robot robot;
 	for (unsigned int i = 0; i < this->moves.size(); i++) {
 		robot.addMove(this->moves[i]);
 	}
+	robot.endMove();
 	return robot.rmoves;
 }
+

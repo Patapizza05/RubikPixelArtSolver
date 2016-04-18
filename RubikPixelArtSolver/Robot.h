@@ -11,6 +11,7 @@ class Robot {
 public:
 	Robot();
 	void addMove(std::string rubikMove);
+	void endMove();
 	std::vector<std::string> rmoves;
 private:
 	RobotState state;

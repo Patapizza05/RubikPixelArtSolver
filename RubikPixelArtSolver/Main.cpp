@@ -18,26 +18,29 @@ int main(int argc, char* argv[]) {
 						4, 5, 5
 	};*/
 
+	Rubik::debug = false;
+
 	RubikColor colors[9] = {
-		RubikColor::BLUE, RubikColor::BLUE, RubikColor::BLUE,
-		RubikColor::YELLOW, RubikColor::YELLOW, RubikColor::YELLOW,
-		RubikColor::BLUE, RubikColor::BLUE, RubikColor::BLUE
+		RubikColor::WHITE, RubikColor::WHITE, RubikColor::WHITE,
+		RubikColor::WHITE, RubikColor::YELLOW, RubikColor::WHITE,
+		RubikColor::WHITE, RubikColor::WHITE, RubikColor::WHITE
 	};
 
-	//TestCampaign testCampaign(pieces);
-	//testCampaign.run();
+	TestCampaign testCampaign(pieces);
+	testCampaign.run();
 
 	//testCampaign.solveOneCube(colors);
 
-	Rubik r(pieces);
+	/*Rubik r(pieces);
 	r.R();
 	r.U();
+	//r.resolve(colors);
 	std::vector<std::string> moves = r.translateToRobotMoves();
 	for (int i = 0; i < moves.size(); i++) {
 		std::cout << moves[i] << " ";
 	}
 	std::cout << std::endl;
-	std::cout << "END" << std::endl;
+	std::cout << "END" << std::endl;*/
 	getchar();
 	
 	return 0;

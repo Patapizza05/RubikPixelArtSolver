@@ -80,7 +80,69 @@ void TestCampaign::resolveOneCube(RubikColor colors[]) {
 	Rubik rubik(pieces);
 	rubik.resolve(colors);
 
-	if (rubik.checkRubik(colors))
+	Rubik rubik2(pieces);
+	std::vector<std::string> moves = rubik.getMoves();
+	for (int i = 0; i < moves.size(); i++) {
+		std::string m = moves[i];
+		if (m == _R) {
+			rubik2.R();
+		}
+		else if (m == _Ri) {
+			rubik2.Ri();
+		}
+		else if (m == _R2) {
+			rubik2.R2();
+		}
+		else if (m == _L) {
+			rubik2.L();
+		}
+		else if (m == _Li) {
+			rubik2.Li();
+		}
+		else if (m == _L2) {
+			rubik2.L2();
+		}
+		else if (m == _D) {
+			rubik2.D();
+		}
+		else if (m == _Di) {
+			rubik2.Di();
+		}
+		else if (m == _D2) {
+			rubik2.D2();
+		}
+		else if (m == _F) {
+			rubik2.F();
+		}
+		else if (m == _Fi) {
+			rubik2.Fi();
+		}
+		else if (m == _F2) {
+			rubik2.F2();
+		}
+		else if (m == _U) {
+			rubik2.U();
+		}
+		else if (m == _Ui) {
+			rubik2.Ui();
+		}
+		else if (m == _U2) {
+			rubik2.U2();
+		}
+		else if (m == _B) {
+			rubik2.B();
+		}
+		else if (m == _Bi) {
+			rubik2.Bi();
+		}
+		else if (m == _B2) {
+			rubik2.B2();
+		}
+	}
+
+	rubik2.resolveMiddle(colors[4]);
+
+	if (rubik2.checkRubik(colors))
 	{
 		this->passed++;
 		this->nbMoves += rubik.getMoves().size();
@@ -106,7 +168,8 @@ void TestCampaign::resolveOneCube(RubikColor colors[]) {
 		std::cout << std::endl;
 
 		std::cout << setcolor(RubikColor::WHITE) << "---------------------------------------------" << std::endl;
-		rubik.printCube();
+		std::cout << "Rubik2:" << std::endl;
+		rubik2.printCube();
 		throw ResolutionException("Incorrect resolution", colors);
 	}
 }

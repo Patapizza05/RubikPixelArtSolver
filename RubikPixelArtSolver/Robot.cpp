@@ -37,11 +37,11 @@ void Robot::D3() {
 	rmoves.push_back(robot_D3);
 }
 void Robot::Bi() {
-	state.balancier = TRUE;
+	state.balancier = true;
 	rmoves.push_back(robot_Bi);
 }
 void Robot::B() {
-	state.balancier = FALSE;
+	state.balancier = false;
 	rmoves.push_back(robot_B);
 }
 
@@ -160,6 +160,7 @@ void Robot::addMove(std::string rubikMove) {
 	//Vérification mouvement
 	if (state.rotator == 1) {
 		if (this->state.rotator == 2) {
+			resetHeight();
 			Ui();
 		}
 		//else : OK
@@ -184,6 +185,13 @@ void Robot::addMove(std::string rubikMove) {
 
 	//Mouvement
 	rotate(state.rotator);
+}
+
+void Robot::endMove() {
+	resetHeight();
+	/*if (this->state.balancier) {
+		Bi();
+	}*/
 }
 
 
