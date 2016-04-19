@@ -146,11 +146,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CornerFace.h" />
-    <ClInclude Include="DetectionException.h" />
     <ClInclude Include="EdgeFace.h" />
     <ClInclude Include="Face.h" />
     <ClInclude Include="IndexOutOfBoundsException.h" />
     <ClInclude Include="MiddleFace.h" />
+    <ClInclude Include="ResolutionException.h" />
     <ClInclude Include="Robot.h" />
     <ClInclude Include="RobotState.h" />
     <ClInclude Include="RubikColor.h" />

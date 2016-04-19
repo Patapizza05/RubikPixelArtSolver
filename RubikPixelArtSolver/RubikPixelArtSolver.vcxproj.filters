@@ -83,10 +83,10 @@
     <ClInclude Include="Utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DetectionException.h">
+    <ClInclude Include="RobotController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RobotController.h">
+    <ClInclude Include="ResolutionException.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
