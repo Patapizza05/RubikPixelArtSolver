@@ -48,10 +48,7 @@
     <ClCompile Include="Robot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RubikRobot.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RubikState.cpp">
+    <ClCompile Include="RobotController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -71,9 +68,6 @@
     <ClInclude Include="MiddleFace.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ResolutionException.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="TestCampaign.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -86,13 +80,13 @@
     <ClInclude Include="IndexOutOfBoundsException.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RubikRobot.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RubikState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DetectionException.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RobotController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

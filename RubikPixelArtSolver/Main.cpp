@@ -1,14 +1,13 @@
 
 #include "Rubik.h"
 #include "TestCampaign.h"
-#include "RubikRobot.h"
-#include "RubikState.h"
+#include "Robot.h"
 
 void openCVMain()
 {
-	RubikRobot robot("COM3", 0);
+	Robot robot("COM3", 0);
 
-	if (robot.initPort()){
+	/*if (robot.initPort()){
 		std::cout << "Communication is ready" << std::endl;
 
 		if (robot.send('d')) {
@@ -21,11 +20,11 @@ void openCVMain()
 	}
 	else {
 		std::cerr << "Communication is not ready" << std::endl;
-	}
+	}*/
 
 	//getchar();
 
-	robot.getState().launchCapture();
+	robot.launchCapture(); 
 
 	getchar();
 }

@@ -141,22 +141,20 @@
     <ClCompile Include="Rubik.h" />
     <ClCompile Include="Rubik.cpp" />
     <ClCompile Include="RubikColor.cpp" />
-    <ClCompile Include="RubikRobot.cpp" />
-    <ClCompile Include="RubikState.cpp" />
+    <ClCompile Include="RobotController.cpp" />
     <ClCompile Include="TestCampaign.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CornerFace.h" />
+    <ClInclude Include="DetectionException.h" />
     <ClInclude Include="EdgeFace.h" />
     <ClInclude Include="Face.h" />
     <ClInclude Include="IndexOutOfBoundsException.h" />
     <ClInclude Include="MiddleFace.h" />
-    <ClInclude Include="ResolutionException.h" />
     <ClInclude Include="Robot.h" />
     <ClInclude Include="RobotState.h" />
     <ClInclude Include="RubikColor.h" />
-    <ClInclude Include="RubikRobot.h" />
-    <ClInclude Include="RubikState.h" />
+    <ClInclude Include="RobotController.h" />
     <ClInclude Include="TestCampaign.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>
