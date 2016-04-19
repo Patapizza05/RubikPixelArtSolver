@@ -6,7 +6,7 @@
 #include <windows.h>
 #include <iomanip>
 
-enum RubikColor { WHITE = 1, GREEN, RED, BLUE, ORANGE, YELLOW };
+enum RubikColor { WHITE = 0, GREEN, RED, BLUE, ORANGE, YELLOW };
 
 enum ConsoleColor { DARKBLUE_ = 1, DARKGREEN_, DARKTEAL_, DARKRED_, DARKPINK_, DARKYELLOW_, GRAY_, DARKGRAY_, BLUE_, GREEN_, TEAL_, RED_, PINK_, YELLOW_, WHITE_ };
 

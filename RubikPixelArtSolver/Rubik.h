@@ -35,6 +35,7 @@
 
 class Rubik {
 	public:
+		Rubik(std::vector<std::vector<int>>);
 		Rubik(int[]);
 		~Rubik();
 		void printCube();
@@ -82,7 +83,9 @@ class Rubik {
 		EdgeFace * edges[24];
 		MiddleFace * middle[8];
 		std::vector<std::string> moves;
+		static int lines[9][12];
 		std::map<std::string, std::string> movesDictionary;
+		void initMovesDictionary();
 		void addMove(std::string);
 		void addEdge(int, int);
 		void addCorner(int, int);

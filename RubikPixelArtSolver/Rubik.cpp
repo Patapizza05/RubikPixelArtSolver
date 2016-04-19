@@ -3,9 +3,29 @@
 
 bool Rubik::debug = false;
 
+int Rubik::lines[9][12] = {
+	{ -1, -1, -1, 6, 4, 7, -1, -1, -1, -1, -1, -1 },
+	{ -1, -1, -1, 6, 1, 7, -1, -1, -1, -1, -1, -1 },
+	{ -1, -1, -1, 16, 12, 9, -1, -1, -1, -1, -1, -1 },
+	{ 14, 18, 8, 0, 0, 1, 17, 19, 23, 15, 16, 22 },
+	{ 23, 3, 15, 3, 0, 1, 13, 4, 10, 22, 5, 11 },
+	{ 20, 20, 18, 2, 2, 3, 11, 21, 13, 21, 17, 12 },
+	{ -1, -1, -1, 10, 14, 19, -1, -1, -1, -1, -1, -1 },
+	{ -1, -1, -1, 8, 2, 9, -1, -1, -1, -1, -1, -1 },
+	{ -1, -1, -1, 4, 5, 5, -1, -1, -1, -1, -1, -1 }
+};
+
+Rubik::Rubik(std::vector<std::vector<int>> piecesColors) {
+
+}
+
 Rubik::Rubik(int pieces[]) 	
 {
 	initCornersAndEdges(pieces);
+	initMovesDictionary();
+}
+
+void Rubik::initMovesDictionary() {
 	movesDictionary[_R] = _R;
 	movesDictionary[_Ri] = _Ri;
 	movesDictionary[_R2] = _R2;
@@ -29,12 +49,11 @@ Rubik::Rubik(int pieces[])
 	movesDictionary[_D] = _D;
 	movesDictionary[_Di] = _Di;
 	movesDictionary[_D2] = _D2;
-
 }
 
 void Rubik::initCornersAndEdges(int pieces[]) {
 	int index;
-	int lines[9][12] = {
+	/*int lines[9][12] = {
 		{ -1, -1, -1, 6, 4, 7, -1, -1, -1, -1, -1, -1 },
 		{ -1, -1, -1, 6, 1, 7, -1, -1, -1, -1, -1, -1 },
 		{ -1, -1, -1, 16, 12, 9, -1, -1, -1, -1, -1, -1 },
@@ -44,11 +63,11 @@ void Rubik::initCornersAndEdges(int pieces[]) {
 		{ -1, -1, -1, 10, 14, 19, -1, -1, -1, -1, -1, -1 },
 		{ -1, -1, -1, 8, 2, 9, -1, -1, -1, -1, -1, -1 },
 		{ -1, -1, -1, 4, 5, 5, -1, -1, -1, -1, -1, -1 }
-	};
+	};*/
 	int i = 0;
 	for (int y = 0; y < 9; y++) {
 		for (int x = 0; x < 12; x++) {
-			index = lines[y][x];
+			index = Rubik::lines[y][x];
 
 			if (index != -1)
 			{
@@ -228,7 +247,7 @@ void Rubik::printCube() {
 
 	int number;
 	int index;
-	int lines[9][12] = {
+	/*int lines[9][12] = {
 		{ -1, -1, -1, 6, 4, 7, -1, -1, -1, -1, -1, -1 },
 		{ -1, -1, -1, 6, 1, 7, -1, -1, -1, -1, -1, -1 },
 		{ -1, -1, -1, 16, 12, 9, -1, -1, -1, -1, -1, -1 },
@@ -238,7 +257,7 @@ void Rubik::printCube() {
 		{ -1, -1, -1, 10, 14, 19, -1, -1, -1, -1, -1, -1 },
 		{ -1, -1, -1, 8, 2, 9, -1, -1, -1, -1, -1, -1 },
 		{ -1, -1, -1, 4, 5, 5, -1, -1, -1, -1, -1, -1 }
-	};
+	};*/
 
 	for (int y = 0; y < 9; y++) {
 
@@ -247,7 +266,7 @@ void Rubik::printCube() {
 
 		for (int x = 0; x < 12; x++) {
 
-			index = lines[y][x];
+			index = Rubik::lines[y][x];
 
 			if (index == -1) {
 				std::cout << "  ";
@@ -258,19 +277,19 @@ void Rubik::printCube() {
 				{
 					if (x % 3 == 0 || x % 3 == 2)
 					{
-						number = this->corners[lines[y][x]]->getNumber();
+						number = this->corners[Rubik::lines[y][x]]->getNumber();
 						if (number < 10) {
 							std::cout << " ";
 						}
-						std::cout << setcolor(this->corners[lines[y][x]]->getColor()) << number;
+						std::cout << setcolor(this->corners[Rubik::lines[y][x]]->getColor()) << number;
 					}
 					else
 					{
-						number = this->edges[lines[y][x]]->getNumber();
+						number = this->edges[Rubik::lines[y][x]]->getNumber();
 						if (number < 10) {
 							std::cout << " ";
 						}
-						std::cout << setcolor(this->edges[lines[y][x]]->getColor()) << number;
+						std::cout << setcolor(this->edges[Rubik::lines[y][x]]->getColor()) << number;
 					}
 
 				}
@@ -278,16 +297,16 @@ void Rubik::printCube() {
 				{
 					if (x % 3 == 0 || x % 3 == 2)
 					{
-						number = this->edges[lines[y][x]]->getNumber();
+						number = this->edges[Rubik::lines[y][x]]->getNumber();
 						if (number < 10) {
 							std::cout << " ";
 						}
-						std::cout << setcolor(this->edges[lines[y][x]]->getColor()) << number;
+						std::cout << setcolor(this->edges[Rubik::lines[y][x]]->getColor()) << number;
 					}
 					else
 					{
-						number = this->middle[lines[y][x]]->getNumber();
-						std::cout << " " << setcolor(this->middle[lines[y][x]]->getColor()) << number;
+						number = this->middle[Rubik::lines[y][x]]->getNumber();
+						std::cout << " " << setcolor(this->middle[Rubik::lines[y][x]]->getColor()) << number;
 					}
 				}
 			}
