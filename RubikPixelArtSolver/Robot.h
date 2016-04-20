@@ -35,6 +35,9 @@ public:
 private:
 	RobotState state;
 	RobotController controller;
+	void U0();
+	void U1();
+	void U2();
 	void U();
 	void Ui();
 	void H1();
