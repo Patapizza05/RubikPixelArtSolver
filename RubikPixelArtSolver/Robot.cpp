@@ -24,18 +24,30 @@ Robot::Robot(String window_name, int camera_id){
 }
 
 void Robot::U0() {
-	rmoves.push_back(robot_U0);
-	state.rotator = 0;
+	this->controller.send('a');
+
+	if (this->controller.read() == 'a'){
+		rmoves.push_back(robot_U0);
+		state.rotator = 0;
+	}
 }
 
 void Robot::U1() {
-	rmoves.push_back(robot_U1);
-	state.rotator = 1;
+	this->controller.send('b');
+
+	if (this->controller.read() == 'b'){
+		rmoves.push_back(robot_U1);
+		state.rotator = 1;
+	}
 }
 
 void Robot::U2() {
-	rmoves.push_back(robot_U2);
-	state.rotator = 2;
+	this->controller.send('c');
+
+	if (this->controller.read() == 'c'){
+		rmoves.push_back(robot_U2);
+		state.rotator = 2;
+	}
 }
 
 void Robot::U() {
@@ -418,20 +430,38 @@ void Robot::launchCapture(){
 bool Robot::setRobotPosition(int id){
 	switch (id){
 		case 1:
+			this->H3();
+			this->U();
+			this->D3();
 			//H3 - U - D3
-			break;
+			return true;
 		case 2:
+			this->Ui();
+			this->H3();
+			this->U();
+			this->D3();
 			//Ui - H3 - U - D3
-			break;
+			return true;
 		case 3:
+			this->Ui();
+			this->H3();
+			this->U();
+			this->D3();
 			// Ui - H3 - U - D3
-			break;
+			return true;
 		case 4:
-			// B1 - H3 - B0
-			break;
+			this->Bi();
+			this->H3();
+			this->B();
+			// Bi - H3 - B
+			return true;
 		case 5:
+			this->H3();
+			this->Ui();
+			this->Ui();
+			this->D3();
 			// H3 - Ui - Ui - D3
-			break;
+			return true;
 		default:
 			return false;
 	}
