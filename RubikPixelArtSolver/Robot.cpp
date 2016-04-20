@@ -351,6 +351,7 @@ void Robot::launchCapture(){
 			results.push_back(points);
 			std::cout << "next" << std::endl;
 			nb_capture++;
+			this->setRobotPosition(nb_capture);
 		}
 		else if (this->getSquareCount() == 9) { // Found all cube of a side!
 			points = sortResult(points);
@@ -363,6 +364,7 @@ void Robot::launchCapture(){
 			results.push_back(points);
 
 			nb_capture++;
+			this->setRobotPosition(nb_capture);
 		}
 
 		finalContours.clear();
@@ -377,6 +379,29 @@ void Robot::launchCapture(){
 	std::swap(results[2], results[4]);
 
 	return;
+
+}
+
+bool Robot::setRobotPosition(int id){
+	switch (id){
+		case 1:
+			//H3 - U - D3
+			break;
+		case 2:
+			//Ui - H3 - U - D3
+			break;
+		case 3:
+			// Ui - H3 - U - D3
+			break;
+		case 4:
+			// B1 - H3 - B0
+			break;
+		case 5:
+			// H3 - Ui - Ui - D3
+			break;
+		default:
+			return false;
+	}
 
 }
 

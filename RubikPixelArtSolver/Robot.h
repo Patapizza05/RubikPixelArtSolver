@@ -28,6 +28,7 @@ public:
 	int getSquareCount();
 	void setWindowName(cv::String);
 	cv::String getWindowName();
+	bool setRobotPosition(int);
 	void printSide(std::vector<SquareRubik>);
 	std::vector<SquareRubik> sortResult(std::vector<SquareRubik>);
 	static bool sortXAxis(SquareRubik r1, SquareRubik r2) { return r1.position.x < r2.position.x; };
