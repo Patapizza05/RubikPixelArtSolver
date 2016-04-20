@@ -28,3 +28,4 @@
 *.app
 
 RubikPixelArtSolver/Debug/*
+*.sdf
