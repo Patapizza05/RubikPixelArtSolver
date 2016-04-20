@@ -9,6 +9,7 @@
 #include "MiddleFace.h"
 #include "Robot.h"
 #include "RobotState.h"
+#include "RubikColor.h"
 #include <iostream>
 #include <vector>
 #include <string>
@@ -33,9 +34,14 @@
 #define _Di "Di"
 #define _D2 "D2"
 
+struct Offset {
+	int x;
+	int y;
+};
+
 class Rubik {
 	public:
-		Rubik(std::vector<std::vector<int>>);
+		Rubik(std::vector<std::vector<int>>&);
 		Rubik(int[]);
 		~Rubik();
 		void printCube();
@@ -86,11 +92,26 @@ class Rubik {
 		static int lines[9][12];
 		std::map<std::string, std::string> movesDictionary;
 		void initMovesDictionary();
+		struct Offset getOffset(int);
 		void addMove(std::string);
 		void addEdge(int, int);
 		void addCorner(int, int);
 		void addMiddle(int, int);
+		void addCornerColor(int, RubikColor);
+		void addEdgeColor(int, RubikColor);
+		void addMiddleColor(int, RubikColor);
+		
+		void computeFaceLabels();
+		void computeAllEdgeFaceLabels();
+		void computeEdgeFaceLabels(int);
+		std::vector<int> getPossibleEdgeNumbersFromColor(RubikColor);
+
+		void computeAllCornerFaceLabels();
+		void computeCornerFaceLabels(int);
+		std::vector<int> getPossibleCornerNumbersFromColor(RubikColor);
+
 		void initCornersAndEdges(int[]);
+		void initCornersAndEdges(std::vector<std::vector<int>>&);
 		void translate(Face * array[], int i1, int i2, int i3, int i4);
 		void translate(CornerFace * array[], int i1, int i2, int i3, int i4);
 		void translate(EdgeFace * array[], int i1, int i2, int i3, int i4);

@@ -8,6 +8,10 @@ std::basic_ostream<char> &operator<<(std::basic_ostream<char> &s, const setcolor
 	return s;
 }
 
+RubikColor translate(int color) {
+	return static_cast<RubikColor>(color);
+}
+
 ConsoleColor translate(RubikColor color) {
 	switch (color) {
 		case RubikColor::WHITE:

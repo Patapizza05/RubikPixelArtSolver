@@ -5,6 +5,11 @@ Face::Face(int number, RubikColor color) {
 	this->color = color;
 }
 
+void Face::setNumber(int number) {
+	if (this->number == -1)
+		this->number = number;
+}
+
 void Face::setLockedPosition(bool value)  
 { 
 	lockedPosition = value; 

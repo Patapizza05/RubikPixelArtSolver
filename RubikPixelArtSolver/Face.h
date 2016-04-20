@@ -8,6 +8,7 @@ class Face {
 	public:
 		Face(int,RubikColor);
 		int getNumber() { return number; }
+		void setNumber(int);
 		bool getLockedPosition() { return lockedPosition; }
 		void setLockedPosition(bool value);
 		RubikColor getColor() { return color; }

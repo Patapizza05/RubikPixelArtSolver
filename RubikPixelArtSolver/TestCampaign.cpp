@@ -6,6 +6,11 @@ TestCampaign::TestCampaign(int pieces[]) {
 	}
 }
 
+TestCampaign::TestCampaign(std::vector<std::vector<int>> rubikColors) {
+	this->rubikColors = rubikColors;
+	this->isRubikColors = true;
+}
+
 void TestCampaign::run() {
 	Rubik::debug = false;
 
@@ -76,11 +81,35 @@ void TestCampaign::resolveTests() {
 
 }
 
+std::vector<std::vector<int>> TestCampaign::copyRubikColors() {
+	std::vector<std::vector<int>> result;
+
+	int size = this->rubikColors.size();
+	for (int i = 0; i < size; i++) {
+		int size2 = this->rubikColors[i].size();
+		std::vector<int> line;
+		for (int j = 0; j < size2; j++) {
+			line.push_back(this->rubikColors[i][j]);
+		}
+		result.push_back(line);
+	}
+	return result;
+}
+
+Rubik TestCampaign::makeRubik() {
+	if (this->isRubikColors) {
+		return Rubik(this->rubikColors);
+	}
+	return Rubik(this->pieces);
+}
+
 void TestCampaign::resolveOneCube(RubikColor colors[]) {
-	Rubik rubik(pieces);
+
+	Rubik rubik = makeRubik();
 	rubik.resolve(colors);
 
-	Rubik rubik2(pieces);
+	Rubik rubik2 = makeRubik();
+
 	std::vector<std::string> moves = rubik.getMoves();
 	for (int i = 0; i < moves.size(); i++) {
 		std::string m = moves[i];

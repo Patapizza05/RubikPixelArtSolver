@@ -31,7 +31,7 @@ void openCVMain()
 
 int main(int argc, char* argv[]) {
 	
-	openCVMain();
+	//openCVMain();
 	//int pieces[54] = { 6, 4, 7, 6, 1, 7, 16, 12, 9, 14, 18, 8, 0, 0, 1, 17, 19, 23, 15, 16, 22, 23, 3, 15, 3, 0, 1, 13, 4, 10, 22, 5, 11, 20, 20, 18, 2, 2, 3, 11, 21, 13, 21, 17, 12, 10, 14, 19, 8, 2, 9, 4, 5, 5 };
 
 	int pieces[54] = { 16, 6, 6,
@@ -45,7 +45,26 @@ int main(int argc, char* argv[]) {
 						4, 5, 5
 	};
 
-	Rubik::debug = false;
+	int colorOrder[] = { 2, 3, 4, 1, 5, 0 };
+
+	std::vector<std::vector<int>> rubikColors;
+	for (int colorIndex = 0; colorIndex < 6; colorIndex++) {
+		std::vector<int> piecesColors;
+		for (int i = 0; i < 9; i++) {
+			piecesColors.push_back(colorOrder[colorIndex]);
+		}
+		rubikColors.push_back(piecesColors);
+	}
+
+	/*Rubik r(rubikColors);
+	r.printCube();*/
+
+	TestCampaign testCampaign(rubikColors);
+	testCampaign.run();
+	
+
+
+	/*Rubik::debug = false;
 
 	RubikColor colors[9] = {
 		RubikColor::YELLOW, RubikColor::WHITE, RubikColor::YELLOW,
@@ -54,7 +73,7 @@ int main(int argc, char* argv[]) {
 	};
 
 	TestCampaign testCampaign(pieces);
-	testCampaign.run();
+	testCampaign.run();*/
 
 	//testCampaign.solveOneCube(colors);
 
