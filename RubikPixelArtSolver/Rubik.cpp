@@ -15,8 +15,9 @@ int Rubik::lines[9][12] = {
 	{ -1, -1, -1, 4, 5, 5, -1, -1, -1, -1, -1, -1 }
 };
 
-Rubik::Rubik(std::vector<std::vector<int>> piecesColors) {
-
+Rubik::Rubik(std::vector<std::vector<int>>& piecesColors) {
+	initCornersAndEdges(piecesColors);
+	initMovesDictionary();
 }
 
 Rubik::Rubik(int pieces[]) 	
@@ -49,6 +50,273 @@ void Rubik::initMovesDictionary() {
 	movesDictionary[_D] = _D;
 	movesDictionary[_Di] = _Di;
 	movesDictionary[_D2] = _D2;
+}
+
+struct Offset Rubik::getOffset(int face) {
+	struct Offset offset;
+	switch (face) {
+	case 0:
+		offset.x = 3;
+		offset.y = 3;
+		break;
+	case 1:
+		offset.x = 6;
+		offset.y = 3;
+		break;
+	case 2:
+		offset.x = 9;
+		offset.y = 3;
+		break;
+	case 3:
+		offset.x = 0;
+		offset.y = 3;
+		break;
+	case 4:
+		offset.x = 3;
+		offset.y = 6;
+		break;
+	case 5:
+		offset.x = 3;
+		offset.y = 0;
+		break;
+	default:
+		offset.x = 0;
+		offset.y = 0;
+		break;
+	}
+	return offset;
+}
+
+void Rubik::initCornersAndEdges(std::vector<std::vector<int>>& colors) {
+	struct Offset offset;
+	offset.x = 0;
+	offset.y = 0;
+
+	int size = colors.size();
+	for (int i = 0; i < size; i++) {
+		int nbPieces = colors[i].size();
+		for (int j = 0; j < nbPieces; j++) {
+			offset = getOffset(i);
+			int x = j;
+			int y = 0;
+			while (x > 2) {
+				x -= 3;
+				y++;
+			}
+			x += offset.x;
+			y += offset.y;
+			if (j % 2 != 0) { //Edge
+				addEdgeColor(Rubik::lines[y][x], ::translate(colors[i][j]));
+			}
+			else if (j == 4) { //Middle
+				addMiddleColor(Rubik::lines[y][x], ::translate(colors[i][j]));
+			}
+			else { //Corner
+				addCornerColor(Rubik::lines[y][x], ::translate(colors[i][j]));
+			}
+		}
+	}
+
+	computeFaceLabels();
+}
+
+void Rubik::computeFaceLabels() {
+	//Middles
+		//Already done
+
+	//Edges
+	computeAllEdgeFaceLabels();
+
+	//Corners
+	computeAllCornerFaceLabels();
+}
+
+std::vector<int> Rubik::getPossibleEdgeNumbersFromColor(RubikColor color) {
+	std::vector<int> colors;
+	switch (color) {
+	case RED:
+		colors.push_back(0);
+		colors.push_back(1);
+		colors.push_back(2);
+		colors.push_back(3);
+		break;
+	case GREEN:
+		colors.push_back(15);
+		colors.push_back(18);
+		colors.push_back(20);
+		colors.push_back(23);
+		break;
+	case YELLOW:
+		colors.push_back(5);
+		colors.push_back(8);
+		colors.push_back(9);
+		colors.push_back(14);
+		break;
+	case BLUE:
+		colors.push_back(10);
+		colors.push_back(13);
+		colors.push_back(19);
+		colors.push_back(21);
+		break;
+	case ORANGE:
+		colors.push_back(11);
+		colors.push_back(16);
+		colors.push_back(17);
+		colors.push_back(22);
+		break;
+	case WHITE:
+		colors.push_back(4);
+		colors.push_back(6);
+		colors.push_back(7);
+		colors.push_back(12);
+		break;
+	}
+
+	return colors;
+}
+
+void Rubik::computeEdgeFaceLabels(int i1) {
+	i1 = i1 % 12;
+	int i2 = i1 + 12;
+	std::vector<int> color1 = getPossibleEdgeNumbersFromColor(this->edges[i1]->getColor());
+	std::vector<int> color2 = getPossibleEdgeNumbersFromColor(this->edges[i2]->getColor());
+	int size1 = color1.size();
+	int size2 = color2.size();
+	for (int a = 0; a < size1; a++) {
+		for (int b = 0; b < size2; b++) {
+			if (color1[a] % 12 == color2[b] % 12) {
+				this->edges[i1]->setNumber(color1[a]);
+				this->edges[i2]->setNumber(color2[b]);
+				return;
+			}
+		}
+	}
+	std::cout << "error finding egde from colors" << std::endl;
+}
+
+void Rubik::computeAllEdgeFaceLabels() {
+
+	int modulo = 12;
+
+	for (int i1 = 0; i1 < modulo; i1++)
+	{
+		computeEdgeFaceLabels(i1);
+	}
+}
+
+void Rubik::computeAllCornerFaceLabels() {
+	int modulo = 8;
+
+	for (int i1 = 0; i1 < modulo; i1++)
+	{
+		computeCornerFaceLabels(i1);
+	}
+}
+void Rubik::computeCornerFaceLabels(int i1) {
+	i1 = i1 % 8;
+	int i2 = i1 + 8;
+	int i3 = i2 + 8;
+	std::vector<int> color1 = getPossibleCornerNumbersFromColor(this->corners[i1]->getColor());
+	std::vector<int> color2 = getPossibleCornerNumbersFromColor(this->corners[i2]->getColor());
+	std::vector<int> color3 = getPossibleCornerNumbersFromColor(this->corners[i3]->getColor());
+	int size1 = color1.size();
+	int size2 = color2.size();
+	int size3 = color3.size();
+
+	for (int a = 0; a < size1; a++) {
+		for (int b = 0; b < size2; b++) {
+			for (int c = 0; c < size3; c++) {
+				if (color1[a] % 8 == color2[b] % 8 && color2[b] % 8 == color3[c] % 8) {
+					this->corners[i1]->setNumber(color1[a]);
+					this->corners[i2]->setNumber(color2[b]);
+					this->corners[i3]->setNumber(color3[c]);
+					return;
+				}
+			}
+		}
+	}
+	std::cout << "error finding corner from colors" << std::endl;
+}
+
+
+std::vector<int> Rubik::getPossibleCornerNumbersFromColor(RubikColor color) {
+	std::vector<int> colors;
+	switch (color) {
+	case RED:
+		colors.push_back(0);
+		colors.push_back(1);
+		colors.push_back(2);
+		colors.push_back(3);
+		break;
+	case GREEN:
+		colors.push_back(8);
+		colors.push_back(14);
+		colors.push_back(18);
+		colors.push_back(20);
+		break;
+	case YELLOW:
+		colors.push_back(4);
+		colors.push_back(5);
+		colors.push_back(10);
+		colors.push_back(19);
+		break;
+	case BLUE:
+		colors.push_back(11);
+		colors.push_back(13);
+		colors.push_back(17);
+		colors.push_back(23);
+		break;
+	case ORANGE:
+		colors.push_back(12);
+		colors.push_back(15);
+		colors.push_back(21);
+		colors.push_back(22);
+		break;
+	case WHITE:
+		colors.push_back(6);
+		colors.push_back(7);
+		colors.push_back(9);
+		colors.push_back(16);
+		break;
+	}
+
+	return colors;
+}
+
+void Rubik::addCornerColor(int i, RubikColor color) {
+	this->corners[i] = new CornerFace(-1, color);
+}
+
+void Rubik::addEdgeColor(int i, RubikColor color) {
+	this->edges[i] = new EdgeFace(-1, color);
+}
+
+void Rubik::addMiddleColor(int i, RubikColor color) {
+	int number = -1;
+	switch (color) {
+	case RED:
+		number = 0;
+		break;
+	case BLUE:
+		number = 4;
+		break;
+	case ORANGE:
+		number = 5;
+		break;
+	case YELLOW:
+		number = 2;
+		break;
+	case GREEN:
+		number = 3;
+		break;
+	case WHITE:
+		number = 1;
+		break;
+	default:
+		break;
+	}
+
+	this->middle[i] = new MiddleFace(number, color);
 }
 
 void Rubik::initCornersAndEdges(int pieces[]) {

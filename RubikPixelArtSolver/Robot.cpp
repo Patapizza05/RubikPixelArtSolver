@@ -23,13 +23,37 @@ Robot::Robot(String window_name, int camera_id){
 	this->setWindowName(window_name);
 }
 
+void Robot::U0() {
+	rmoves.push_back(robot_U0);
+	state.rotator = 0;
+}
+
+void Robot::U1() {
+	rmoves.push_back(robot_U1);
+	state.rotator = 1;
+}
+
+void Robot::U2() {
+	rmoves.push_back(robot_U2);
+	state.rotator = 2;
+}
+
 void Robot::U() {
-	state.rotator += 1;
-	rmoves.push_back(robot_U);
+	if (state.rotator == 0) {
+		U1();
+	}
+	else if (state.rotator == 1) {
+		U2();
+	}
+	
 }
 void Robot::Ui() {
-	state.rotator -= 1;
-	rmoves.push_back(robot_Ui);
+	if (state.rotator == 1) {
+		U0();
+	}
+	else if (state.rotator == 2) {
+		U1();
+	}
 }
 void Robot::H1() {
 	state.height += 1;
@@ -153,6 +177,9 @@ void Robot::addMove(std::string rubikMove) {
 				B();
 			}
 			else if (state.referential == _R) {
+				if (state.rotator == 2) {
+					Ui();
+				}
 				H3(); U(); D3(); B();
 			}
 		}
@@ -161,10 +188,16 @@ void Robot::addMove(std::string rubikMove) {
 				Bi();
 			}
 			else if (state.referential == _R) {
+				if (state.rotator == 2) {
+					Ui();
+				}
 				Bi(); H3(); U(); D3(); B();
 			}
 		}
 		else if (this->state.referential == _R) {
+			if (state.rotator == 0) {
+				U();
+			}
 			Bi(); H3(); Ui();
 			if (state.referential == _U) {
 				//Done

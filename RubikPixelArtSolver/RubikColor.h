@@ -12,6 +12,8 @@ enum ConsoleColor { DARKBLUE_ = 1, DARKGREEN_, DARKTEAL_, DARKRED_, DARKPINK_, D
 
 ConsoleColor translate(RubikColor color);
 
+RubikColor translate(int color);
+
 struct setcolor
 {
 	ConsoleColor _c;
