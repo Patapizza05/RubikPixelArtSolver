@@ -10,17 +10,16 @@
 #include <vector>
 
 #define NB_CAPTURE 6
+#define ROBOT_DEBUG 1
 
 class Robot {
 public:
 	Robot();
 	Robot(int);
 	Robot(cv::String, int);
-	void addMove(std::string rubikMove);
-	void endMove();
-	std::vector<std::string> rmoves;
+	void sendRobotMoves(std::vector<std::string> rubikMoves);
+	std::vector<std::string> getRobotMoves() { return rmoves; };
 	RobotController getController();
-
 	void launchCapture();
 	void setCameraId(int);
 	int getCameraId();
@@ -36,6 +35,9 @@ public:
 private:
 	RobotState state;
 	RobotController controller;
+	void addMove(std::string rubikMove);
+	void endMove();
+	std::vector<std::string> rmoves;
 	void U0();
 	void U1();
 	void U2();

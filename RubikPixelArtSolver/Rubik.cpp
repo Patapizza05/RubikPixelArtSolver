@@ -1733,12 +1733,12 @@ void Rubik::addMove(std::string m2) {
 
 }
 
-std::vector<std::string> Rubik::translateToRobotMoves() {
+/*std::vector<std::string> Rubik::translateToRobotMoves() {
 	Robot robot;
 	for (unsigned int i = 0; i < this->moves.size(); i++) {
 		robot.addMove(this->moves[i]);
 	}
 	robot.endMove();
 	return robot.rmoves;
-}
+}*/
 

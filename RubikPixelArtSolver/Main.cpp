@@ -46,6 +46,8 @@ void runCampaignMain() {
 }
 
 void testRobotMovesMain() {
+	Robot robot;
+
 	int colorOrder[] = { 2, 3, 4, 1, 5, 0 };
 
 	std::vector<std::vector<int>> rubikColors;
@@ -61,7 +63,8 @@ void testRobotMovesMain() {
 	r.R();
 	r.U();
 	//r.resolve(colors);
-	std::vector<std::string> moves = r.translateToRobotMoves();
+	robot.sendRobotMoves(r.getMoves());
+	std::vector<std::string> moves = robot.getRobotMoves();
 	for (int i = 0; i < moves.size(); i++) {
 		std::cout << moves[i] << " ";
 	}
@@ -94,9 +97,9 @@ void testOneCubeSolveMain() {
 int main(int argc, char* argv[]) {
 	
 	//openCVMain();
-	runCampaignMain();
+	//runCampaignMain();
 	//testOneCubeSolveMain();
-	//testRobotMovesMain();
+	testRobotMovesMain();
 	getchar();
 	return 0;
 }

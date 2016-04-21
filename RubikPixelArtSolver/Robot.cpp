@@ -23,10 +23,17 @@ Robot::Robot(String window_name, int camera_id){
 	this->setWindowName(window_name);
 }
 
+void Robot::sendRobotMoves(std::vector<std::string> rubikMoves) {
+	for (unsigned int i = 0; i < rubikMoves.size(); i++) {
+		this->addMove(rubikMoves[i]);
+	}
+	this->endMove();
+}
+
 void Robot::U0() {
 	this->controller.send(robot_U0[0]);
 
-	if (this->controller.read() == robot_U0[0]){
+	if (this->controller.read() == robot_U0[0] || ROBOT_DEBUG){
 		rmoves.push_back(robot_U0);
 		state.rotator = 0;
 	}
@@ -35,7 +42,7 @@ void Robot::U0() {
 void Robot::U1() {
 	this->controller.send(robot_U1[0]);
 
-	if (this->controller.read() == robot_U1[0]){
+	if (this->controller.read() == robot_U1[0] || ROBOT_DEBUG){
 		rmoves.push_back(robot_U1);
 		state.rotator = 1;
 	}
@@ -44,7 +51,7 @@ void Robot::U1() {
 void Robot::U2() {
 	this->controller.send(robot_U2[0]);
 
-	if (this->controller.read() == robot_U2[0]){
+	if (this->controller.read() == robot_U2[0] || ROBOT_DEBUG){
 		rmoves.push_back(robot_U2);
 		state.rotator = 2;
 	}
@@ -70,7 +77,7 @@ void Robot::Ui() {
 void Robot::H1() {
 	this->controller.send(robot_H1[0]);
 
-	if (this->controller.read() == robot_H1[0]) {
+	if (this->controller.read() == robot_H1[0] || ROBOT_DEBUG) {
 		state.height += 1;
 		rmoves.push_back(robot_H1);
 	}
@@ -78,7 +85,7 @@ void Robot::H1() {
 void Robot::H2() {
 	this->controller.send(robot_H2[0]);
 
-	if (this->controller.read() == robot_H2[0]) {
+	if (this->controller.read() == robot_H2[0] || ROBOT_DEBUG) {
 		state.height += 2;
 		rmoves.push_back(robot_H2);
 	}
@@ -86,7 +93,7 @@ void Robot::H2() {
 void Robot::H3() {
 	this->controller.send(robot_H3[0]);
 
-	if (this->controller.read() == robot_H3[0]) {
+	if (this->controller.read() == robot_H3[0] || ROBOT_DEBUG) {
 		state.height += 3;
 		rmoves.push_back(robot_H3);
 	}
@@ -94,7 +101,7 @@ void Robot::H3() {
 void Robot::D1() {
 	this->controller.send(robot_D1[0]);
 
-	if (this->controller.read() == robot_D1[0]) {
+	if (this->controller.read() == robot_D1[0] || ROBOT_DEBUG) {
 		state.height -= 1;
 		rmoves.push_back(robot_D1);
 	}
@@ -102,7 +109,7 @@ void Robot::D1() {
 void Robot::D2() {
 	this->controller.send(robot_D2[0]);
 
-	if (this->controller.read() == robot_D2[0]) {
+	if (this->controller.read() == robot_D2[0] || ROBOT_DEBUG) {
 		state.height -= 2;
 		rmoves.push_back(robot_D2);
 	}
@@ -110,7 +117,7 @@ void Robot::D2() {
 void Robot::D3() {
 	this->controller.send(robot_D3[0]);
 
-	if (this->controller.read() == robot_D3[0]) {
+	if (this->controller.read() == robot_D3[0] || ROBOT_DEBUG) {
 		state.height -= 3;
 		rmoves.push_back(robot_D3);
 	}
@@ -118,7 +125,7 @@ void Robot::D3() {
 void Robot::Bi() {
 	this->controller.send(robot_Bi[0]);
 
-	if (this->controller.read() == robot_Bi[0]) {
+	if (this->controller.read() == robot_Bi[0] || ROBOT_DEBUG) {
 		state.balancier = true;
 		rmoves.push_back(robot_Bi);
 	}
@@ -127,7 +134,7 @@ void Robot::Bi() {
 void Robot::B() {
 	this->controller.send(robot_B[0]);
 
-	if (this->controller.read() == robot_B[0]) {
+	if (this->controller.read() == robot_B[0] || ROBOT_DEBUG) {
 		state.balancier = false;
 		rmoves.push_back(robot_B);
 	}

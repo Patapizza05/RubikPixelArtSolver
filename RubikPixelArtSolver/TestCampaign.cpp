@@ -250,8 +250,10 @@ void TestCampaign::solveOneCube(RubikColor colors[]) {
 	std::cout << std::endl;
 
 	std::cout << setcolor(RubikColor::WHITE) << std::endl;
+	Robot robot;
+	robot.sendRobotMoves(rubik.getMoves());
 	std::cout << "Robot Moves :";
-	std::vector<std::string> rmoves = rubik.translateToRobotMoves();
+	std::vector<std::string> rmoves = robot.getRobotMoves();
 	size = rmoves.size();
 	for (int i = 0; i < size; i++) {
 		std::cout << " " << rmoves[i];
