@@ -72,7 +72,6 @@ class Rubik {
 		void resolveCorners(RubikColor colors[]);
 		void error(std::string);
 		void changeReferentialWhiteToGreen();
-
 		void changeReferentialWhiteToRed();
 		void changeReferentialWhiteToBlue();
 		void changeReferentialWhiteToOrange();
@@ -81,7 +80,7 @@ class Rubik {
 		void optimise();
 
 		std::vector<std::string> translateToRobotMoves();
-
+		
 		std::vector<std::string> getMoves() { return moves; }
 		
 	private:

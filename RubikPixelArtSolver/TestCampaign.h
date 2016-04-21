@@ -21,7 +21,7 @@ private:
 	Rubik makeRubik();
 public:
 	TestCampaign(int pieces[]);
-	TestCampaign(std::vector<std::vector<int>> rubikColors);
+	TestCampaign(std::vector<std::vector<int>>& rubikColors);
 	void run();
 	void solveOneCube(RubikColor colors[]);
 };

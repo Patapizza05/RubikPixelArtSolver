@@ -6,7 +6,7 @@ TestCampaign::TestCampaign(int pieces[]) {
 	}
 }
 
-TestCampaign::TestCampaign(std::vector<std::vector<int>> rubikColors) {
+TestCampaign::TestCampaign(std::vector<std::vector<int>>& rubikColors) {
 	this->rubikColors = rubikColors;
 	this->isRubikColors = true;
 }
@@ -221,7 +221,7 @@ void TestCampaign::solveOneCube(RubikColor colors[]) {
 	*/
 
 
-	Rubik rubik(pieces);
+	Rubik rubik = makeRubik();
 
 	/*The colors are specified this way :
 			1 2 3
@@ -248,6 +248,17 @@ void TestCampaign::solveOneCube(RubikColor colors[]) {
 		std::cout << " " << moves[i];
 	}
 	std::cout << std::endl;
+
+	std::cout << setcolor(RubikColor::WHITE) << std::endl;
+	std::cout << "Robot Moves :";
+	std::vector<std::string> rmoves = rubik.translateToRobotMoves();
+	size = rmoves.size();
+	for (int i = 0; i < size; i++) {
+		std::cout << " " << rmoves[i];
+	}
+	std::cout << std::endl;
+
+
 
 	std::cout << setcolor(RubikColor::WHITE) << "---------------------------------------------" << std::endl;
 	rubik.printCube();

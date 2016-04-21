@@ -13,9 +13,9 @@
 #define robot_H1 "d" //Monter de 1
 #define robot_H2 "e" //Monter de 2
 #define robot_H3 "f" //Monter de 3
-#define robot_D1 "D1" //Descendre de 1
-#define robot_D2 "D2" //Descendre de 2
-#define robot_D3 "D3" //Descendre de 3
+#define robot_D1 "j" //Descendre de 1
+#define robot_D2 "k" //Descendre de 2
+#define robot_D3 "l" //Descendre de 3
 #define robot_Bi "h" //Basculer le balancier
 #define robot_B "i" //Remettre le balancier à l'état initial
 
