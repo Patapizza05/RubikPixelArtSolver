@@ -23,113 +23,156 @@ Robot::Robot(String window_name, int camera_id){
 	this->setWindowName(window_name);
 }
 
-void Robot::U0() {
+bool Robot::U0() {
 	this->controller.send(robot_U0[0]);
 
 	if (this->controller.read() == robot_U0[0]){
 		rmoves.push_back(robot_U0);
 		state.rotator = 0;
+		return true;
+	}
+	else {
+		return false;
 	}
 }
 
-void Robot::U1() {
+bool Robot::U1() {
 	this->controller.send(robot_U1[0]);
 
 	if (this->controller.read() == robot_U1[0]){
 		rmoves.push_back(robot_U1);
 		state.rotator = 1;
+		return true;
+	}
+	else {
+		return false;
 	}
 }
 
-void Robot::U2() {
+bool Robot::U2() {
 	this->controller.send(robot_U2[0]);
 
 	if (this->controller.read() == robot_U2[0]){
 		rmoves.push_back(robot_U2);
 		state.rotator = 2;
+		return true;
+	}
+	else {
+		return false;
 	}
 }
 
-void Robot::U() {
+bool Robot::U() {
 	if (state.rotator == 0) {
-		U1();
+		return U1();
 	}
 	else if (state.rotator == 1) {
-		U2();
+		return U2();
 	}
-	
 }
-void Robot::Ui() {
+bool Robot::Ui() {
 	if (state.rotator == 1) {
-		U0();
+		return U0();
 	}
 	else if (state.rotator == 2) {
-		U1();
+		return U1();
 	}
 }
-void Robot::H1() {
+bool Robot::H1() {
 	this->controller.send(robot_H1[0]);
 
 	if (this->controller.read() == robot_H1[0]) {
 		state.height += 1;
 		rmoves.push_back(robot_H1);
+		return true;
+	}
+	else {
+		return false;
 	}
 }
-void Robot::H2() {
+bool Robot::H2() {
 	this->controller.send(robot_H2[0]);
 
 	if (this->controller.read() == robot_H2[0]) {
 		state.height += 2;
 		rmoves.push_back(robot_H2);
+		return true;
+	}
+	else {
+		return false;
 	}
 }
-void Robot::H3() {
+bool Robot::H3() {
 	this->controller.send(robot_H3[0]);
 
 	if (this->controller.read() == robot_H3[0]) {
 		state.height += 3;
 		rmoves.push_back(robot_H3);
+		return true;
+	}
+	else {
+		return false;
 	}
 }
-void Robot::D1() {
+bool Robot::D1() {
 	this->controller.send(robot_D1[0]);
 
 	if (this->controller.read() == robot_D1[0]) {
 		state.height -= 1;
 		rmoves.push_back(robot_D1);
+		return true;
+	}
+	else {
+		return false;
 	}
 }
-void Robot::D2() {
+bool Robot::D2() {
 	this->controller.send(robot_D2[0]);
 
 	if (this->controller.read() == robot_D2[0]) {
 		state.height -= 2;
 		rmoves.push_back(robot_D2);
+		return true;
+	}
+	else {
+		return false;
 	}
 }
-void Robot::D3() {
+bool Robot::D3() {
 	this->controller.send(robot_D3[0]);
 
 	if (this->controller.read() == robot_D3[0]) {
 		state.height -= 3;
 		rmoves.push_back(robot_D3);
+		return true;
+	}
+	else {
+		return false;
 	}
 }
-void Robot::Bi() {
+bool Robot::Bi() {
 	this->controller.send(robot_Bi[0]);
 
 	if (this->controller.read() == robot_Bi[0]) {
 		state.balancier = true;
 		rmoves.push_back(robot_Bi);
+		return true;
+	}
+	else {
+		return false;
 	}
 }
 
-void Robot::B() {
+bool Robot::B() {
 	this->controller.send(robot_B[0]);
 
 	if (this->controller.read() == robot_B[0]) {
 		state.balancier = false;
 		rmoves.push_back(robot_B);
+		return true;
+	}
+	else {
+		return false;
 	}
 }
 
@@ -429,7 +472,9 @@ void Robot::launchCapture(){
 			results.push_back(points);
 			std::cout << "next" << std::endl;
 			nb_capture++;
-			this->setRobotPosition(nb_capture);
+			if (!this->setRobotPosition(nb_capture)){
+				//HANDLE ERROR @TODO
+			}
 		}
 		else if (this->getSquareCount() == 9) { // Found all cube of a side!
 			points = sortResult(points);
@@ -442,7 +487,9 @@ void Robot::launchCapture(){
 			results.push_back(points);
 
 			nb_capture++;
-			this->setRobotPosition(nb_capture);
+			if (!this->setRobotPosition(nb_capture)){
+				//HANDLE ERROR @TODO
+			}
 		}
 
 		finalContours.clear();
@@ -463,36 +510,36 @@ void Robot::launchCapture(){
 bool Robot::setRobotPosition(int id){
 	switch (id){
 		case 1:
-			this->H3();
-			this->U();
-			this->D3();
+			if(!this->H3()) return false;
+			if(!this->U()) return false;
+			if(!this->D3()) return false;
 			//H3 - U - D3
 			return true;
 		case 2:
-			this->Ui();
-			this->H3();
-			this->U();
-			this->D3();
+			if(!this->Ui()) return false;
+			if(!this->H3()) return false;
+			if(!this->U()) return false;
+			if(!this->D3()) return false;
 			//Ui - H3 - U - D3
 			return true;
 		case 3:
-			this->Ui();
-			this->H3();
-			this->U();
-			this->D3();
+			if (!this->Ui()) return false;
+			if (!this->H3()) return false;
+			if (!this->U()) return false;
+			if (!this->D3()) return false;
 			// Ui - H3 - U - D3
 			return true;
 		case 4:
-			this->Bi();
-			this->H3();
-			this->B();
+			if (!this->Bi()) return false;
+			if (!this->H3()) return false;
+			if (!this->B()) return false;
 			// Bi - H3 - B
 			return true;
 		case 5:
-			this->H3();
-			this->Ui();
-			this->Ui();
-			this->D3();
+			if (!this->H3()) return false;
+			if (!this->Ui()) return false;
+			if (!this->Ui()) return false;
+			if (!this->D3()) return false;
 			// H3 - Ui - Ui - D3
 			return true;
 		default:
