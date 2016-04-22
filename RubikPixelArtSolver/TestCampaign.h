@@ -13,6 +13,7 @@ private:
 	int passed;
 	int failed;
 	int nbMoves;
+	int nbRobotMoves;
 	int pieces[54];
 	std::vector<std::vector<int>> rubikColors;
 	bool isRubikColors = false;

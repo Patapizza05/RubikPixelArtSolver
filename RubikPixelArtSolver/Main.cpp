@@ -83,9 +83,9 @@ void testOneCubeSolveMain() {
 	}
 
 	RubikColor colors[9] = {
-		RubikColor::YELLOW, RubikColor::WHITE, RubikColor::YELLOW,
-		RubikColor::WHITE, RubikColor::YELLOW, RubikColor::WHITE,
-		RubikColor::YELLOW, RubikColor::WHITE, RubikColor::YELLOW
+		RubikColor::RED, RubikColor::RED, RubikColor::RED,
+		RubikColor::RED, RubikColor::RED, RubikColor::RED,
+		RubikColor::RED, RubikColor::RED, RubikColor::RED
 	};
 
 	TestCampaign testCampaign(rubikColors);
@@ -95,8 +95,10 @@ void testOneCubeSolveMain() {
 int main(int argc, char* argv[]) {
 	
 	//openCVMain();
-	runCampaignMain();
-	//testOneCubeSolveMain();
+	//runCampaignMain();
+
+	Rubik::debug = true;
+	testOneCubeSolveMain();
 	//testRobotMovesMain();
 	getchar();
 	return 0;

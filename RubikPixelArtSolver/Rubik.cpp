@@ -1109,6 +1109,7 @@ void Rubik::resolveEdges(RubikColor colors[], Robot& robot) {
 		int index = this->searchEdgeColorIndexes(color, solvedEdges, robot);
 		if (index == -1) {
 			error("did not find edge");
+			return;
 		}
 		if (Rubik::debug) std::cout << "Edge : Number " << this->edges[index]->getNumber() << " at position " << index << std::endl;
 
@@ -1880,6 +1881,9 @@ void Rubik::resolveCorners(RubikColor colors[]) {
 	for (int i = 0; i < 4; i++) {
 		RubikColor color = colors[i]; //16 9 7 6
 		int index = this->searchCornerColorIndex(color, solvedCorners);
+		if (index == -1) {
+			std::cout << "Did not find corner" << std::endl;
+		}
 		if (Rubik::debug) std::cout << "Corner : Number " << this->corners[index]->getNumber() << " at position " << index << std::endl;
 
 		this->setLockedCorner(16, TRUE);
@@ -1906,6 +1910,10 @@ void Rubik::resolveCorners(RubikColor colors[], Robot& robot) {
 	for (int i = 0; i < 4; i++) {
 		RubikColor color = colors[i]; //16 9 7 6
 		int index = this->searchCornerColorIndexes(color, solvedCorners, robot);
+		if (index == -1) {
+			std::cout << "did not find corner";
+			return;
+		}
 		if (Rubik::debug) std::cout << "Corner : Number " << this->corners[index]->getNumber() << " at position " << index << std::endl;
 
 		this->setLockedCorner(16, TRUE);

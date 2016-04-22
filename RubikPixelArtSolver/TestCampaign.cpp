@@ -28,6 +28,7 @@ void TestCampaign::resolveTests() {
 	this->failed = 0;
 	this->passed = 0;
 	this->nbMoves = 0;
+	this->nbRobotMoves = 0;
 
 	RubikColor rubikColors[6] = { RubikColor::WHITE, RubikColor::GREEN, RubikColor::RED, RubikColor::BLUE, RubikColor::ORANGE, RubikColor::YELLOW };
 	RubikColor colors[9];
@@ -52,6 +53,7 @@ void TestCampaign::resolveTests() {
 							std::cout << "Passed : " << this->passed << std::endl;
 							std::cout << "Failed : " << this->failed << std::endl;
 							if (this->passed > 0) std::cout << "Average : " << this->nbMoves / (this->passed) << std::endl;
+							if (this->passed > 0) std::cout << "Robot Average : " << this->nbRobotMoves / (this->passed) << std::endl;
 							std::cout << std::endl;
 
 							for (int i8 = 0; i8 < 6; i8++) {
@@ -122,6 +124,8 @@ void TestCampaign::resolveOneCube(RubikColor colors[]) {
 	{
 		this->passed++;
 		this->nbMoves += rubik.getMoves().size();
+		robot.sendRubikMoves(moves);
+		this->nbRobotMoves += robot.getRobotMoves().size();
 	}
 	else {
 		this->failed++;
