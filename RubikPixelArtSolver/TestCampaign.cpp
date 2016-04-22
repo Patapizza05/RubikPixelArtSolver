@@ -42,18 +42,17 @@ void TestCampaign::resolveTests() {
 				for (int i4 = 0; i4 < 6; i4++) {
 					colors[3] = rubikColors[i4];
 
-
-					std::cout << "RESULTS" << std::endl;
-					std::cout << "Number of tests : " << this->passed + this->failed << std::endl;
-					std::cout << "Passed : " << this->passed << std::endl;
-					std::cout << "Failed : " << this->failed << std::endl;
-					if (this->passed > 0) std::cout << "Average : " << this->nbMoves / (this->passed) << std::endl;
-					std::cout << std::endl;
-
 					for (int i6 = 0; i6 < 6; i6++) {
 						colors[5] = rubikColors[i6];
 						for (int i7 = 0; i7 < 6; i7++) {
 							colors[6] = rubikColors[i7];
+
+							std::cout << "RESULTS" << std::endl;
+							std::cout << "Number of tests : " << this->passed + this->failed << std::endl;
+							std::cout << "Passed : " << this->passed << std::endl;
+							std::cout << "Failed : " << this->failed << std::endl;
+							if (this->passed > 0) std::cout << "Average : " << this->nbMoves / (this->passed) << std::endl;
+							std::cout << std::endl;
 
 							for (int i8 = 0; i8 < 6; i8++) {
 								colors[7] = rubikColors[i8];
@@ -104,69 +103,17 @@ Rubik TestCampaign::makeRubik() {
 }
 
 void TestCampaign::resolveOneCube(RubikColor colors[]) {
+	Robot robot;
 
 	Rubik rubik = makeRubik();
-	rubik.resolve(colors);
+	rubik.resolve(colors, robot);
 
 	Rubik rubik2 = makeRubik();
 
 	std::vector<std::string> moves = rubik.getMoves();
 	for (int i = 0; i < moves.size(); i++) {
 		std::string m = moves[i];
-		if (m == _R) {
-			rubik2.R();
-		}
-		else if (m == _Ri) {
-			rubik2.Ri();
-		}
-		else if (m == _R2) {
-			rubik2.R2();
-		}
-		else if (m == _L) {
-			rubik2.L();
-		}
-		else if (m == _Li) {
-			rubik2.Li();
-		}
-		else if (m == _L2) {
-			rubik2.L2();
-		}
-		else if (m == _D) {
-			rubik2.D();
-		}
-		else if (m == _Di) {
-			rubik2.Di();
-		}
-		else if (m == _D2) {
-			rubik2.D2();
-		}
-		else if (m == _F) {
-			rubik2.F();
-		}
-		else if (m == _Fi) {
-			rubik2.Fi();
-		}
-		else if (m == _F2) {
-			rubik2.F2();
-		}
-		else if (m == _U) {
-			rubik2.U();
-		}
-		else if (m == _Ui) {
-			rubik2.Ui();
-		}
-		else if (m == _U2) {
-			rubik2.U2();
-		}
-		else if (m == _B) {
-			rubik2.B();
-		}
-		else if (m == _Bi) {
-			rubik2.Bi();
-		}
-		else if (m == _B2) {
-			rubik2.B2();
-		}
+		rubik2.applyMove(m);
 	}
 
 	rubik2.resolveMiddle(colors[4]);
@@ -219,7 +166,7 @@ void TestCampaign::solveOneCube(RubikColor colors[]) {
 				52 53 54
 
 	*/
-
+	Robot robot;
 
 	Rubik rubik = makeRubik();
 
@@ -229,7 +176,7 @@ void TestCampaign::solveOneCube(RubikColor colors[]) {
 			7 8 9
 	*/
 
-	rubik.resolve(colors);
+	rubik.resolve(colors, robot);
 
 
 	std::cout << "Expected colors :" << std::endl;
@@ -250,8 +197,8 @@ void TestCampaign::solveOneCube(RubikColor colors[]) {
 	std::cout << std::endl;
 
 	std::cout << setcolor(RubikColor::WHITE) << std::endl;
-	Robot robot;
-	robot.sendRobotMoves(rubik.getMoves());
+
+	robot.sendRubikMoves(rubik.getMoves());
 	std::cout << "Robot Moves :";
 	std::vector<std::string> rmoves = robot.getRobotMoves();
 	size = rmoves.size();

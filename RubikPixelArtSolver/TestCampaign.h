@@ -3,6 +3,7 @@
 #define TEST_CAMPAIGN_H
 
 #include "RubikColor.h"
+#include "Face.h"
 #include "Rubik.h"
 #include "ResolutionException.h"
 #include <vector>

@@ -4,21 +4,22 @@
 
 #include "RobotState.h"
 #include "RobotController.h"
-#include "Rubik.h"
+#include "Face.h"
 #include "Utils.h"
 #include <string>
 #include <vector>
 
 #define NB_CAPTURE 6
-#define ROBOT_DEBUG 1
+#define ROBOT_DEBUG 0
 
 class Robot {
 public:
 	Robot();
 	Robot(int);
 	Robot(cv::String, int);
-	void sendRobotMoves(std::vector<std::string> rubikMoves);
+	void sendRubikMoves(std::vector<std::string> rubikMoves);
 	std::vector<std::string> getRobotMoves() { return rmoves; };
+	int getRubikMovesCost(std::vector<std::string> rubikMoves, std::string previousRubikMove);
 	RobotController getController();
 	void launchCapture();
 	void setCameraId(int);

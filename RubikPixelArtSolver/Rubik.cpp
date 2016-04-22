@@ -1,5 +1,4 @@
 #include "Rubik.h"
-#include "RubikColor.h"
 
 bool Rubik::debug = false;
 
@@ -871,34 +870,25 @@ void Rubik::resolve(RubikColor colors[]) {
 	resolveCorners(cornersColors);
 	//optimise();
 }
+
+void Rubik::resolve(RubikColor colors[], Robot& robot) {
+	resolveMiddle(colors[4], robot);
+	RubikColor edgesColors[4] = { colors[7], colors[5], colors[1], colors[3] };
+	RubikColor cornersColors[4] = { colors[6], colors[8], colors[2], colors[0] };
+	resolveEdges(edgesColors, robot);
+	resolveCorners(cornersColors, robot);
+
+}
+
 void Rubik::resolveMiddle(RubikColor color) {
 
 	int index = this->searchMiddleColorIndex(color);
 	this->middle[index]->setLockedPosition(TRUE);
-
-	/*switch (color) {
-	case RubikColor::RED:
-	this->changeReferentialWhiteToRed();
-	break;
-	case RubikColor::BLUE:
-	this->changeReferentialWhiteToBlue();
-	break;
-	case RubikColor::ORANGE:
-	this->changeReferentialWhiteToOrange();
-	break;
-	case RubikColor::GREEN:
-	this->changeReferentialWhiteToGreen();
-	break;
-	case RubikColor::YELLOW:
-	this->changeReferentialWhiteToYellow();
-	break;
-	default:
-	break;
-	}*/
-
-
-
 	if (Rubik::debug) this->printCube();
+}
+
+void Rubik::resolveMiddle(RubikColor color, Robot& robot) {
+	resolveMiddle(color);
 }
 
 int Rubik::searchMiddleColorIndex(RubikColor color) {
@@ -1073,8 +1063,8 @@ void Rubik::middle_TurnCubeLeft() { //White to green
 
 bool Rubik::checkMiddleColor(int i, RubikColor color) {
 	if (this->middle[i]->getColor() == color)
-		return TRUE;
-	return FALSE;
+		return true;
+	return false;
 }
 
 void Rubik::setLockedEdge(int index, bool value) {
@@ -1108,6 +1098,553 @@ void Rubik::resolveEdges(RubikColor colors[]) {
 			std::cout << "--------------------------------------------------------" << std::endl;
 		}
 
+	}
+}
+
+void Rubik::resolveEdges(RubikColor colors[], Robot& robot) {
+	int solvedEdges = 0;
+
+	for (int i = 0; i < 4; i++) {
+		RubikColor color = colors[i]; //12 7 4 6
+		int index = this->searchEdgeColorIndexes(color, solvedEdges, robot);
+		if (index == -1) {
+			error("did not find edge");
+		}
+		if (Rubik::debug) std::cout << "Edge : Number " << this->edges[index]->getNumber() << " at position " << index << std::endl;
+
+		this->setLockedEdge(12, TRUE);
+		solvedEdges++;
+		this->U();
+
+		if (Rubik::debug) {
+			std::cout << std::endl;
+			for (unsigned int i = 0; i < this->moves.size(); i++) {
+				std::cout << moves[i] << " ";
+			}
+			this->printCube();
+			std::cout << "--------------------------------------------------------" << std::endl;
+		}
+
+	}
+}
+
+bool Rubik::getMinCost(std::vector<std::string>& tempMoves, int& minCost, Robot& robot) {
+	int cost;
+	if (this->moves.size() == 0) {
+		cost = robot.getRubikMovesCost(tempMoves, "");
+	}
+	else {
+		cost = robot.getRubikMovesCost(tempMoves, this->moves[this->moves.size() - 1]);
+	}
+	if (minCost == -1) {
+		minCost = cost;
+		return true;
+	}
+	return false;
+}
+
+int Rubik::searchEdgeColorIndexes(RubikColor color, int solvedEdges, Robot& robot) {
+
+	int result = -1;
+	int minCost = -1;
+	std::vector<std::string> tempMoves;
+	std::vector<std::string> resultMoves;
+
+	if (checkEdgeColor(12, color)) { //0
+		//No moves
+		result = 12;
+		minCost = 0;
+	}
+
+	if (checkEdgeColor(13, color)) { //1
+		tempMoves.clear();
+		tempMoves.push_back(_Fi);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 13;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkEdgeColor(15, color)) { //1
+		tempMoves.clear();
+		tempMoves.push_back(_F);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 15;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkEdgeColor(6, color) && solvedEdges == 0) { //1
+		tempMoves.clear();
+		tempMoves.push_back(_Ui);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 6;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkEdgeColor(7, color) && solvedEdges == 0) { //1
+		tempMoves.clear();
+		tempMoves.push_back(_U);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 7;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkEdgeColor(14, color)) { //1.5
+		tempMoves.clear();
+		tempMoves.push_back(_F2);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 14;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkEdgeColor(4, color) && solvedEdges == 0) { //1.5
+		tempMoves.clear();
+		tempMoves.push_back(_U2);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 4;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkEdgeColor(21, color) && !this->edges[7]->getLockedPosition()) { //2
+		tempMoves.clear();
+		tempMoves.push_back(_R);
+		tempMoves.push_back(_Fi);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 21;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkEdgeColor(20, color) && !this->edges[6]->getLockedPosition()) { //2
+		tempMoves.clear();
+		tempMoves.push_back(_Li);
+		tempMoves.push_back(_F);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 20;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkEdgeColor(3, color) && solvedEdges == 0) { //2
+		tempMoves.clear();
+		tempMoves.push_back(_Li);
+		tempMoves.push_back(_Ui);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 3;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkEdgeColor(11, color) && solvedEdges == 0) { //2
+		tempMoves.clear();
+		tempMoves.push_back(_L);
+		tempMoves.push_back(_Ui);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 11;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkEdgeColor(1, color) && solvedEdges == 0) { //2
+		tempMoves.clear();
+		tempMoves.push_back(_R);
+		tempMoves.push_back(_U);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 1;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkEdgeColor(22, color) && solvedEdges == 0) { //2
+		tempMoves.clear();
+		tempMoves.push_back(_Ri);
+		tempMoves.push_back(_U);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 22;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkEdgeColor(18, color)) { //2
+		tempMoves.clear();
+		tempMoves.push_back(_L);
+		tempMoves.push_back(_F);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 18;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkEdgeColor(19, color)) { //2
+		tempMoves.clear();
+		tempMoves.push_back(_Ri);
+		tempMoves.push_back(_Fi);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 19;
+			resultMoves = tempMoves;
+		}
+	}
+
+	//2.5
+
+	if (checkEdgeColor(9, color)) { //2.5
+		tempMoves.clear();
+		tempMoves.push_back(_Di);
+		tempMoves.push_back(_F2);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 9;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkEdgeColor(10, color) && !this->edges[7]->getLockedPosition()) { //2.5
+		tempMoves.clear();
+		tempMoves.push_back(_R2);
+		tempMoves.push_back(_Fi);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 10;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkEdgeColor(23, color) && !this->edges[6]->getLockedPosition()) { //2.5
+		tempMoves.clear();
+		tempMoves.push_back(_L2);
+		tempMoves.push_back(_F);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 23;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkEdgeColor(8, color)) { //2.5
+		tempMoves.clear();
+		tempMoves.push_back(_D);
+		tempMoves.push_back(_F2);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 8;
+			resultMoves = tempMoves;
+		}
+	}
+
+	//2.8
+
+	if (checkEdgeColor(5, color)) { //2.8
+		tempMoves.clear();
+		tempMoves.push_back(_D2);
+		tempMoves.push_back(_F2);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 5;
+			resultMoves = tempMoves;
+		}
+	}
+
+	//3
+
+	if (checkEdgeColor(21, color)) { //3 //7 is locked
+		tempMoves.clear();
+		tempMoves.push_back(_R);
+		tempMoves.push_back(_Fi);
+		tempMoves.push_back(_Ri);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 21;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkEdgeColor(20, color)) { //3 //6 is locked
+		tempMoves.clear();
+		tempMoves.push_back(_Li);
+		tempMoves.push_back(_F);
+		tempMoves.push_back(_L);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 20;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkEdgeColor(3, color)) { //3
+		tempMoves.clear();
+		tempMoves.push_back(_U);
+		tempMoves.push_back(_Li);
+		tempMoves.push_back(_Ui);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 3;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkEdgeColor(11, color)) { //3
+		tempMoves.clear();
+		tempMoves.push_back(_U);
+		tempMoves.push_back(_L);
+		tempMoves.push_back(_Ui);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 11;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkEdgeColor(1, color)) { //3
+		tempMoves.clear();
+		tempMoves.push_back(_Ui);
+		tempMoves.push_back(_R);
+		tempMoves.push_back(_U);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 1;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkEdgeColor(22, color)) { //3
+		tempMoves.clear();
+		tempMoves.push_back(_Ui);
+		tempMoves.push_back(_Ri);
+		tempMoves.push_back(_U);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 22;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkEdgeColor(2, color) && !this->edges[7]->getLockedPosition()) { //3
+		tempMoves.clear();
+		tempMoves.push_back(_D);
+		tempMoves.push_back(_R);
+		tempMoves.push_back(_Fi);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 2;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkEdgeColor(17, color) && !this->edges[6]->getLockedPosition()) { //3
+		tempMoves.clear();
+		tempMoves.push_back(_D);
+		tempMoves.push_back(_Li);
+		tempMoves.push_back(_F);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 17;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkEdgeColor(10, color)) { //3.8
+		tempMoves.clear();
+		tempMoves.push_back(_R2);
+		tempMoves.push_back(_Fi);
+		tempMoves.push_back(_R2);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 10;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkEdgeColor(23, color)) { //3.8
+		tempMoves.clear();
+		tempMoves.push_back(_L2);
+		tempMoves.push_back(_F);
+		tempMoves.push_back(_L2);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 23;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkEdgeColor(2, color)) { //4
+		tempMoves.clear();
+		tempMoves.push_back(_D);
+		tempMoves.push_back(_R);
+		tempMoves.push_back(_Fi);
+		tempMoves.push_back(_Ri);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 2;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkEdgeColor(17, color)) { //4
+		tempMoves.clear();
+		tempMoves.push_back(_D);
+		tempMoves.push_back(_Li);
+		tempMoves.push_back(_F);
+		tempMoves.push_back(_L);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 17;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkEdgeColor(0, color) && !this->edges[7]->getLockedPosition()) //4.5
+	{
+		tempMoves.clear();
+		tempMoves.push_back(_F2);
+		tempMoves.push_back(_D);
+		tempMoves.push_back(_R);
+		tempMoves.push_back(_Fi);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 0;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkEdgeColor(16, color) && !this->edges[16]->getLockedPosition()) { //4.5
+		tempMoves.clear();
+		tempMoves.push_back(_B2);
+		tempMoves.push_back(_Di);
+		tempMoves.push_back(_R);
+		tempMoves.push_back(_Fi);
+		tempMoves.push_back(_Ri);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 16;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkEdgeColor(0, color)) { //5.5
+		tempMoves.clear();
+		tempMoves.push_back(_F2);
+		tempMoves.push_back(_D);
+		tempMoves.push_back(_R);
+		tempMoves.push_back(_Fi);
+		tempMoves.push_back(_Ri);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 0;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkEdgeColor(16, color)) { //5.5
+		tempMoves.clear();
+		tempMoves.push_back(_B2);
+		tempMoves.push_back(_Di);
+		tempMoves.push_back(_R);
+		tempMoves.push_back(_Fi);
+		tempMoves.push_back(_Ri);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 16;
+			resultMoves = tempMoves;
+		}
+	}
+
+	// 6
+
+	if (checkEdgeColor(4, color)) { //7
+		tempMoves.clear();
+		tempMoves.push_back(_Ri);
+		tempMoves.push_back(_L);
+		tempMoves.push_back(_Bi);
+		tempMoves.push_back(_R);
+		tempMoves.push_back(_Li);
+		tempMoves.push_back(_R);
+		tempMoves.push_back(_Fi);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 4;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkEdgeColor(6, color)) { //9
+		tempMoves.clear();
+		tempMoves.push_back(_F);
+		tempMoves.push_back(_Bi);
+		tempMoves.push_back(_L);
+		tempMoves.push_back(_Fi);
+		tempMoves.push_back(_B);
+		tempMoves.push_back(_D);
+		tempMoves.push_back(_R);
+		tempMoves.push_back(_Fi);
+		tempMoves.push_back(_Ri);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 6;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkEdgeColor(7, color)) { //9
+		tempMoves.clear();
+		tempMoves.push_back(_Fi);
+		tempMoves.push_back(_B);
+		tempMoves.push_back(_Ri);
+		tempMoves.push_back(_F);
+		tempMoves.push_back(_Bi);
+		tempMoves.push_back(_D);
+		tempMoves.push_back(_R);
+		tempMoves.push_back(_Fi);
+		tempMoves.push_back(_Ri);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 7;
+			resultMoves = tempMoves;
+		}
+	}
+
+	//Apply result moves
+	for (int i = 0; i < resultMoves.size(); i++) {
+		applyMove(resultMoves[i]);
+	}
+
+	return result;
+}
+
+void Rubik::applyMove(std::string m) {
+	if (m == _R) {
+		R();
+	}
+	else if (m == _Ri) {
+		Ri();
+	}
+	else if (m == _R2) {
+		R2();
+	}
+	else if (m == _L) {
+		L();
+	}
+	else if (m == _Li) {
+		Li();
+	}
+	else if (m == _L2) {
+		L2();
+	}
+	else if (m == _D) {
+		D();
+	}
+	else if (m == _Di) {
+		Di();
+	}
+	else if (m == _D2) {
+		D2();
+	}
+	else if (m == _F) {
+		F();
+	}
+	else if (m == _Fi) {
+		Fi();
+	}
+	else if (m == _F2) {
+		F2();
+	}
+	else if (m == _U) {
+		U();
+	}
+	else if (m == _Ui) {
+		Ui();
+	}
+	else if (m == _U2) {
+		U2();
+	}
+	else if (m == _B) {
+		B();
+	}
+	else if (m == _Bi) {
+		Bi();
+	}
+	else if (m == _B2) {
+		B2();
 	}
 }
 
@@ -1325,9 +1862,9 @@ int Rubik::searchEdgeColorIndex(RubikColor color, int solvedEdges) {
 bool Rubik::checkEdgeColor(int index, RubikColor color) { //locked
 	if (this->edges[index]->getLockedPosition() == FALSE && this->edges[index]->getColor() == color)
 	{
-		return TRUE;
+		return true;
 	}
-	return FALSE;
+	return false;
 }
 
 void Rubik::setLockedCorner(int index, bool value) {
@@ -1361,6 +1898,392 @@ void Rubik::resolveCorners(RubikColor colors[]) {
 	}
 
 }
+
+
+void Rubik::resolveCorners(RubikColor colors[], Robot& robot) {
+	int solvedCorners = 0;
+
+	for (int i = 0; i < 4; i++) {
+		RubikColor color = colors[i]; //16 9 7 6
+		int index = this->searchCornerColorIndexes(color, solvedCorners, robot);
+		if (Rubik::debug) std::cout << "Corner : Number " << this->corners[index]->getNumber() << " at position " << index << std::endl;
+
+		this->setLockedCorner(16, TRUE);
+
+		solvedCorners++;
+		this->U();
+
+		if (Rubik::debug) {
+			std::cout << std::endl;
+			for (unsigned int i = 0; i < this->moves.size(); i++) {
+				std::cout << moves[i] << " ";
+			}
+			this->printCube();
+			std::cout << "--------------------------------------------------------" << std::endl;
+		}
+	}
+}
+
+int Rubik::searchCornerColorIndexes(RubikColor color, int solvedCorners, Robot& robot) {
+	int result = -1;
+	int minCost = -1;
+	std::vector<std::string> tempMoves;
+	std::vector<std::string> resultMoves;
+
+	if (checkCornerColor(16, color)) { //0
+		result = 16;
+		minCost = 0;
+	}
+
+	if (checkCornerColor(11, color)) { //3
+		tempMoves.clear();
+		tempMoves.push_back(_L);
+		tempMoves.push_back(_Di);
+		tempMoves.push_back(_Li);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 11;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkCornerColor(12, color)) { //3
+		tempMoves.clear();
+		tempMoves.push_back(_Fi);
+		tempMoves.push_back(_D);
+		tempMoves.push_back(_F);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 12;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkCornerColor(2, color)) { //4
+		tempMoves.clear();
+		tempMoves.push_back(_D);
+		tempMoves.push_back(_L);
+		tempMoves.push_back(_Di);
+		tempMoves.push_back(_Li);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 2;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkCornerColor(13, color)) { //4
+		tempMoves.clear();
+		tempMoves.push_back(_D);
+		tempMoves.push_back(_Fi);
+		tempMoves.push_back(_D);
+		tempMoves.push_back(_F);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 13;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkCornerColor(18, color)) { //4
+		tempMoves.clear();
+		tempMoves.push_back(_Di);
+		tempMoves.push_back(_Fi);
+		tempMoves.push_back(_D);
+		tempMoves.push_back(_F);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 18;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkCornerColor(21, color)) { //4
+		tempMoves.clear();
+		tempMoves.push_back(_Di);
+		tempMoves.push_back(_L);
+		tempMoves.push_back(_Di);
+		tempMoves.push_back(_Li);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 21;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkCornerColor(20, color)) { //4.5
+		tempMoves.clear();
+		tempMoves.push_back(_D2);
+		tempMoves.push_back(_L);
+		tempMoves.push_back(_Di);
+		tempMoves.push_back(_Li);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 20;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkCornerColor(3, color))  { //4.5
+		tempMoves.clear();
+		tempMoves.push_back(_D2);
+		tempMoves.push_back(_Fi);
+		tempMoves.push_back(_D);
+		tempMoves.push_back(_F);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 3;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkCornerColor(17, color)) { //5
+		tempMoves.clear();
+		tempMoves.push_back(_Ri);
+		tempMoves.push_back(_L);
+		tempMoves.push_back(_Di);
+		tempMoves.push_back(_Li);
+		tempMoves.push_back(_R);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 17;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkCornerColor(22, color)) { //5
+		tempMoves.clear();
+		tempMoves.push_back(_B);
+		tempMoves.push_back(_Fi);
+		tempMoves.push_back(_D);
+		tempMoves.push_back(_Bi);
+		tempMoves.push_back(_F);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 22;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkCornerColor(1, color)) { //5.8
+		tempMoves.clear();
+
+		tempMoves.push_back(_F);
+		tempMoves.push_back(_D2);
+		tempMoves.push_back(_F2);
+		tempMoves.push_back(_D);
+		tempMoves.push_back(_F);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 1;
+			resultMoves = tempMoves;
+		}
+	}
+
+
+	if (checkCornerColor(14, color)) { //5.8
+		tempMoves.clear();
+
+		tempMoves.push_back(_Li);
+		tempMoves.push_back(_D2);
+		tempMoves.push_back(_L2);
+		tempMoves.push_back(_Di);
+		tempMoves.push_back(_Li);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 14;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkCornerColor(7, color)) { //6
+		tempMoves.clear();
+
+		tempMoves.push_back(_Bi);
+		tempMoves.push_back(_D);
+		tempMoves.push_back(_Fi);
+		tempMoves.push_back(_D);
+		tempMoves.push_back(_F);
+		tempMoves.push_back(_B);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 7;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkCornerColor(15, color)) { //6
+		tempMoves.clear();
+
+		tempMoves.push_back(_Bi);
+		tempMoves.push_back(_Di);
+		tempMoves.push_back(_B);
+		tempMoves.push_back(_L);
+		tempMoves.push_back(_Di);
+		tempMoves.push_back(_Li);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 15;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkCornerColor(23, color)) { //6
+		tempMoves.clear();
+
+		tempMoves.push_back(_R);
+		tempMoves.push_back(_D);
+		tempMoves.push_back(_Fi);
+		tempMoves.push_back(_D);
+		tempMoves.push_back(_F);
+		tempMoves.push_back(_Ri);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 23;
+			resultMoves = tempMoves;
+		}
+
+	}
+
+	if (checkCornerColor(6, color)) { //6.5
+		tempMoves.clear();
+
+		tempMoves.push_back(_B);
+		tempMoves.push_back(_D2);
+		tempMoves.push_back(_Bi);
+		tempMoves.push_back(_L);
+		tempMoves.push_back(_Di);
+		tempMoves.push_back(_Li);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 6;
+			resultMoves = tempMoves;
+		}
+
+	}
+
+	if (checkCornerColor(0, color)) { //7.5
+		tempMoves.clear();
+
+		tempMoves.push_back(_Fi);
+		tempMoves.push_back(_Di);
+		tempMoves.push_back(_F);
+		tempMoves.push_back(_D2);
+		tempMoves.push_back(_L);
+		tempMoves.push_back(_Di);
+		tempMoves.push_back(_Li);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 0;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkCornerColor(8, color)) { //7.5
+		tempMoves.clear();
+
+		tempMoves.push_back(_L);
+		tempMoves.push_back(_D);
+		tempMoves.push_back(_Li);
+		tempMoves.push_back(_D2);
+		tempMoves.push_back(_Fi);
+		tempMoves.push_back(_D);
+		tempMoves.push_back(_F);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 8;
+			resultMoves = tempMoves;
+		}
+
+	}
+
+	if (checkCornerColor(9, color)) { //7.5
+		tempMoves.clear();
+
+		tempMoves.push_back(_Ri);
+		tempMoves.push_back(_Di);
+		tempMoves.push_back(_R);
+		tempMoves.push_back(_Di);
+		tempMoves.push_back(_Fi);
+		tempMoves.push_back(_D);
+		tempMoves.push_back(_F);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 9;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkCornerColor(4, color)) { //10.5 //mm combinaison pour 5, 10, 19
+		tempMoves.clear();
+
+		tempMoves.push_back(_Fi);
+		tempMoves.push_back(_D);
+		tempMoves.push_back(_F);
+		tempMoves.push_back(_L);
+		tempMoves.push_back(_D);
+		tempMoves.push_back(_Li);
+		tempMoves.push_back(_D2);
+		tempMoves.push_back(_Fi);
+		tempMoves.push_back(_D);
+		tempMoves.push_back(_F);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 4;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkCornerColor(5, color)) { //11.5
+		tempMoves.clear();
+
+		tempMoves.push_back(_D);
+		tempMoves.push_back(_Fi);
+		tempMoves.push_back(_D);
+		tempMoves.push_back(_F);
+		tempMoves.push_back(_L);
+		tempMoves.push_back(_D);
+		tempMoves.push_back(_Li);
+		tempMoves.push_back(_D2);
+		tempMoves.push_back(_Fi);
+		tempMoves.push_back(_D);
+		tempMoves.push_back(_F);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 5;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkCornerColor(10, color)) { //11.5
+		tempMoves.clear();
+
+		tempMoves.push_back(_Di);
+		tempMoves.push_back(_Fi);
+		tempMoves.push_back(_D);
+		tempMoves.push_back(_F);
+		tempMoves.push_back(_L);
+		tempMoves.push_back(_D);
+		tempMoves.push_back(_Li);
+		tempMoves.push_back(_D2);
+		tempMoves.push_back(_Fi);
+		tempMoves.push_back(_D);
+		tempMoves.push_back(_F);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 10;
+			resultMoves = tempMoves;
+		}
+	}
+
+	if (checkCornerColor(19, color)) { //11.8
+		tempMoves.clear();
+
+		tempMoves.push_back(_D2);
+		tempMoves.push_back(_Fi);
+		tempMoves.push_back(_D);
+		tempMoves.push_back(_F);
+		tempMoves.push_back(_L);
+		tempMoves.push_back(_D);
+		tempMoves.push_back(_Li);
+		tempMoves.push_back(_D2);
+		tempMoves.push_back(_Fi);
+		tempMoves.push_back(_D);
+		tempMoves.push_back(_F);
+		if (getMinCost(tempMoves, minCost, robot)) {
+			result = 19;
+			resultMoves = tempMoves;
+		}
+	}
+
+
+	//Apply result moves
+	for (int i = 0; i < resultMoves.size(); i++) {
+		applyMove(resultMoves[i]);
+	}
+
+	return result;
+
+}
+
 int Rubik::searchCornerColorIndex(RubikColor color, int solvedCorners) {
 
 	if (checkCornerColor(16, color)) { //0
@@ -1498,13 +2421,15 @@ int Rubik::searchCornerColorIndex(RubikColor color, int solvedCorners) {
 		return 19;
 	}
 
+	return -1;
+
 }
 bool Rubik::checkCornerColor(int index, RubikColor color) { //locked
 	if (this->corners[index]->getLockedPosition() == FALSE && this->corners[index]->getColor() == color)
 	{
-		return TRUE;
+		return true;
 	}
-	return FALSE;
+	return false;
 }
 
 

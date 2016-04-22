@@ -14,25 +14,7 @@
 #include <vector>
 #include <string>
 #include <map>
-
-#define _R "R"
-#define _Ri "Ri"
-#define _R2 "R2"
-#define _L "L"
-#define _Li "Li"
-#define _L2 "L2"
-#define _U "U"
-#define _Ui "Ui"
-#define _U2 "U2"
-#define _B "B"
-#define _Bi "Bi"
-#define _B2 "B2"
-#define _F "F"
-#define _Fi "Fi"
-#define _F2 "F2"
-#define _D "D"
-#define _Di "Di"
-#define _D2 "D2"
+#include <list>
 
 struct Offset {
 	int x;
@@ -66,10 +48,16 @@ class Rubik {
 		void D(bool = TRUE);
 		void Di(bool = TRUE);
 		void D2(bool = TRUE);
+
 		void resolve(RubikColor colors[]);
+		void resolve(RubikColor colors[], Robot& robot);
 		void resolveMiddle(RubikColor color);
+		void resolveMiddle(RubikColor color, Robot& robot);
 		void resolveEdges(RubikColor colors[]);
+		void resolveEdges(RubikColor colors[], Robot& robot);
 		void resolveCorners(RubikColor colors[]);
+		void resolveCorners(RubikColor colors[], Robot& robot);
+
 		void error(std::string);
 		void changeReferentialWhiteToGreen();
 		void changeReferentialWhiteToRed();
@@ -78,6 +66,8 @@ class Rubik {
 		void changeReferentialWhiteToYellow();
 
 		void optimise();
+
+		void applyMove(std::string);
 
 		//std::vector<std::string> translateToRobotMoves();
 		
@@ -99,7 +89,7 @@ class Rubik {
 		void addCornerColor(int, RubikColor);
 		void addEdgeColor(int, RubikColor);
 		void addMiddleColor(int, RubikColor);
-		
+		bool getMinCost(std::vector<std::string>& resultMoves, int& minCost, Robot& robot);
 		void computeFaceLabels();
 		void computeAllEdgeFaceLabels();
 		void computeEdgeFaceLabels(int);
@@ -118,9 +108,12 @@ class Rubik {
 		void swap(Face * array[], int i1, int i2);
 		void changeReferential(RubikColor color);
 		void changeReferential(MiddleFace * m);
+		int searchEdgeColorIndexes(RubikColor color, int solvedEdges, Robot& robot);
 		int searchEdgeColorIndex(RubikColor color, int solvedEdges);
 		bool checkEdgeColor(int, RubikColor);
 		void setLockedEdge(int index, bool value);
+
+		int searchCornerColorIndexes(RubikColor color, int solvedEdges, Robot& robot);
 		int searchCornerColorIndex(RubikColor color, int solvedEdges);
 		bool checkCornerColor(int, RubikColor);
 		void setLockedCorner(int index, bool value);

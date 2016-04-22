@@ -18,6 +18,12 @@
 #define robot_D3 "l" //Descendre de 3
 #define robot_Bi "h" //Basculer le balancier
 #define robot_B "i" //Remettre le balancier à l'état initial
+#define robotH1_to_3 "z"
+#define robotH3_to_1 "y"
+#define robotH3_to_2 "u"
+#define robotH2_to_3 "v"
+#define robotH2_to_1 "w"
+#define robotH1_to_2 "x"
 
 class RobotState {
 public:

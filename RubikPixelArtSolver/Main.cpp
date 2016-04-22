@@ -1,7 +1,5 @@
 
-#include "Rubik.h"
 #include "TestCampaign.h"
-#include "Robot.h"
 
 void openCVMain()
 {
@@ -46,7 +44,7 @@ void runCampaignMain() {
 }
 
 void testRobotMovesMain() {
-	Robot robot;
+	Robot robot("COM3",0);
 
 	int colorOrder[] = { 2, 3, 4, 1, 5, 0 };
 
@@ -60,10 +58,10 @@ void testRobotMovesMain() {
 	}
 
 	Rubik r(rubikColors);
+	//r.R();
 	r.R();
-	r.U();
 	//r.resolve(colors);
-	robot.sendRobotMoves(r.getMoves());
+	robot.sendRubikMoves(r.getMoves());
 	std::vector<std::string> moves = robot.getRobotMoves();
 	for (int i = 0; i < moves.size(); i++) {
 		std::cout << moves[i] << " ";
@@ -97,9 +95,9 @@ void testOneCubeSolveMain() {
 int main(int argc, char* argv[]) {
 	
 	//openCVMain();
-	//runCampaignMain();
+	runCampaignMain();
 	//testOneCubeSolveMain();
-	testRobotMovesMain();
+	//testRobotMovesMain();
 	getchar();
 	return 0;
 }

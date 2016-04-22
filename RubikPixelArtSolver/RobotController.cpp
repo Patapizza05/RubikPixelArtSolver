@@ -1,19 +1,26 @@
 #include "RobotController.h"
 
-RobotController::RobotController(){ }
+bool RobotController::debug = false;
+
+RobotController::RobotController() {
+	this->port = "COM3";
+	this->initPort();
+}
 
 RobotController::RobotController(std::string port){
 	this->port = port;
+	this->initPort();
 }
 
 bool RobotController::send(unsigned char msg){
 	this->sendSByte(msg);
-	if (this->read() == msg){
+	/*if (this->read() == msg){
 		return true;
 	}
 	else {
 		return false;
-	}
+	}*/
+	return true;
 }
 
 unsigned char RobotController::read(){
@@ -22,11 +29,11 @@ unsigned char RobotController::read(){
 
 bool RobotController::initPort(){
 	if (openPort() && setupPort()) {
-		std::cout << "Port open and configure" << std::endl;
+		if (RobotController::debug) std::cout << "Port open and configure" << std::endl;
 		return true;
 	}
 	else {
-		std::cout << "Error when opening and setting port" << std::endl;
+		if (RobotController::debug) std::cout << "Error when opening and setting port" << std::endl;
 		return false;
 	}
 }
@@ -42,11 +49,11 @@ std::string RobotController::getPort(){
 bool RobotController::sendSByte(unsigned char msg){
 	DWORD dwWritten;
 	if (WriteFile(hComm, &msg, sizeof(msg), &dwWritten, 0)) {
-		std::cout << "wrote byte " << msg << " to serial port" << std::endl;
+		if (RobotController::debug) std::cout << "wrote byte " << msg << " to serial port" << std::endl;
 		return true;
 	}
 	else {
-		std::cout << "serial port write failed" << std::endl;
+		if (RobotController::debug) std::cout << "serial port write failed" << std::endl;
 		return false;
 	}
 }
@@ -60,12 +67,12 @@ unsigned char RobotController::readSByte(){
 		sizeof(lpBuf),			// number of bytes to read
 		&dwRead,					// address of number of bytes read
 		0);						// address of structure for data
-	std::cout << "Read byte " << lpBuf << " from serial port" << std::endl;
+	if (RobotController::debug) std::cout << "Read byte " << lpBuf << " from serial port" << std::endl;
 	return lpBuf;
 }
 
 bool RobotController::openPort(){
-	std::cout << "-- Opening Port " << this->port << " --" << std::endl;
+	if (RobotController::debug) std::cout << "-- Opening Port " << this->port << " --" << std::endl;
 
 	hComm = CreateFile(this->port.c_str(),					// pointer to name of the file 
 		GENERIC_READ | GENERIC_WRITE,	// access (read-write) mode 
@@ -77,22 +84,22 @@ bool RobotController::openPort(){
 
 
 	if (hComm == INVALID_HANDLE_VALUE) {
-		std::cout << "Failed to open serial port " << this->port << std::endl;
+		if (RobotController::debug) std::cout << "Failed to open serial port " << this->port << std::endl;
 		return false;
 	}
 	else {
-		std::cout << "Serial port " << this->port << " opened" << std::endl;
+		if (RobotController::debug) std::cout << "Serial port " << this->port << " opened" << std::endl;
 		return true;
 	}
 }
 
 bool RobotController::closePort(){
 	if (CloseHandle(hComm)) {
-		std::cout << "Port closed" << std::endl;
+		if (RobotController::debug) std::cout << "Port closed" << std::endl;
 		return true;
 	}
 	else {
-		std::cout << "Port closed failed" << std::endl;
+		if (RobotController::debug) std::cout << "Port closed failed" << std::endl;
 		return false;
 	}
 }
@@ -100,10 +107,10 @@ bool RobotController::closePort(){
 bool RobotController::setupPort(){
 	DCB dcb;
 
-	std::cout << "-- Getting DCB --" << std::endl;
+	if (RobotController::debug) std::cout << "-- Getting DCB --" << std::endl;
 
 	if (!GetCommState(hComm, &dcb)) {
-		std::cout << "GetDCB failed" << std::endl;
+		if (RobotController::debug) std::cout << "GetDCB failed" << std::endl;
 		return false;
 	}
 
@@ -117,13 +124,13 @@ bool RobotController::setupPort(){
 	dcb.fDtrControl = DTR_CONTROL_DISABLE;
 	dcb.fRtsControl = RTS_CONTROL_DISABLE;
 
-	std::cout << "DCB ready for use" << std::endl;
+	if (RobotController::debug) std::cout << "DCB ready for use" << std::endl;
 	if (!SetCommState(hComm, &dcb)) {
-		std::cout << "Failed to set port state (" << GetLastError() << ")" << std::endl;
+		if (RobotController::debug) std::cout << "Failed to set port state (" << GetLastError() << ")" << std::endl;
 		return false;
 	}
 	else {
-		std::cout << "Port setup complete" << std::endl;
+		if (RobotController::debug) std::cout << "Port setup complete" << std::endl;
 		return true;
 	}
 }
