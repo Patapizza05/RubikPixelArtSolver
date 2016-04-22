@@ -18,6 +18,8 @@
 #include "HumanSolver.h"
 #include "RobotSolver.h"
 
+typedef void(Rubik::*pfunc)(bool);
+
 struct Offset {
 	int x;
 	int y;
@@ -59,7 +61,8 @@ class Rubik {
 		void error(std::string);
 
 		void optimise();
-
+		
+		void applyMoves(std::vector<std::string>&);
 		void applyMove(std::string);
 		
 		std::vector<std::string> getMoves() { return moves; }
@@ -81,6 +84,8 @@ class Rubik {
 	private:
 		static int lines[9][12];
 		std::map<std::string, std::string> movesDictionary;
+		std::map<std::string, pfunc> movesFunctions;
+
 		void initMovesDictionary();
 		struct Offset getOffset(int);
 		void addMove(std::string);

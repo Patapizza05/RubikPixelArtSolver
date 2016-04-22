@@ -58,8 +58,7 @@ void testRobotMovesMain() {
 	}
 
 	Rubik r(rubikColors);
-	//r.R();
-	r.R();
+	r.R(); //r.applyMove("R");
 	//r.resolve(colors);
 	robot.sendRubikMoves(r.getMoves());
 	std::vector<std::string> moves = robot.getRobotMoves();
@@ -83,9 +82,9 @@ void testOneCubeSolveMain() {
 	}
 
 	RubikColor colors[9] = {
-		RubikColor::RED, RubikColor::RED, RubikColor::RED,
-		RubikColor::RED, RubikColor::RED, RubikColor::RED,
-		RubikColor::RED, RubikColor::RED, RubikColor::RED
+		RubikColor::WHITE, RubikColor::WHITE, RubikColor::WHITE,
+		RubikColor::WHITE, RubikColor::RED, RubikColor::RED,
+		RubikColor::WHITE, RubikColor::WHITE, RubikColor::WHITE
 	};
 
 	TestCampaign testCampaign(rubikColors);

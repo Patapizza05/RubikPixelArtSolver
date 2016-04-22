@@ -27,28 +27,46 @@ Rubik::Rubik(int pieces[])
 
 void Rubik::initMovesDictionary() {
 	movesDictionary[_R] = _R;
+	movesFunctions[_R] = &Rubik::R;
 	movesDictionary[_Ri] = _Ri;
+	movesFunctions[_Ri] = &Rubik::Ri;
 	movesDictionary[_R2] = _R2;
+	movesFunctions[_R2] = &Rubik::R2;
 
 	movesDictionary[_L] = _L;
+	movesFunctions[_L] = &Rubik::L;
 	movesDictionary[_Li] = _Li;
+	movesFunctions[_Li] = &Rubik::Li;
 	movesDictionary[_L2] = _L2;
+	movesFunctions[_L2] = &Rubik::L2;
 
 	movesDictionary[_U] = _U;
+	movesFunctions[_U] = &Rubik::U;
 	movesDictionary[_Ui] = _Ui;
+	movesFunctions[_Ui] = &Rubik::Ui;
 	movesDictionary[_U2] = _U2;
+	movesFunctions[_U2] = &Rubik::U2;
 
 	movesDictionary[_B] = _B;
+	movesFunctions[_B] = &Rubik::B;
 	movesDictionary[_Bi] = _Bi;
+	movesFunctions[_Bi] = &Rubik::Bi;
 	movesDictionary[_B2] = _B2;
+	movesFunctions[_B2] = &Rubik::B2;
 
 	movesDictionary[_F] = _F;
+	movesFunctions[_F] = &Rubik::F;
 	movesDictionary[_Fi] = _Fi;
+	movesFunctions[_Fi] = &Rubik::Fi;
 	movesDictionary[_F2] = _F2;
+	movesFunctions[_F2] = &Rubik::F2;
 
 	movesDictionary[_D] = _D;
+	movesFunctions[_D] = &Rubik::D;
 	movesDictionary[_Di] = _Di;
+	movesFunctions[_Di] = &Rubik::Di;
 	movesDictionary[_D2] = _D2;
+	movesFunctions[_D2] = &Rubik::D2;
 }
 
 struct Offset Rubik::getOffset(int face) {
@@ -1001,64 +1019,17 @@ void Rubik::setLockedEdge(int index, bool value) {
 	this->edges[edgeIndex + 12]->setLockedPosition(value);
 }
 
-void Rubik::applyMove(std::string m) {
-	if (m == _R) {
-		R();
-	}
-	else if (m == _Ri) {
-		Ri();
-	}
-	else if (m == _R2) {
-		R2();
-	}
-	else if (m == _L) {
-		L();
-	}
-	else if (m == _Li) {
-		Li();
-	}
-	else if (m == _L2) {
-		L2();
-	}
-	else if (m == _D) {
-		D();
-	}
-	else if (m == _Di) {
-		Di();
-	}
-	else if (m == _D2) {
-		D2();
-	}
-	else if (m == _F) {
-		F();
-	}
-	else if (m == _Fi) {
-		Fi();
-	}
-	else if (m == _F2) {
-		F2();
-	}
-	else if (m == _U) {
-		U();
-	}
-	else if (m == _Ui) {
-		Ui();
-	}
-	else if (m == _U2) {
-		U2();
-	}
-	else if (m == _B) {
-		B();
-	}
-	else if (m == _Bi) {
-		Bi();
-	}
-	else if (m == _B2) {
-		B2();
+void Rubik::applyMoves(std::vector<std::string>& m) {
+	int size = m.size();
+	for (int i = 0; i < size; i++) {
+		applyMove(m[i]);
 	}
 }
 
-
+void Rubik::applyMove(std::string m) {
+	pfunc f = movesFunctions[m];
+	(this->*f)(true);
+}
 
 void Rubik::setLockedCorner(int index, bool value) {
 	int cornerIndex = index % 8;

@@ -108,15 +108,12 @@ void TestCampaign::resolveOneCube(RubikColor colors[]) {
 	Robot robot;
 
 	Rubik rubik = makeRubik();
-	rubik.resolve(colors, &robot);
+	rubik.resolve(colors/*, &robot*/);
 
 	Rubik rubik2 = makeRubik();
 
 	std::vector<std::string> moves = rubik.getMoves();
-	for (int i = 0; i < moves.size(); i++) {
-		std::string m = moves[i];
-		rubik2.applyMove(m);
-	}
+	rubik2.applyMoves(moves);
 
 	rubik2.changeReferential(colors[4]);
 
@@ -180,7 +177,7 @@ void TestCampaign::solveOneCube(RubikColor colors[]) {
 			7 8 9
 	*/
 
-	rubik.resolve(colors, &robot);
+	rubik.resolve(colors/*, &robot*/);
 
 
 	std::cout << "Expected colors :" << std::endl;

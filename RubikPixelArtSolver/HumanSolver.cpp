@@ -135,7 +135,7 @@ int HumanSolver::searchEdgeColorIndex(Rubik * pRubik, RubikColor color, int solv
 	}
 
 	if (checkEdgeColor(pRubik, 22, color)) { //3
-		pRubik->Ri(); pRubik->U();
+		pRubik->Ui();  pRubik->Ri(); pRubik->U();
 		return 22;
 	}
 
