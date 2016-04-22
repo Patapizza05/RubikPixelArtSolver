@@ -108,7 +108,7 @@ void TestCampaign::resolveOneCube(RubikColor colors[]) {
 	Robot robot;
 
 	Rubik rubik = makeRubik();
-	rubik.resolve(colors/*, &robot*/);
+	rubik.resolve(colors, &robot);
 
 	Rubik rubik2 = makeRubik();
 
@@ -177,7 +177,7 @@ void TestCampaign::solveOneCube(RubikColor colors[]) {
 			7 8 9
 	*/
 
-	rubik.resolve(colors/*, &robot*/);
+	rubik.resolve(colors, &robot);
 
 
 	std::cout << "Expected colors :" << std::endl;
