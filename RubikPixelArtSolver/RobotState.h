@@ -2,28 +2,30 @@
 
 #define ROBOTSTATE_H
 
+#include "Face.h"
 #include <vector>
 #include <string>
 #include <map>
 
 
+
 #define robot_U0 "c" //Tourner jusqu'à la position 180°
 #define robot_U1 "b" //Tourner jusqu'à la position 90°
 #define robot_U2 "a" //Tourner jusqu'à la position 0°
-#define robot_H1 "d" //Monter de 1
-#define robot_H2 "e" //Monter de 2
-#define robot_H3 "f" //Monter de 3
-#define robot_D1 "j" //Descendre de 1
-#define robot_D2 "k" //Descendre de 2
-#define robot_D3 "l" //Descendre de 3
+#define robot_H0_to_1 "d" //Monter de 1
+#define robot_H0_to_2 "e" //Monter de 2
+#define robot_H0_to_3 "f" //Monter de 3
+#define robot_D1_to_0 "j" //Descendre de 1
+#define robot_D2_to_0 "k" //Descendre de 2
+#define robot_D3_to_0 "l" //Descendre de 3
 #define robot_Bi "h" //Basculer le balancier
 #define robot_B "i" //Remettre le balancier à l'état initial
-#define robotH1_to_3 "z"
-#define robotH3_to_1 "y"
-#define robotH3_to_2 "u"
-#define robotH2_to_3 "v"
-#define robotH2_to_1 "w"
-#define robotH1_to_2 "x"
+#define robot_H1_to_3 "z"
+#define robot_D3_to_1 "y"
+#define robot_D3_to_2 "u"
+#define robot_H2_to_3 "v"
+#define robot_D2_to_1 "w"
+#define robot_H1_to_2 "x"
 
 class RobotState {
 public:

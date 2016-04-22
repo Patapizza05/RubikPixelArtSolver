@@ -10,7 +10,7 @@
 #include <vector>
 
 #define NB_CAPTURE 6
-#define ROBOT_DEBUG 0
+#define ROBOT_DEBUG 1
 
 class Robot {
 public:
@@ -44,6 +44,21 @@ private:
 	bool U2();
 	bool U();
 	bool Ui();
+
+	bool H0_to_1();
+	bool H0_to_2();
+	bool H0_to_3();
+	bool H1_to_2();
+	bool H1_to_3();
+	bool H2_to_3();
+
+	bool D3_to_0();
+	bool D2_to_0();
+	bool D1_to_0();
+	bool D2_to_1();
+	bool D3_to_2();
+	bool D3_to_1();
+
 	bool H1();
 	bool H2();
 	bool H3();
@@ -57,6 +72,8 @@ private:
 	void goDown(int);
 	void goUp(int);
 	void rotate(int);
+
+	bool sendMessageAndRead(std::string);
 
 	int camera_id;
 	int square_count;

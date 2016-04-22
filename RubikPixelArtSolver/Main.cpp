@@ -95,10 +95,10 @@ void testOneCubeSolveMain() {
 int main(int argc, char* argv[]) {
 	
 	//openCVMain();
-	//runCampaignMain();
+	runCampaignMain();
 
-	Rubik::debug = true;
-	testOneCubeSolveMain();
+	//Rubik::debug = true;
+	//testOneCubeSolveMain();
 	//testRobotMovesMain();
 	getchar();
 	return 0;

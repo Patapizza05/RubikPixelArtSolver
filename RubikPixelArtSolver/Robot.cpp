@@ -98,43 +98,39 @@ int Robot::getRubikMovesCost(std::vector<std::string> rubikMoves, std::string pr
 
 }
 
-bool Robot::U0() {
-	this->controller.send(robot_U0[0]);
+bool Robot::sendMessageAndRead(std::string m) {
+	this->controller.send(m[0]);
 
-	if (this->controller.read() == robot_U0[0] || ROBOT_DEBUG){
-		rmoves.push_back(robot_U0);
+	if (this->controller.read() == m[0] || ROBOT_DEBUG) {
+		rmoves.push_back(m);
+		return true;
+	}
+
+	return false;
+}
+
+bool Robot::U0() {
+	if (sendMessageAndRead(robot_U0)) {
 		state.rotator = 0;
 		return true;
 	}
-	else {
-		return false;
-	}
+	return false;
 }
 
 bool Robot::U1() {
-	this->controller.send(robot_U1[0]);
-
-	if (this->controller.read() == robot_U1[0] || ROBOT_DEBUG){
-		rmoves.push_back(robot_U1);
+	if (sendMessageAndRead(robot_U1)) {
 		state.rotator = 1;
 		return true;
 	}
-	else {
-		return false;
-	}
+	return false;
 }
 
 bool Robot::U2() {
-	this->controller.send(robot_U2[0]);
-
-	if (this->controller.read() == robot_U2[0] || ROBOT_DEBUG){
-		rmoves.push_back(robot_U2);
+	if (sendMessageAndRead(robot_U2)) {
 		state.rotator = 2;
 		return true;
 	}
-	else {
-		return false;
-	}
+	return false;
 }
 
 bool Robot::U() {
@@ -155,103 +151,172 @@ bool Robot::Ui() {
 	}
 	return false;
 }
-bool Robot::H1() {
-	this->controller.send(robot_H1[0]);
 
-	if (this->controller.read() == robot_H1[0] || ROBOT_DEBUG) {
-		std::cout << "Received d" << std::endl;
-		state.height += 1;
-		rmoves.push_back(robot_H1);
+bool Robot::H0_to_1() {
+	if (sendMessageAndRead(robot_H0_to_1)) {
+		state.height = 1;
 		return true;
 	}
-	else {
+
+	return false;
+}
+bool Robot::H0_to_2() {
+	if (sendMessageAndRead(robot_H0_to_2)) {
+		state.height = 2;
+		return true;
+	}
+
+	return false;
+}
+bool Robot::H0_to_3() {
+	if (sendMessageAndRead(robot_H0_to_3)) {
+		state.height = 3;
+		return true;
+	}
+
+	return false;
+}
+bool Robot::H1_to_2() {
+	if (sendMessageAndRead(robot_H1_to_2)) {
+		state.height = 2;
+		return true;
+	}
+
+	return false;
+}
+bool Robot::H1_to_3() {
+	if (sendMessageAndRead(robot_H1_to_3)) {
+		state.height = 3;
+		return true;
+	}
+
+	return false;
+}
+bool Robot::H2_to_3() {
+	if (sendMessageAndRead(robot_H2_to_3)) {
+		state.height = 3;
+		return true;
+	}
+	return false;
+}
+
+bool Robot::D3_to_0() {
+	if (sendMessageAndRead(robot_D3_to_0)) {
+		state.height = 0;
+		return true;
+	}
+	return false;
+}
+bool Robot::D2_to_0() {
+	if (sendMessageAndRead(robot_D2_to_0)) {
+		state.height = 0;
+		return true;
+	}
+	return false;
+}
+bool Robot::D1_to_0() {
+	if (sendMessageAndRead(robot_D1_to_0)) {
+		state.height = 0;
+		return true;
+	}
+	return false;
+}
+bool Robot::D2_to_1() {
+	if (sendMessageAndRead(robot_D2_to_1)) {
+		state.height = 1;
+		return true;
+	}
+	return false;
+}
+bool Robot::D3_to_2() {
+	if (sendMessageAndRead(robot_D3_to_2)) {
+		state.height = 2;
+		return true;
+	}
+	return false;
+}
+bool Robot::D3_to_1() {
+	if (sendMessageAndRead(robot_D3_to_1)) {
+		state.height = 1;
+		return true;
+	}
+	return false;
+}
+
+bool Robot::H1() {
+	switch (state.height) {
+	case 0:
+		return H0_to_1();
+	case 1:
+		return H1_to_2();
+	case 2:
+		return H2_to_3();
+	default:
 		return false;
 	}
 }
 bool Robot::H2() {
-	this->controller.send(robot_H2[0]);
-
-	if (this->controller.read() == robot_H2[0] || ROBOT_DEBUG) {
-		state.height += 2;
-		rmoves.push_back(robot_H2);
-		return true;
-	}
-	else {
+	switch (state.height) {
+	case 0:
+		return H0_to_2();
+	case 1:
+		return H1_to_3();
+	default:
 		return false;
 	}
+
 }
 bool Robot::H3() {
-	this->controller.send(robot_H3[0]);
+	if (state.height == 0) {
+		return H0_to_3();
+	}
+	return false;
 
-	if (this->controller.read() == robot_H3[0] || ROBOT_DEBUG) {
-		state.height += 3;
-		rmoves.push_back(robot_H3);
-		return true;
-	}
-	else {
-		return false;
-	}
 }
 bool Robot::D1() {
-	this->controller.send(robot_D1[0]);
-
-	if (this->controller.read() == robot_D1[0] || ROBOT_DEBUG) {
-		state.height -= 1;
-		rmoves.push_back(robot_D1);
-		return true;
-	}
-	else {
+	switch (state.height) {
+	case 3:
+		return D3_to_2();
+	case 2:
+		return D2_to_1();
+	case 1:
+		return D1_to_0();
+	default:
 		return false;
 	}
 }
 bool Robot::D2() {
-	this->controller.send(robot_D2[0]);
-
-	if (this->controller.read() == robot_D2[0] || ROBOT_DEBUG) {
-		state.height -= 2;
-		rmoves.push_back(robot_D2);
-		return true;
-	}
-	else {
+	switch (state.height) {
+	case 3:
+		return D3_to_1();
+	case 2:
+		return D2_to_0();
+	default:
 		return false;
 	}
 }
 bool Robot::D3() {
-	this->controller.send(robot_D3[0]);
-
-	if (this->controller.read() == robot_D3[0] || ROBOT_DEBUG) {
-		state.height -= 3;
-		rmoves.push_back(robot_D3);
-		return true;
+	if (state.height == 3) {
+		return D3_to_0();
 	}
-	else {
-		return false;
-	}
+	return false;
 }
-bool Robot::Bi() {
-	this->controller.send(robot_Bi[0]);
 
-	if (this->controller.read() == robot_Bi[0] || ROBOT_DEBUG) {
+
+bool Robot::Bi() {
+	if (sendMessageAndRead(robot_Bi)) {
 		state.balancier = true;
-		rmoves.push_back(robot_Bi);
 		return true;
 	}
-	else {
-		return false;
-	}
+	return false;
 }
 
 bool Robot::B() {
-	this->controller.send(robot_B[0]);
-
-	if (this->controller.read() == robot_B[0] || ROBOT_DEBUG) {
+	if (sendMessageAndRead(robot_B)) {
 		state.balancier = false;
-		rmoves.push_back(robot_B);
 		return true;
 	}
-	else {
-		return false;
-	}
+	return false;
 }
 
 void Robot::resetHeight() {

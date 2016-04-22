@@ -2441,15 +2441,7 @@ bool Rubik::checkCornerColor(int index, RubikColor color) { //locked
 }
 
 
-void Rubik::changeReferential(RubikColor color) {
-
-}
-
-void Rubik::changeReferential(MiddleFace * m) {
-
-}
-
-void Rubik::changeReferentialWhiteToGreen() {
+/*void Rubik::changeReferentialWhiteToGreen() {
 	F();
 	Bi();
 	this->translate(this->middle, 3,2,4,1);
@@ -2490,7 +2482,7 @@ void Rubik::changeReferentialWhiteToYellow() {
 	this->swap((Face**)this->middle, 1, 2);
 	this->swap((Face**)this->middle, 0, 5);
 	//test
-}
+}*/
 
 void Rubik::optimise() {
 	int size = this->moves.size();

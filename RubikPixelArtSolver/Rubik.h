@@ -59,11 +59,11 @@ class Rubik {
 		void resolveCorners(RubikColor colors[], Robot& robot);
 
 		void error(std::string);
-		void changeReferentialWhiteToGreen();
+		/*void changeReferentialWhiteToGreen();
 		void changeReferentialWhiteToRed();
 		void changeReferentialWhiteToBlue();
 		void changeReferentialWhiteToOrange();
-		void changeReferentialWhiteToYellow();
+		void changeReferentialWhiteToYellow();*/
 
 		void optimise();
 
@@ -106,8 +106,6 @@ class Rubik {
 		void translate(EdgeFace * array[], int i1, int i2, int i3, int i4);
 		void translate(MiddleFace * array[], int i1, int i2, int i3, int i4);
 		void swap(Face * array[], int i1, int i2);
-		void changeReferential(RubikColor color);
-		void changeReferential(MiddleFace * m);
 		int searchEdgeColorIndexes(RubikColor color, int solvedEdges, Robot& robot);
 		int searchEdgeColorIndex(RubikColor color, int solvedEdges);
 		bool checkEdgeColor(int, RubikColor);
