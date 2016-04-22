@@ -15,6 +15,8 @@
 #include <string>
 #include <map>
 #include <list>
+#include "HumanSolver.h"
+#include "RobotSolver.h"
 
 struct Offset {
 	int x;
@@ -30,54 +32,53 @@ class Rubik {
 		static bool Rubik::debug;
 		bool checkRubik(RubikColor colors[]);
 
-		void R(bool = TRUE);
-		void Ri(bool = TRUE);
-		void R2(bool = TRUE);
-		void L(bool = TRUE);
-		void Li(bool = TRUE);
-		void L2(bool = TRUE);
-		void U(bool = TRUE);
-		void Ui(bool = TRUE);
-		void U2(bool = TRUE);
-		void B(bool = TRUE);
-		void Bi(bool = TRUE);
-		void B2(bool = TRUE);
-		void F(bool = TRUE);
-		void Fi(bool = TRUE);
-		void F2(bool = TRUE);
-		void D(bool = TRUE);
-		void Di(bool = TRUE);
-		void D2(bool = TRUE);
+		void R(bool = true);
+		void Ri(bool = true);
+		void R2(bool = true);
+		void L(bool = true);
+		void Li(bool = true);
+		void L2(bool = true);
+		void U(bool = true);
+		void Ui(bool = true);
+		void U2(bool = true);
+		void B(bool = true);
+		void Bi(bool = true);
+		void B2(bool = true);
+		void F(bool = true);
+		void Fi(bool = true);
+		void F2(bool = true);
+		void D(bool = true);
+		void Di(bool = true);
+		void D2(bool = true);
+
+		void changeReferential(RubikColor color);
 
 		void resolve(RubikColor colors[]);
-		void resolve(RubikColor colors[], Robot& robot);
-		void resolveMiddle(RubikColor color);
-		void resolveMiddle(RubikColor color, Robot& robot);
-		void resolveEdges(RubikColor colors[]);
-		void resolveEdges(RubikColor colors[], Robot& robot);
-		void resolveCorners(RubikColor colors[]);
-		void resolveCorners(RubikColor colors[], Robot& robot);
+		void resolve(RubikColor colors[], Robot * pRobot);
 
 		void error(std::string);
-		/*void changeReferentialWhiteToGreen();
-		void changeReferentialWhiteToRed();
-		void changeReferentialWhiteToBlue();
-		void changeReferentialWhiteToOrange();
-		void changeReferentialWhiteToYellow();*/
 
 		void optimise();
 
 		void applyMove(std::string);
-
-		//std::vector<std::string> translateToRobotMoves();
 		
 		std::vector<std::string> getMoves() { return moves; }
+
+		void middle_TurnCubeUp();
+		void middle_TurnCubeRight();
+		void middle_TurnCubeDown();
+		void middle_TurnCubeLeft();
 		
-	private:
 		CornerFace * corners[24];
 		EdgeFace * edges[24];
 		MiddleFace * middle[8];
+
+		void setLockedEdge(int index, bool value);
+		void setLockedCorner(int index, bool value);
+
 		std::vector<std::string> moves;
+
+	private:
 		static int lines[9][12];
 		std::map<std::string, std::string> movesDictionary;
 		void initMovesDictionary();
@@ -89,7 +90,6 @@ class Rubik {
 		void addCornerColor(int, RubikColor);
 		void addEdgeColor(int, RubikColor);
 		void addMiddleColor(int, RubikColor);
-		bool getMinCost(std::vector<std::string>& resultMoves, int& minCost, Robot& robot);
 		void computeFaceLabels();
 		void computeAllEdgeFaceLabels();
 		void computeEdgeFaceLabels(int);
@@ -106,21 +106,7 @@ class Rubik {
 		void translate(EdgeFace * array[], int i1, int i2, int i3, int i4);
 		void translate(MiddleFace * array[], int i1, int i2, int i3, int i4);
 		void swap(Face * array[], int i1, int i2);
-		int searchEdgeColorIndexes(RubikColor color, int solvedEdges, Robot& robot);
-		int searchEdgeColorIndex(RubikColor color, int solvedEdges);
-		bool checkEdgeColor(int, RubikColor);
-		void setLockedEdge(int index, bool value);
 
-		int searchCornerColorIndexes(RubikColor color, int solvedEdges, Robot& robot);
-		int searchCornerColorIndex(RubikColor color, int solvedEdges);
-		bool checkCornerColor(int, RubikColor);
-		void setLockedCorner(int index, bool value);
-		void middle_TurnCubeUp();
-		void middle_TurnCubeRight();
-		void middle_TurnCubeDown();
-		void middle_TurnCubeLeft();
-		int searchMiddleColorIndex(RubikColor color);
-		bool checkMiddleColor(int, RubikColor);
 		int shortenMoves(int);
 };
 

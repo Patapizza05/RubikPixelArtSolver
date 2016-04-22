@@ -32,7 +32,7 @@ void Robot::sendRubikMoves(std::vector<std::string> rubikMoves) {
 	this->endMove();
 }
 
-int Robot::getRubikMovesCost(std::vector<std::string> rubikMoves, std::string previousRubikMove = "") {
+int Robot::getRubikMovesCost(std::vector<std::string> rubikMoves, std::string previousRubikMove) {
 
 	RobotState previousState;
 	if (previousRubikMove == "") {
