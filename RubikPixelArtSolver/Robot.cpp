@@ -1,5 +1,15 @@
 #include "Robot.h"
 
+
+/* Hue values of basic colors
+Orange  0-22
+Yellow 22- 38
+Green 38-75
+Blue 75-130
+Violet 130-160
+Red 160-179
+
+http://opencv-srf.blogspot.fr/2010/09/object-detection-using-color-seperation.html */
 /* White - Green - Red - Blue - Orange - Yellow */
 std::vector<Scalar> minColor{ Scalar(70, 20, 130), Scalar(60, 110, 110), Scalar(120, 120, 140), Scalar(80, 180, 190), Scalar(5, 150, 150), Scalar(20, 100, 100) };
 std::vector<Scalar> maxColor{ Scalar(180, 110, 255), Scalar(100, 220, 250), Scalar(180, 250, 200), Scalar(120, 255, 255), Scalar(15, 235, 250), Scalar(40, 255, 255) };
@@ -410,7 +420,7 @@ String Robot::defineColorText(int color_id){
 	}
 }
 
-void Robot::launchCapture(){
+std::vector<std::vector<SquareRubik>> Robot::launchCapture(){
 
 	VideoCapture cap(this->camera_id);
 
@@ -419,7 +429,7 @@ void Robot::launchCapture(){
 	if (!cap.isOpened())  // if not success, exit program
 	{
 		std::cout << "Cannot open the video file" << std::endl;
-		return;
+		return {};
 	}
 
 	namedWindow(this->getWindowName(), CV_WINDOW_AUTOSIZE);
@@ -501,7 +511,6 @@ void Robot::launchCapture(){
 
 		finalContours.clear();
 		hierarchy.clear();
-		if (cv::waitKey(20) == 'q') return;
 	}
 
 	cv::destroyWindow(this->window_name);
@@ -510,8 +519,7 @@ void Robot::launchCapture(){
 	std::swap(results[1], results[3]);
 	std::swap(results[2], results[4]);
 
-	return;
-
+	return results;
 }
 
 bool Robot::setRobotPosition(int id){

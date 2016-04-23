@@ -20,7 +20,7 @@ public:
 	void sendRobotMoves(std::vector<std::string> rubikMoves);
 	std::vector<std::string> getRobotMoves() { return rmoves; };
 	RobotController getController();
-	void launchCapture();
+	std::vector<std::vector<SquareRubik>> launchCapture();
 	void setCameraId(int);
 	int getCameraId();
 	void setSquareCount(int);

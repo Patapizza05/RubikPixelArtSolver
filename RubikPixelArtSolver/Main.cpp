@@ -5,7 +5,7 @@
 
 void openCVMain()
 {
-	Robot robot("COM3", 0);
+	Robot robot("COM3", 1);
 
 	/*if (robot.initPort()){
 		std::cout << "Communication is ready" << std::endl;
@@ -96,10 +96,10 @@ void testOneCubeSolveMain() {
 
 int main(int argc, char* argv[]) {
 	
-	//openCVMain();
+	openCVMain();
 	//runCampaignMain();
 	//testOneCubeSolveMain();
-	testRobotMovesMain();
+	//testRobotMovesMain();
 	getchar();
 	return 0;
 }
