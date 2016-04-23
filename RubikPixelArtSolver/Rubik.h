@@ -14,25 +14,11 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <list>
+#include "HumanSolver.h"
+#include "RobotSolver.h"
 
-#define _R "R"
-#define _Ri "Ri"
-#define _R2 "R2"
-#define _L "L"
-#define _Li "Li"
-#define _L2 "L2"
-#define _U "U"
-#define _Ui "Ui"
-#define _U2 "U2"
-#define _B "B"
-#define _Bi "Bi"
-#define _B2 "B2"
-#define _F "F"
-#define _Fi "Fi"
-#define _F2 "F2"
-#define _D "D"
-#define _Di "Di"
-#define _D2 "D2"
+typedef void(Rubik::*pfunc)(bool);
 
 struct Offset {
 	int x;
@@ -48,48 +34,58 @@ class Rubik {
 		static bool Rubik::debug;
 		bool checkRubik(RubikColor colors[]);
 
-		void R(bool = TRUE);
-		void Ri(bool = TRUE);
-		void R2(bool = TRUE);
-		void L(bool = TRUE);
-		void Li(bool = TRUE);
-		void L2(bool = TRUE);
-		void U(bool = TRUE);
-		void Ui(bool = TRUE);
-		void U2(bool = TRUE);
-		void B(bool = TRUE);
-		void Bi(bool = TRUE);
-		void B2(bool = TRUE);
-		void F(bool = TRUE);
-		void Fi(bool = TRUE);
-		void F2(bool = TRUE);
-		void D(bool = TRUE);
-		void Di(bool = TRUE);
-		void D2(bool = TRUE);
+		void R(bool = true);
+		void Ri(bool = true);
+		void R2(bool = true);
+		void L(bool = true);
+		void Li(bool = true);
+		void L2(bool = true);
+		void U(bool = true);
+		void Ui(bool = true);
+		void U2(bool = true);
+		void B(bool = true);
+		void Bi(bool = true);
+		void B2(bool = true);
+		void F(bool = true);
+		void Fi(bool = true);
+		void F2(bool = true);
+		void D(bool = true);
+		void Di(bool = true);
+		void D2(bool = true);
+
+		void changeReferential(RubikColor color);
+
 		void resolve(RubikColor colors[]);
-		void resolveMiddle(RubikColor color);
-		void resolveEdges(RubikColor colors[]);
-		void resolveCorners(RubikColor colors[]);
+		void resolve(RubikColor colors[], Robot * pRobot);
+
 		void error(std::string);
-		void changeReferentialWhiteToGreen();
-		void changeReferentialWhiteToRed();
-		void changeReferentialWhiteToBlue();
-		void changeReferentialWhiteToOrange();
-		void changeReferentialWhiteToYellow();
 
 		void optimise();
-
-		//std::vector<std::string> translateToRobotMoves();
+		
+		void applyMoves(std::vector<std::string>&);
+		void applyMove(std::string);
 		
 		std::vector<std::string> getMoves() { return moves; }
+
+		void middle_TurnCubeUp();
+		void middle_TurnCubeRight();
+		void middle_TurnCubeDown();
+		void middle_TurnCubeLeft();
 		
-	private:
 		CornerFace * corners[24];
 		EdgeFace * edges[24];
 		MiddleFace * middle[8];
+
+		void setLockedEdge(int index, bool value);
+		void setLockedCorner(int index, bool value);
+
 		std::vector<std::string> moves;
+
+	private:
 		static int lines[9][12];
 		std::map<std::string, std::string> movesDictionary;
+		std::map<std::string, pfunc> movesFunctions;
+
 		void initMovesDictionary();
 		struct Offset getOffset(int);
 		void addMove(std::string);
@@ -99,7 +95,6 @@ class Rubik {
 		void addCornerColor(int, RubikColor);
 		void addEdgeColor(int, RubikColor);
 		void addMiddleColor(int, RubikColor);
-		
 		void computeFaceLabels();
 		void computeAllEdgeFaceLabels();
 		void computeEdgeFaceLabels(int);
@@ -116,20 +111,7 @@ class Rubik {
 		void translate(EdgeFace * array[], int i1, int i2, int i3, int i4);
 		void translate(MiddleFace * array[], int i1, int i2, int i3, int i4);
 		void swap(Face * array[], int i1, int i2);
-		void changeReferential(RubikColor color);
-		void changeReferential(MiddleFace * m);
-		int searchEdgeColorIndex(RubikColor color, int solvedEdges);
-		bool checkEdgeColor(int, RubikColor);
-		void setLockedEdge(int index, bool value);
-		int searchCornerColorIndex(RubikColor color, int solvedEdges);
-		bool checkCornerColor(int, RubikColor);
-		void setLockedCorner(int index, bool value);
-		void middle_TurnCubeUp();
-		void middle_TurnCubeRight();
-		void middle_TurnCubeDown();
-		void middle_TurnCubeLeft();
-		int searchMiddleColorIndex(RubikColor color);
-		bool checkMiddleColor(int, RubikColor);
+
 		int shortenMoves(int);
 };
 

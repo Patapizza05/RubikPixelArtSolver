@@ -3,6 +3,7 @@
 #define TEST_CAMPAIGN_H
 
 #include "RubikColor.h"
+#include "Face.h"
 #include "Rubik.h"
 #include "ResolutionException.h"
 #include <vector>
@@ -12,6 +13,7 @@ private:
 	int passed;
 	int failed;
 	int nbMoves;
+	int nbRobotMoves;
 	int pieces[54];
 	std::vector<std::vector<int>> rubikColors;
 	bool isRubikColors = false;

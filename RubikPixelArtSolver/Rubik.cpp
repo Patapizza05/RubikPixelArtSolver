@@ -1,5 +1,4 @@
 #include "Rubik.h"
-#include "RubikColor.h"
 
 bool Rubik::debug = false;
 
@@ -28,28 +27,46 @@ Rubik::Rubik(int pieces[])
 
 void Rubik::initMovesDictionary() {
 	movesDictionary[_R] = _R;
+	movesFunctions[_R] = &Rubik::R;
 	movesDictionary[_Ri] = _Ri;
+	movesFunctions[_Ri] = &Rubik::Ri;
 	movesDictionary[_R2] = _R2;
+	movesFunctions[_R2] = &Rubik::R2;
 
 	movesDictionary[_L] = _L;
+	movesFunctions[_L] = &Rubik::L;
 	movesDictionary[_Li] = _Li;
+	movesFunctions[_Li] = &Rubik::Li;
 	movesDictionary[_L2] = _L2;
+	movesFunctions[_L2] = &Rubik::L2;
 
 	movesDictionary[_U] = _U;
+	movesFunctions[_U] = &Rubik::U;
 	movesDictionary[_Ui] = _Ui;
+	movesFunctions[_Ui] = &Rubik::Ui;
 	movesDictionary[_U2] = _U2;
+	movesFunctions[_U2] = &Rubik::U2;
 
 	movesDictionary[_B] = _B;
+	movesFunctions[_B] = &Rubik::B;
 	movesDictionary[_Bi] = _Bi;
+	movesFunctions[_Bi] = &Rubik::Bi;
 	movesDictionary[_B2] = _B2;
+	movesFunctions[_B2] = &Rubik::B2;
 
 	movesDictionary[_F] = _F;
+	movesFunctions[_F] = &Rubik::F;
 	movesDictionary[_Fi] = _Fi;
+	movesFunctions[_Fi] = &Rubik::Fi;
 	movesDictionary[_F2] = _F2;
+	movesFunctions[_F2] = &Rubik::F2;
 
 	movesDictionary[_D] = _D;
+	movesFunctions[_D] = &Rubik::D;
 	movesDictionary[_Di] = _Di;
+	movesFunctions[_Di] = &Rubik::Di;
 	movesDictionary[_D2] = _D2;
+	movesFunctions[_D2] = &Rubik::D2;
 }
 
 struct Offset Rubik::getOffset(int face) {
@@ -861,99 +878,24 @@ void Rubik::D2(bool isAddToMoves){
 		addMove(this->movesDictionary[_D2]);
 }
 
+void Rubik::changeReferential(RubikColor color) {
+	HumanSolver solver;
+	solver.resolveMiddle(this, color);
+}
+
 void Rubik::resolve(RubikColor colors[]) {
-	resolveMiddle(colors[4]);
-	//RubikColor edgesColors[4] = { colors[1], colors[3], colors[5], colors[7] };
-
-	RubikColor edgesColors[4] = { colors[7], colors[5], colors[1], colors[3] };
-	RubikColor cornersColors[4] = { colors[6], colors[8], colors[2], colors[0] };
-	resolveEdges(edgesColors);
-	resolveCorners(cornersColors);
-	//optimise();
-}
-void Rubik::resolveMiddle(RubikColor color) {
-
-	int index = this->searchMiddleColorIndex(color);
-	this->middle[index]->setLockedPosition(TRUE);
-
-	/*switch (color) {
-	case RubikColor::RED:
-	this->changeReferentialWhiteToRed();
-	break;
-	case RubikColor::BLUE:
-	this->changeReferentialWhiteToBlue();
-	break;
-	case RubikColor::ORANGE:
-	this->changeReferentialWhiteToOrange();
-	break;
-	case RubikColor::GREEN:
-	this->changeReferentialWhiteToGreen();
-	break;
-	case RubikColor::YELLOW:
-	this->changeReferentialWhiteToYellow();
-	break;
-	default:
-	break;
-	}*/
-
-
-
-	if (Rubik::debug) this->printCube();
+	HumanSolver solver;
+	solver.resolve(this, colors);
 }
 
-int Rubik::searchMiddleColorIndex(RubikColor color) {
-	if (checkMiddleColor(1, color)) {
-		//No moves
-		return 1;
-	}
-
-	if (checkMiddleColor(0, color)) {
-		//Moves
-		middle_TurnCubeDown();
-		if (Rubik::debug)
-			std::cout << "Down" << std::endl;
-		return 0;
-	}
-
-	if (checkMiddleColor(3, color)) {
-		//Moves
-		middle_TurnCubeLeft();
-		if (Rubik::debug)
-			std::cout << "Left" << std::endl;
-		return 3;
-	}
-
-	if (checkMiddleColor(4, color)) {
-		//Moves
-		middle_TurnCubeRight();
-		if (Rubik::debug)
-			std::cout << "Right" << std::endl;
-		return 4;
-	}
-
-	if (checkMiddleColor(5, color)) {
-		//Moves
-		middle_TurnCubeUp();
-		if (Rubik::debug)
-			std::cout << "Up" << std::endl;
-		return 5;
-	}
-
-	if (checkMiddleColor(2, color)) {
-		//Moves
-		middle_TurnCubeDown();
-		middle_TurnCubeDown();
-		if (Rubik::debug)
-			std::cout << "Down^2" << std::endl;
-		return 2;
-	}
-
-	return 1;
+void Rubik::resolve(RubikColor colors[], Robot * pRobot) {
+	RobotSolver solver(pRobot);
+	solver.resolve(this, colors);
 }
 
 void Rubik::middle_TurnCubeRight() { //White to blue
-	Fi(FALSE);
-	B(FALSE);
+	Fi(false);
+	B(false);
 	this->translate(this->middle, 3, 1, 4, 2);
 	this->translate(this->edges, 6, 19, 9, 20);
 	this->translate(this->edges, 7, 21, 8, 18);
@@ -982,8 +924,8 @@ void Rubik::middle_TurnCubeRight() { //White to blue
 }
 
 void Rubik::middle_TurnCubeUp() { //White to orange
-	Ri(FALSE);
-	L(FALSE);
+	Ri(false);
+	L(false);
 	this->translate(this->middle, 0, 1, 5, 2);
 	this->translate(this->edges, 4, 17, 14, 0);
 	this->translate(this->edges, 12, 16, 5, 2);
@@ -1011,8 +953,8 @@ void Rubik::middle_TurnCubeUp() { //White to orange
 }
 
 void Rubik::middle_TurnCubeDown() { //White to red
-	R(FALSE);
-	Li(FALSE);
+	R(false);
+	Li(false);
 	this->translate(this->middle, 0, 2, 5, 1);
 	this->translate(this->edges, 4, 0, 14, 17);
 	this->translate(this->edges, 12, 2, 5, 16);
@@ -1041,8 +983,8 @@ void Rubik::middle_TurnCubeDown() { //White to red
 
 }
 void Rubik::middle_TurnCubeLeft() { //White to green
-	F(FALSE);
-	Bi(FALSE);
+	F(false);
+	Bi(false);
 	this->translate(this->middle, 3, 2, 4, 1);
 	this->translate(this->edges, 6, 20, 9, 19);
 	this->translate(this->edges, 7, 18, 8, 21);
@@ -1071,263 +1013,22 @@ void Rubik::middle_TurnCubeLeft() { //White to green
 
 }
 
-bool Rubik::checkMiddleColor(int i, RubikColor color) {
-	if (this->middle[i]->getColor() == color)
-		return TRUE;
-	return FALSE;
-}
-
 void Rubik::setLockedEdge(int index, bool value) {
 	int edgeIndex = index % 12;
 	this->edges[edgeIndex]->setLockedPosition(value);
 	this->edges[edgeIndex + 12]->setLockedPosition(value);
 }
 
-void Rubik::resolveEdges(RubikColor colors[]) {
-
-	int solvedEdges = 0;
-
-	for (int i = 0; i < 4; i++) {
-		RubikColor color = colors[i]; //12 7 4 6
-		int index = this->searchEdgeColorIndex(color,solvedEdges);
-		if (index == -1) {
-			error("did not find edge");
-		}
-		if (Rubik::debug) std::cout << "Edge : Number " << this->edges[index]->getNumber() << " at position " << index << std::endl;
-
-		this->setLockedEdge(12, TRUE);
-		solvedEdges++;
-		this->U();
-
-		if (Rubik::debug) {
-			std::cout << std::endl;
-			for (unsigned int i = 0; i < this->moves.size(); i++) {
-				std::cout << moves[i] << " ";
-			}
-			this->printCube();
-			std::cout << "--------------------------------------------------------" << std::endl;
-		}
-
+void Rubik::applyMoves(std::vector<std::string>& m) {
+	int size = m.size();
+	for (int i = 0; i < size; i++) {
+		applyMove(m[i]);
 	}
 }
 
-int Rubik::searchEdgeColorIndex(RubikColor color, int solvedEdges) {
-
-	if (checkEdgeColor(12, color)) { //0
-		//No moves
-		return 12;
-	}
-
-	if (checkEdgeColor(13, color)) { //1
-		Fi();
-		return 13;
-	}
-
-	if (checkEdgeColor(15, color)) { //1
-		F();
-		return 15;
-	}
-
-	if (checkEdgeColor(6, color) && solvedEdges == 0) { //1
-		Ui();
-		return 6;
-	}
-	
-	if (checkEdgeColor(7, color) && solvedEdges == 0) { //1
-		U();
-		return 7;
-	}
-
-	if (checkEdgeColor(14, color)) { //1.5
-		F2();
-		return 14;
-	}
-
-	if (checkEdgeColor(4, color) && solvedEdges == 0) { //1.5
-		U2();
-		return 4;
-	}
-
-	if (checkEdgeColor(21, color) && !this->edges[7]->getLockedPosition()) { //2
-		R(); Fi();
-		return 21;
-	}
-	
-	if (checkEdgeColor(20, color) && !this->edges[6]->getLockedPosition()) { //2
-		Li(); F();
-		return 20;
-	}
-
-	if (checkEdgeColor(3, color) && solvedEdges == 0) { //2
-		Li(); Ui();
-		return 3;
-	}
-	
-	if (checkEdgeColor(11, color) && solvedEdges == 0) { //2
-		L(); Ui();
-		return 11;
-	}
-
-	if (checkEdgeColor(1, color) && solvedEdges == 0) { //2
-		R(); U();
-		return 1;
-	}
-
-	if (checkEdgeColor(22, color) && solvedEdges == 0) { //2
-		Ri(); U();
-		return 22;
-	}
-
-	if (checkEdgeColor(18, color)) { //2
-		L(); F();
-		return 18;
-	}
-	
-	if (checkEdgeColor(19, color)) { //2
-		Ri(); Fi();
-		return 19;
-	}
-	
-	//2.5
-	
-	if (checkEdgeColor(9, color)) { //2.5
-		Di(); F2();
-		return 9;
-	}
-
-	if (checkEdgeColor(10, color) && !this->edges[7]->getLockedPosition()) { //2.5
-		R2(); Fi();
-		return 10;
-	}
-
-	if (checkEdgeColor(23, color) && !this->edges[6]->getLockedPosition()) { //2.5
-		L2(); F();
-		return 23;
-	}
-
-	if (checkEdgeColor(8, color)) { //2.5
-		D(); F2();
-		return 8;
-	}
-
-	//2.8
-
-	if (checkEdgeColor(5, color)) { //2.8
-		D2(); F2();
-		return 5;
-	}
-
-	//3
-
-	if (checkEdgeColor(21, color)) { //3 //7 is locked
-		R(); Fi(); Ri();
-		return 21;
-	}
-
-	if (checkEdgeColor(20, color)) { //3 //6 is locked
-		Li(); F(); L();
-		return 20;
-	}
-
-	if (checkEdgeColor(3, color)) { //3
-		U(); Li(); Ui();
-		return 3;
-	}
-
-	if (checkEdgeColor(11, color)) { //3
-		U(); L(); Ui();
-		return 11;
-	}
-
-	if (checkEdgeColor(1, color)) { //3
-		Ui(); R(); U();
-		return 1;
-	}
-
-	if (checkEdgeColor(22, color)) { //3
-		Ui(); Ri(); U();
-		return 22;
-	}
-
-	if (checkEdgeColor(2, color) && !this->edges[7]->getLockedPosition()) { //3
-		D(); R(); Fi();
-		return 2;
-	}
-
-	if (checkEdgeColor(17, color) && !this->edges[6]->getLockedPosition()) { //3
-		D(); Li(); F();
-		return 17;
-	}
-	
-	if (checkEdgeColor(10, color)) { //3.8
-		R2(); Fi(); R2();
-		return 10;
-	}
-
-	if (checkEdgeColor(23, color)) { //3.8
-		L2(); F(); L2();
-		return 23;
-	}
-	
-	if (checkEdgeColor(2, color)) { //4
-		D(); R(); Fi(); Ri();
-		return 2;
-	}
-	
-	if (checkEdgeColor(17, color)) { //4
-		D(); Li(); F(); L();
-		return 17;
-	}
-
-	if (checkEdgeColor(0, color) && !this->edges[7]->getLockedPosition()) //4.5
-	{
-		F2(); D(); R(); Fi();
-		return 0;
-	}
-
-	if (checkEdgeColor(16, color) && !this->edges[16]->getLockedPosition()) { //4.5
-		B2(); Di(); R(); Fi();
-		return 16;
-	}
-
-	if (checkEdgeColor(0, color)) { //5.5
-		F2(); D(); R(); Fi(); Ri();
-		return 0;
-	}
-	
-	if (checkEdgeColor(16, color)) { //5.5
-		B2(); Di(); R(); Fi(); Ri();
-		return 16;
-	}
-
-	// 6
-
-	if (checkEdgeColor(4, color)) { //7
-		//Don't move top !
-		Ri(); L(); Bi(); R(); Li(); R(); Fi();
-		return 4;
-	}
-	
-	if (checkEdgeColor(6, color)) { //9
-		//Don't move top !
-		F(); Bi(); L(); Fi(); B(); D(); R(); Fi(); Ri();
-		return 6;
-	}
-	
-	if (checkEdgeColor(7, color)) { //9
-		//Don't move top !
-		Fi(); B(); Ri(); F(); Bi(); D(); R(); Fi(); Ri();
-		return 7;
-	}
-	return -1;
-}
-
-bool Rubik::checkEdgeColor(int index, RubikColor color) { //locked
-	if (this->edges[index]->getLockedPosition() == FALSE && this->edges[index]->getColor() == color)
-	{
-		return TRUE;
-	}
-	return FALSE;
+void Rubik::applyMove(std::string m) {
+	pfunc f = movesFunctions[m];
+	(this->*f)(true);
 }
 
 void Rubik::setLockedCorner(int index, bool value) {
@@ -1337,229 +1038,9 @@ void Rubik::setLockedCorner(int index, bool value) {
 	this->corners[cornerIndex + 16]->setLockedPosition(value);
 }
 
-void Rubik::resolveCorners(RubikColor colors[]) {
-	int solvedCorners = 0;
-
-	for (int i = 0; i < 4; i++) {
-		RubikColor color = colors[i]; //16 9 7 6
-		int index = this->searchCornerColorIndex(color, solvedCorners);
-		if (Rubik::debug) std::cout << "Corner : Number " << this->corners[index]->getNumber() << " at position " << index << std::endl;
-
-		this->setLockedCorner(16, TRUE);
-
-		solvedCorners++;
-		this->U();
-
-		if (Rubik::debug) {
-			std::cout << std::endl;
-			for (unsigned int i = 0; i < this->moves.size(); i++) {
-				std::cout << moves[i] << " ";
-			}
-			this->printCube();
-			std::cout << "--------------------------------------------------------" << std::endl;
-		}
-	}
-
-}
-int Rubik::searchCornerColorIndex(RubikColor color, int solvedCorners) {
-
-	if (checkCornerColor(16, color)) { //0
-		//No moves
-		return 16;
-	}
-
-	if (checkCornerColor(11, color)) { //3
-		L(); Di(); Li();
-		return 11;
-	}
-
-	if (checkCornerColor(12, color)) { //3
-		Fi(); D(); F();
-		return 12;
-	}
-
-	if (checkCornerColor(11, color)) { //3
-		L(); Di(); Li();
-		return 11;
-	}
-
-	if (checkCornerColor(12, color)) { //3
-		Fi(); D(); F();
-		return 12;
-	}
-
-	if (checkCornerColor(2, color)) { //4
-		D(); L(); Di(); Li();
-		return 2;
-	}
-	
-	if (checkCornerColor(13, color)) { //4
-		D(); Fi(); D(); F();
-		return 13;
-	}
-
-	if (checkCornerColor(18, color)) { //4
-		Di(); Fi(); D(); F();
-		return 18;
-	}
-
-	if (checkCornerColor(21, color)) { //4
-		Di(); L(); Di(); Li();
-		return 21;
-	}
-
-	if (checkCornerColor(20, color)) { //4.5
-		D2(); L(); Di();  Li();
-		return 20;
-	}
-
-	if (checkCornerColor(3, color))  { //4.5
-		D2(); Fi(); D(); F();
-		return 3;
-	}
-
-	if (checkCornerColor(17, color)) { //5
-		Ri(); L(); Di(); Li(); R();
-		return 17;
-
-	}
-
-	if (checkCornerColor(22, color)) { //5
-		B(); Fi(); D(); Bi(); F();
-		return 22;
-	}
-
-	if (checkCornerColor(1, color)) { //5.8
-		F(); D2(); F2(); D(); F();
-		return 1;
-	}
 
 
-	if (checkCornerColor(14, color)) { //5.8
-		Li(); D2(); L2(); Di(); Li();
-		return 14;
-	}
-
-	if (checkCornerColor(7, color)) { //6
-		Bi(); D(); Fi(); D(); F(); B();
-		return 7;
-	}
-
-	if (checkCornerColor(15, color)) { //6
-		Bi(); Di(); B(); L(); Di(); Li();
-		return 15;
-	}
-
-	if (checkCornerColor(23, color)) { //6
-		R(); D(); Fi(); D(); F(); Ri();
-		return 23;
-
-	}
-
-	if (checkCornerColor(6, color)) { //6.5
-		B(); D2(); Bi(); L(); Di(); Li();
-		return 6;
-
-	}
-
-	if (checkCornerColor(0, color)) { //7.5
-		Fi(); Di(); F(); D2(); L(); Di(); Li();
-		return 0;
-	}
-
-	if (checkCornerColor(8, color)) { //7.5
-		L(); D(); Li(); D2(); Fi(); D(); F();
-		return 8;
-
-	}
-
-	if (checkCornerColor(9, color)) { //7.5
-		Ri(); Di(); R(); Di(); Fi(); D(); F();
-		return 9;
-	}
-
-	if (checkCornerColor(4, color)) { //10.5 //mm combinaison pour 5, 10, 19
-		Fi(); D(); F(); L(); D(); Li(); D2(); Fi(); D(); F();
-		return 4;
-	}
-
-	if (checkCornerColor(5, color)) { //11.5
-		D(); Fi(); D(); F(); L(); D(); Li(); D2(); Fi(); D(); F();
-		return 5;
-	}
-
-	if (checkCornerColor(10, color)) { //11.5
-		Di(); Fi(); D(); F(); L(); D(); Li(); D2(); Fi(); D(); F();
-		return 10;
-	}
-
-	if (checkCornerColor(19, color)) { //11.8
-		D2(); Fi(); D(); F(); L(); D(); Li(); D2(); Fi(); D(); F();
-		return 19;
-	}
-
-}
-bool Rubik::checkCornerColor(int index, RubikColor color) { //locked
-	if (this->corners[index]->getLockedPosition() == FALSE && this->corners[index]->getColor() == color)
-	{
-		return TRUE;
-	}
-	return FALSE;
-}
-
-
-void Rubik::changeReferential(RubikColor color) {
-
-}
-
-void Rubik::changeReferential(MiddleFace * m) {
-
-}
-
-void Rubik::changeReferentialWhiteToGreen() {
-	F();
-	Bi();
-	this->translate(this->middle, 3,2,4,1);
-	this->translate(this->edges, 6,20,9,19);
-	this->translate(this->edges, 7,18,8,21);
-
-}
-void Rubik::changeReferentialWhiteToRed() {
-	R();
-	Li();
-	this->translate(this->middle, 0,2,5,1);
-	this->translate(this->edges, 4,0,14,17);
-	this->translate(this->edges, 12,2,5,16);
-
-}
-void Rubik::changeReferentialWhiteToBlue() {
-	Fi();
-	B();
-	this->translate(this->middle, 3,1,4,2);
-	this->translate(this->edges, 6,19,9,20);
-	this->translate(this->edges, 7,21,8,18);
-}
-void Rubik::changeReferentialWhiteToOrange() {
-	Ri();
-	L();
-	this->translate(this->middle, 0,1,5,2);
-	this->translate(this->edges, 4,17,14,0);
-	this->translate(this->edges, 12,16,5,2);
-}
-void Rubik::changeReferentialWhiteToYellow() {
-	R2();
-	L2();
-	this->swap((Face**)this->edges, 12, 5);
-	this->swap((Face**)this->edges, 4, 14);
-	this->swap((Face**)this->edges, 0, 17);
-	this->swap((Face**)this->edges, 2, 16);
-
-	this->swap((Face**)this->middle, 1, 2);
-	this->swap((Face**)this->middle, 0, 5);
-	//test
-}
-
-void Rubik::optimise() {
+/*void Rubik::optimise() {
 	int size = this->moves.size();
 
 	if (size < 2)
@@ -1584,7 +1065,7 @@ void Rubik::optimise() {
 		index = index + 1 - shortenMoves(index);
 		size = this->moves.size();
 	}
-}
+}*/
 
 int Rubik::shortenMoves(int i1)
 {
@@ -1732,13 +1213,4 @@ void Rubik::addMove(std::string m2) {
 	this->moves.push_back(m2);
 
 }
-
-/*std::vector<std::string> Rubik::translateToRobotMoves() {
-	Robot robot;
-	for (unsigned int i = 0; i < this->moves.size(); i++) {
-		robot.addMove(this->moves[i]);
-	}
-	robot.endMove();
-	return robot.rmoves;
-}*/
 

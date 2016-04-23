@@ -19,6 +19,7 @@ private:
 	bool setupPort();
 
 public:
+	static bool RobotController::debug;
 	RobotController();
 	RobotController(std::string);
 	RobotController(std::string, int);

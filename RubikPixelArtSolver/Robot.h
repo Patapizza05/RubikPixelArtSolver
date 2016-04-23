@@ -4,7 +4,7 @@
 
 #include "RobotState.h"
 #include "RobotController.h"
-#include "Rubik.h"
+#include "Face.h"
 #include "Utils.h"
 #include <string>
 #include <vector>
@@ -17,8 +17,9 @@ public:
 	Robot();
 	Robot(int);
 	Robot(cv::String, int);
-	void sendRobotMoves(std::vector<std::string> rubikMoves);
+	void sendRubikMoves(std::vector<std::string> rubikMoves);
 	std::vector<std::string> getRobotMoves() { return rmoves; };
+	int getRubikMovesCost(std::vector<std::string> rubikMoves, std::string previousRubikMove);
 	RobotController getController();
 	std::vector<std::vector<SquareRubik>> launchCapture();
 	void setCameraId(int);
@@ -43,6 +44,21 @@ private:
 	bool U2();
 	bool U();
 	bool Ui();
+
+	bool H0_to_1();
+	bool H0_to_2();
+	bool H0_to_3();
+	bool H1_to_2();
+	bool H1_to_3();
+	bool H2_to_3();
+
+	bool D3_to_0();
+	bool D2_to_0();
+	bool D1_to_0();
+	bool D2_to_1();
+	bool D3_to_2();
+	bool D3_to_1();
+
 	bool H1();
 	bool H2();
 	bool H3();
@@ -56,6 +72,8 @@ private:
 	void goDown(int);
 	void goUp(int);
 	void rotate(int);
+
+	bool sendMessageAndRead(std::string);
 
 	int camera_id;
 	int square_count;

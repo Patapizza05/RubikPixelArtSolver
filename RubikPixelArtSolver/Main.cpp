@@ -1,7 +1,5 @@
 
-#include "Rubik.h"
 #include "TestCampaign.h"
-#include "Robot.h"
 
 void openCVMain()
 {
@@ -46,7 +44,7 @@ void runCampaignMain() {
 }
 
 void testRobotMovesMain() {
-	Robot robot;
+	Robot robot("COM3",0);
 
 	int colorOrder[] = { 2, 3, 4, 1, 5, 0 };
 
@@ -60,10 +58,9 @@ void testRobotMovesMain() {
 	}
 
 	Rubik r(rubikColors);
-	r.R();
-	r.U();
+	r.R(); //r.applyMove("R");
 	//r.resolve(colors);
-	robot.sendRobotMoves(r.getMoves());
+	robot.sendRubikMoves(r.getMoves());
 	std::vector<std::string> moves = robot.getRobotMoves();
 	for (int i = 0; i < moves.size(); i++) {
 		std::cout << moves[i] << " ";
@@ -85,9 +82,9 @@ void testOneCubeSolveMain() {
 	}
 
 	RubikColor colors[9] = {
-		RubikColor::YELLOW, RubikColor::WHITE, RubikColor::YELLOW,
-		RubikColor::WHITE, RubikColor::YELLOW, RubikColor::WHITE,
-		RubikColor::YELLOW, RubikColor::WHITE, RubikColor::YELLOW
+		RubikColor::WHITE, RubikColor::WHITE, RubikColor::WHITE,
+		RubikColor::WHITE, RubikColor::RED, RubikColor::RED,
+		RubikColor::WHITE, RubikColor::WHITE, RubikColor::WHITE
 	};
 
 	TestCampaign testCampaign(rubikColors);
@@ -95,9 +92,11 @@ void testOneCubeSolveMain() {
 }
 
 int main(int argc, char* argv[]) {
-	
-	openCVMain();
 	//runCampaignMain();
+	//openCVMain();
+	runCampaignMain();
+
+	//Rubik::debug = true;
 	//testOneCubeSolveMain();
 	//testRobotMovesMain();
 	getchar();
