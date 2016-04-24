@@ -1,5 +1,8 @@
 #include "Rubik.h"
 
+/// <summary>
+/// The debug{CC2D43FA-BBC4-448A-9D0B-7B57ADF2655C}
+/// </summary>
 bool Rubik::debug = false;
 
 int Rubik::lines[9][12] = {
@@ -511,6 +514,7 @@ void Rubik::addMiddle(int i, int number)
 	this->middle[i] = new MiddleFace(number, color);
 }
 
+
 void Rubik::error(std::string error) {
 	//exception
 	std::cout << "ERREUR : " << error << std::endl;
@@ -527,22 +531,15 @@ Rubik::~Rubik() {
 	this->moves.clear();
 }
 
+void Rubik::setVerbose(bool value) {
+	Rubik::debug = value;
+}
+
 
 void Rubik::printCube() {
 
 	int number;
 	int index;
-	/*int lines[9][12] = {
-		{ -1, -1, -1, 6, 4, 7, -1, -1, -1, -1, -1, -1 },
-		{ -1, -1, -1, 6, 1, 7, -1, -1, -1, -1, -1, -1 },
-		{ -1, -1, -1, 16, 12, 9, -1, -1, -1, -1, -1, -1 },
-		{ 14, 18, 8, 0, 0, 1, 17, 19, 23, 15, 16, 22 },
-		{ 23, 3, 15, 3, 0, 1, 13, 4, 10, 22, 5, 11 },
-		{ 20, 20, 18, 2, 2, 3, 11, 21, 13, 21, 17, 12 },
-		{ -1, -1, -1, 10, 14, 19, -1, -1, -1, -1, -1, -1 },
-		{ -1, -1, -1, 8, 2, 9, -1, -1, -1, -1, -1, -1 },
-		{ -1, -1, -1, 4, 5, 5, -1, -1, -1, -1, -1, -1 }
-	};*/
 
 	for (int y = 0; y < 9; y++) {
 
@@ -603,7 +600,7 @@ void Rubik::printCube() {
 	std::cout << setcolor(RubikColor::WHITE) << std::endl;
 }
 
-bool Rubik::checkRubik(RubikColor colors[]) {
+bool Rubik::verifyRubikColors(RubikColor colors[]) {
 	int rotate = 0;
 	bool result = false;
 	int i = 0;
@@ -623,14 +620,6 @@ bool Rubik::checkRubik(RubikColor colors[]) {
 		rotate++;
 		U();
 	}
-
-	/*while (rotate < 0)
-	{
-		Ui();
-		rotate--;
-	}*/
-
-
 	return result;
 }
 
@@ -659,6 +648,7 @@ void Rubik::swap(Face * array[], int i1, int i2) {
 	array[i2] = temp;
 }
 
+
 void Rubik::Ri(bool isAddToMoves) {
 	translate(this->corners, 9, 15, 5, 3);
 	translate(this->corners, 7, 21, 19, 1);
@@ -669,6 +659,7 @@ void Rubik::Ri(bool isAddToMoves) {
 	if (isAddToMoves)
 		addMove(this->movesDictionary[_Ri]);
 }
+
 
 void Rubik::R(bool isAddToMoves) {
 	translate(this->corners, 3, 5, 15, 9);
@@ -716,6 +707,7 @@ void Rubik::L(bool isAddToMoves) {
 	if (isAddToMoves)
 		addMove(this->movesDictionary[_L]);
 }
+
 void Rubik::L2(bool isAddToMoves) {
 	swap((Face**)this->corners, 22, 2);
 	swap((Face**)this->corners, 4, 16);
@@ -752,6 +744,7 @@ void Rubik::U(bool isAddToMoves) {
 	if (isAddToMoves)
 		addMove(this->movesDictionary[_U]);
 }
+
 void Rubik::U2(bool isAddToMoves) {
 	swap((Face**)this->corners, 7, 16);
 	swap((Face**)this->corners, 6, 9);
@@ -893,7 +886,7 @@ void Rubik::resolve(RubikColor colors[], Robot * pRobot) {
 	solver.resolve(this, colors);
 }
 
-void Rubik::middle_TurnCubeRight() { //White to blue
+void Rubik::turnCubeRight() { //White to blue
 	Fi(false);
 	B(false);
 	this->translate(this->middle, 3, 1, 4, 2);
@@ -923,7 +916,7 @@ void Rubik::middle_TurnCubeRight() { //White to blue
 
 }
 
-void Rubik::middle_TurnCubeUp() { //White to orange
+void Rubik::turnCubeUp() { //White to orange
 	Ri(false);
 	L(false);
 	this->translate(this->middle, 0, 1, 5, 2);
@@ -952,7 +945,7 @@ void Rubik::middle_TurnCubeUp() { //White to orange
 	movesDictionary[_D2] = tempMap[_F2];
 }
 
-void Rubik::middle_TurnCubeDown() { //White to red
+void Rubik::turnCubeDown() { //White to red
 	R(false);
 	Li(false);
 	this->translate(this->middle, 0, 2, 5, 1);
@@ -982,7 +975,7 @@ void Rubik::middle_TurnCubeDown() { //White to red
 	movesDictionary[_D2] = tempMap[_B2];
 
 }
-void Rubik::middle_TurnCubeLeft() { //White to green
+void Rubik::turnCubeLeft() { //White to green
 	F(false);
 	Bi(false);
 	this->translate(this->middle, 3, 2, 4, 1);
@@ -1038,6 +1031,37 @@ void Rubik::setLockedCorner(int index, bool value) {
 	this->corners[cornerIndex + 16]->setLockedPosition(value);
 }
 
+CornerFace * Rubik::getCorner(int i) {
+	if (i < 0 || i > 23) {
+		return NULL;
+	}
+	return this->corners[i];
+}
+
+EdgeFace * Rubik::getEdge(int i) {
+	if (i < 0 || i > 23) {
+		return NULL;
+	}
+	return this->edges[i];
+}
+
+MiddleFace * Rubik::getMiddle(int i) {
+	if (i < 0 || i > 7) {
+		return NULL;
+	}
+	return this->middle[i];
+}
+
+std::string Rubik::getMoveAtIndex(int i) {
+	if (i >= 0 && i < this->moves.size()) {
+		return this->moves[i];
+	}
+	return "";
+}
+
+int Rubik::getNbMoves() {
+	return this->moves.size();
+}
 
 
 /*void Rubik::optimise() {

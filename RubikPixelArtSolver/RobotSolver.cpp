@@ -11,7 +11,7 @@ bool RobotSolver::getMinCost(Rubik * pRubik, std::vector<std::string>& tempMoves
 		cost = pRobot->getRubikMovesCost(tempMoves, "");
 	}
 	else {
-		cost = pRobot->getRubikMovesCost(tempMoves, pRubik->moves[pRubik->moves.size() - 1]);
+		cost = pRobot->getRubikMovesCost(tempMoves, pRubik->getMoveAtIndex(pRubik->getNbMoves() - 1));
 	}
 	if (minCost == -1) {
 		minCost = cost;
@@ -86,7 +86,7 @@ int RobotSolver::searchEdgeColorIndex(Rubik * pRubik, RubikColor color, int solv
 			}
 		}
 
-		if (checkEdgeColor(pRubik, 21, color) && !pRubik->edges[7]->getLockedPosition()) { //2
+		if (checkEdgeColor(pRubik, 21, color) && !pRubik->getEdge(7)->getLockedPosition()) { //2
 			tempMoves.clear();
 			tempMoves.push_back(_R);
 			tempMoves.push_back(_Fi);
@@ -96,7 +96,7 @@ int RobotSolver::searchEdgeColorIndex(Rubik * pRubik, RubikColor color, int solv
 			}
 		}
 
-		if (checkEdgeColor(pRubik, 20, color) && !pRubik->edges[6]->getLockedPosition()) { //2
+		if (checkEdgeColor(pRubik, 20, color) && !pRubik->getEdge(6)->getLockedPosition()) { //2
 			tempMoves.clear();
 			tempMoves.push_back(_Li);
 			tempMoves.push_back(_F);
@@ -178,7 +178,7 @@ int RobotSolver::searchEdgeColorIndex(Rubik * pRubik, RubikColor color, int solv
 			}
 		}
 
-		if (checkEdgeColor(pRubik, 10, color) && !pRubik->edges[7]->getLockedPosition()) { //2.5
+		if (checkEdgeColor(pRubik, 10, color) && !pRubik->getEdge(7)->getLockedPosition()) { //2.5
 			tempMoves.clear();
 			tempMoves.push_back(_R2);
 			tempMoves.push_back(_Fi);
@@ -188,7 +188,7 @@ int RobotSolver::searchEdgeColorIndex(Rubik * pRubik, RubikColor color, int solv
 			}
 		}
 
-		if (checkEdgeColor(pRubik, 23, color) && !pRubik->edges[6]->getLockedPosition()) { //2.5
+		if (checkEdgeColor(pRubik, 23, color) && !pRubik->getEdge(6)->getLockedPosition()) { //2.5
 			tempMoves.clear();
 			tempMoves.push_back(_L2);
 			tempMoves.push_back(_F);
@@ -288,7 +288,7 @@ int RobotSolver::searchEdgeColorIndex(Rubik * pRubik, RubikColor color, int solv
 			}
 		}
 
-		if (checkEdgeColor(pRubik, 2, color) && !pRubik->edges[7]->getLockedPosition()) { //3
+		if (checkEdgeColor(pRubik, 2, color) && !pRubik->getEdge(7)->getLockedPosition()) { //3
 			tempMoves.clear();
 			tempMoves.push_back(_D);
 			tempMoves.push_back(_R);
@@ -299,7 +299,7 @@ int RobotSolver::searchEdgeColorIndex(Rubik * pRubik, RubikColor color, int solv
 			}
 		}
 
-		if (checkEdgeColor(pRubik, 17, color) && !pRubik->edges[6]->getLockedPosition()) { //3
+		if (checkEdgeColor(pRubik, 17, color) && !pRubik->getEdge(6)->getLockedPosition()) { //3
 			tempMoves.clear();
 			tempMoves.push_back(_D);
 			tempMoves.push_back(_Li);
@@ -356,7 +356,7 @@ int RobotSolver::searchEdgeColorIndex(Rubik * pRubik, RubikColor color, int solv
 			}
 		}
 
-		if (checkEdgeColor(pRubik, 0, color) && !pRubik->edges[7]->getLockedPosition()) //4.5
+		if (checkEdgeColor(pRubik, 0, color) && !pRubik->getEdge(7)->getLockedPosition()) //4.5
 		{
 			tempMoves.clear();
 			tempMoves.push_back(_F2);
@@ -369,7 +369,7 @@ int RobotSolver::searchEdgeColorIndex(Rubik * pRubik, RubikColor color, int solv
 			}
 		}
 
-		if (checkEdgeColor(pRubik, 16, color) && !pRubik->edges[16]->getLockedPosition()) { //4.5
+		if (checkEdgeColor(pRubik, 16, color) && !pRubik->getEdge(16)->getLockedPosition()) { //4.5
 			tempMoves.clear();
 			tempMoves.push_back(_B2);
 			tempMoves.push_back(_Di);

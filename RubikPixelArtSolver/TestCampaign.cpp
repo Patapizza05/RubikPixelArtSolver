@@ -12,14 +12,14 @@ TestCampaign::TestCampaign(std::vector<std::vector<int>>& rubikColors) {
 }
 
 void TestCampaign::run() {
-	Rubik::debug = false;
+	Rubik::setVerbose(false);
 
 	try {
 		resolveTests();
 	}
 	catch (ResolutionException ex)
 	{
-		Rubik::debug = true;
+		Rubik::setVerbose(true);
 		solveOneCube(ex.getColors());
 	}
 }
@@ -117,7 +117,7 @@ void TestCampaign::resolveOneCube(RubikColor colors[]) {
 
 	rubik2.changeReferential(colors[4]);
 
-	if (rubik2.checkRubik(colors))
+	if (rubik2.verifyRubikColors(colors))
 	{
 		this->passed++;
 		this->nbMoves += rubik.getMoves().size();
