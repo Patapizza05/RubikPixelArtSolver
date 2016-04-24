@@ -3,7 +3,7 @@
 
 void openCVMain()
 {
-	Robot robot("COM3", 1);
+	Robot robot(1, "COM3");
 
 	/*if (robot.initPort()){
 		std::cout << "Communication is ready" << std::endl;
@@ -44,7 +44,7 @@ void runCampaignMain() {
 }
 
 void testRobotMovesMain() {
-	Robot robot("COM3",0);
+	Robot robot(0, "COM3");
 
 	int colorOrder[] = { 2, 3, 4, 1, 5, 0 };
 

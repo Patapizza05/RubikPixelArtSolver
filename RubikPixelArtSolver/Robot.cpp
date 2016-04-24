@@ -14,21 +14,17 @@ http://opencv-srf.blogspot.fr/2010/09/object-detection-using-color-seperation.ht
 std::vector<Scalar> minColor{ Scalar(70, 20, 130), Scalar(60, 110, 110), Scalar(120, 120, 140), Scalar(80, 180, 190), Scalar(5, 150, 150), Scalar(20, 100, 100) };
 std::vector<Scalar> maxColor{ Scalar(180, 110, 255), Scalar(100, 220, 250), Scalar(180, 250, 200), Scalar(120, 255, 255), Scalar(15, 235, 250), Scalar(40, 255, 255) };
 
-Robot::Robot(){
-	this->state = RobotState(0, false, 1, _U);
-	this->setCameraId(0);
-	this->setSquareCount(0);
-	this->setWindowName("Default Rubik Window");
-}
+/*Robot::Robot() : Robot(0) {
+}*/
 
-Robot::Robot(int camera_id){
+/*Robot::Robot(int camera_id){
 	this->state = RobotState(0, false, 1, _U);
 	this->setCameraId(camera_id);
 	this->setSquareCount(0);
 	this->setWindowName("Default Rubik Window");
-}
+}*/
 
-Robot::Robot(String window_name, int camera_id){
+Robot::Robot(int camera_id, String window_name){
 	this->state = RobotState(0, false, 1, _U);
 	this->setCameraId(camera_id);
 	this->setSquareCount(0);
@@ -491,7 +487,7 @@ void Robot::endMove() {
 	}*/
 }
 
-RobotController Robot::getController(){
+RobotController& Robot::getController(){
 	return this->controller;
 }
 

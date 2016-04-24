@@ -1,7 +1,7 @@
 #include "HumanStepSolver.h"
 #include "Rubik.h"
 
-void HumanStepSolver::resolve(Rubik * pRubik, RubikColor colors[]) {
+void AbstractHumanStepSolver::resolve(Rubik * pRubik, RubikColor colors[]) {
 	resolveMiddle(pRubik, colors[4]);
 	RubikColor edgesColors[4] = { colors[7], colors[5], colors[1], colors[3] };
 	RubikColor cornersColors[4] = { colors[6], colors[8], colors[2], colors[0] };
@@ -9,13 +9,13 @@ void HumanStepSolver::resolve(Rubik * pRubik, RubikColor colors[]) {
 	resolveCorners(pRubik, cornersColors);
 }
 
-void HumanStepSolver::resolveMiddle(Rubik * pRubik, RubikColor color) {
+void AbstractHumanStepSolver::resolveMiddle(Rubik * pRubik, RubikColor color) {
 	int index = this->searchMiddleColorIndex(pRubik, color);
-	pRubik->getMiddle(index)->setLockedPosition(true);
+	pRubik->getMiddle(index)->setLocked(true);
 	if (Rubik::debug) pRubik->printCube();
 }
 
-void HumanStepSolver::resolveEdges(Rubik * pRubik, RubikColor colors[]) {
+void AbstractHumanStepSolver::resolveEdges(Rubik * pRubik, RubikColor colors[]) {
 
 	int solvedEdges = 0;
 
@@ -46,7 +46,7 @@ void HumanStepSolver::resolveEdges(Rubik * pRubik, RubikColor colors[]) {
 	}
 }
 
-void HumanStepSolver::resolveCorners(Rubik * pRubik, RubikColor colors[]) {
+void AbstractHumanStepSolver::resolveCorners(Rubik * pRubik, RubikColor colors[]) {
 	int solvedCorners = 0;
 
 	for (int i = 0; i < 4; i++) {
@@ -76,16 +76,16 @@ void HumanStepSolver::resolveCorners(Rubik * pRubik, RubikColor colors[]) {
 
 }
 
-bool HumanStepSolver::checkEdgeColor(Rubik * pRubik, int index, RubikColor color) { //locked
-	if (pRubik->getEdge(index)->getLockedPosition() == false && pRubik->getEdge(index)->getColor() == color)
+bool AbstractHumanStepSolver::checkEdgeColor(Rubik * pRubik, int index, RubikColor color) { //locked
+	if (pRubik->getEdge(index)->isLocked() == false && pRubik->getEdge(index)->getColor() == color)
 	{
 		return true;
 	}
 	return false;
 }
 
-bool HumanStepSolver::checkCornerColor(Rubik * pRubik, int index, RubikColor color) { //locked
-	if (pRubik->getCorner(index)->getLockedPosition() == false && pRubik->getCorner(index)->getColor() == color)
+bool AbstractHumanStepSolver::checkCornerColor(Rubik * pRubik, int index, RubikColor color) { //locked
+	if (pRubik->getCorner(index)->isLocked() == false && pRubik->getCorner(index)->getColor() == color)
 	{
 		return true;
 	}
@@ -94,7 +94,7 @@ bool HumanStepSolver::checkCornerColor(Rubik * pRubik, int index, RubikColor col
 
 
 
-int HumanStepSolver::searchMiddleColorIndex(Rubik * pRubik, RubikColor color) {
+int AbstractHumanStepSolver::searchMiddleColorIndex(Rubik * pRubik, RubikColor color) {
 	if (checkMiddleColor(pRubik, 1, color)) {
 		//No moves
 		return 1;
@@ -144,7 +144,7 @@ int HumanStepSolver::searchMiddleColorIndex(Rubik * pRubik, RubikColor color) {
 	return 1;
 }
 
-bool HumanStepSolver::checkMiddleColor(Rubik * pRubik, int i, RubikColor color) {
+bool AbstractHumanStepSolver::checkMiddleColor(Rubik * pRubik, int i, RubikColor color) {
 	if (pRubik->getMiddle(i)->getColor() == color)
 		return true;
 	return false;

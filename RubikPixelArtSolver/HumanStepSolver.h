@@ -4,7 +4,7 @@
 
 #include "AbstractSolver.h"
 
-class HumanStepSolver : public AbstractSolver {
+class AbstractHumanStepSolver : public AbstractSolver {
 public:
 	virtual void resolve(Rubik * pRubik, RubikColor colors[]);
 	virtual void resolveMiddle(Rubik * pRubik, RubikColor colors);

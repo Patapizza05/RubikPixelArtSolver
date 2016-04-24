@@ -5,6 +5,10 @@
 #include <string>
 #include "RubikColor.h"
 
+/// <summary>
+/// Exception : The cube resolution is wrong
+/// </summary>
+/// <seealso cref="std::exception" />
 class ResolutionException : public std::exception
 {
 public:

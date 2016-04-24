@@ -896,8 +896,8 @@ void Rubik::turnCubeLeft() { //White to green
 
 void Rubik::setLockedEdge(int index, bool value) {
 	int edgeIndex = index % 12;
-	this->edges[edgeIndex]->setLockedPosition(value);
-	this->edges[edgeIndex + 12]->setLockedPosition(value);
+	this->edges[edgeIndex]->setLocked(value);
+	this->edges[edgeIndex + 12]->setLocked(value);
 }
 
 
@@ -916,9 +916,9 @@ void Rubik::applyMove(std::string m) {
 
 void Rubik::setLockedCorner(int index, bool value) {
 	int cornerIndex = index % 8;
-	this->corners[cornerIndex]->setLockedPosition(value);
-	this->corners[cornerIndex + 8]->setLockedPosition(value);
-	this->corners[cornerIndex + 16]->setLockedPosition(value);
+	this->corners[cornerIndex]->setLocked(value);
+	this->corners[cornerIndex + 8]->setLocked(value);
+	this->corners[cornerIndex + 16]->setLocked(value);
 }
 
 

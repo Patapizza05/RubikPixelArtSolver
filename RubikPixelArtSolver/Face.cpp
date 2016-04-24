@@ -1,5 +1,6 @@
 #include "Face.h"
 
+
 Face::Face(int number, RubikColor color) {
 	this->number = number;
 	this->color = color;
@@ -10,7 +11,7 @@ void Face::setNumber(int number) {
 		this->number = number;
 }
 
-void Face::setLockedPosition(bool value)  
+void Face::setLocked(bool value)  
 { 
-	lockedPosition = value; 
+	isLockedPosition = value; 
 }

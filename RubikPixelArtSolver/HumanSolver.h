@@ -4,7 +4,7 @@
 
 #include "HumanStepSolver.h"
 
-class HumanSolver : public HumanStepSolver {
+class HumanSolver : public AbstractHumanStepSolver {
 protected:
 	int searchEdgeColorIndex(Rubik * pRubik, RubikColor color, int solvedEdges);
 	int searchCornerColorIndex(Rubik * pRubik, RubikColor color, int solvedEdges);

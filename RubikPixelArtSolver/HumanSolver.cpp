@@ -38,12 +38,12 @@ int HumanSolver::searchEdgeColorIndex(Rubik * pRubik, RubikColor color, int solv
 		return 4;
 	}
 
-	if (checkEdgeColor(pRubik, 21, color) && !pRubik->getEdge(7)->getLockedPosition()) { //2
+	if (checkEdgeColor(pRubik, 21, color) && !pRubik->getEdge(7)->isLocked()) { //2
 		pRubik->R(); pRubik->Fi();
 		return 21;
 	}
 
-	if (checkEdgeColor(pRubik, 20, color) && !pRubik->getEdge(6)->getLockedPosition()) { //2
+	if (checkEdgeColor(pRubik, 20, color) && !pRubik->getEdge(6)->isLocked()) { //2
 		pRubik->Li(); pRubik->F();
 		return 20;
 	}
@@ -85,12 +85,12 @@ int HumanSolver::searchEdgeColorIndex(Rubik * pRubik, RubikColor color, int solv
 		return 9;
 	}
 
-	if (checkEdgeColor(pRubik, 10, color) && !pRubik->getEdge(7)->getLockedPosition()) { //2.5
+	if (checkEdgeColor(pRubik, 10, color) && !pRubik->getEdge(7)->isLocked()) { //2.5
 		pRubik->R2(); pRubik->Fi();
 		return 10;
 	}
 
-	if (checkEdgeColor(pRubik, 23, color) && !pRubik->getEdge(6)->getLockedPosition()) { //2.5
+	if (checkEdgeColor(pRubik, 23, color) && !pRubik->getEdge(6)->isLocked()) { //2.5
 		pRubik->L2(); pRubik->F();
 		return 23;
 	}
@@ -139,12 +139,12 @@ int HumanSolver::searchEdgeColorIndex(Rubik * pRubik, RubikColor color, int solv
 		return 22;
 	}
 
-	if (checkEdgeColor(pRubik, 2, color) && !pRubik->getEdge(7)->getLockedPosition()) { //3
+	if (checkEdgeColor(pRubik, 2, color) && !pRubik->getEdge(7)->isLocked()) { //3
 		pRubik->D(); pRubik->R(); pRubik->Fi();
 		return 2;
 	}
 
-	if (checkEdgeColor(pRubik, 17, color) && !pRubik->getEdge(6)->getLockedPosition()) { //3
+	if (checkEdgeColor(pRubik, 17, color) && !pRubik->getEdge(6)->isLocked()) { //3
 		pRubik->D(); pRubik->Li(); pRubik->F();
 		return 17;
 	}
@@ -169,13 +169,13 @@ int HumanSolver::searchEdgeColorIndex(Rubik * pRubik, RubikColor color, int solv
 		return 17;
 	}
 
-	if (checkEdgeColor(pRubik, 0, color) && !pRubik->getEdge(7)->getLockedPosition()) //4.5
+	if (checkEdgeColor(pRubik, 0, color) && !pRubik->getEdge(7)->isLocked()) //4.5
 	{
 		pRubik->F2(); pRubik->D(); pRubik->R(); pRubik->Fi();
 		return 0;
 	}
 
-	if (checkEdgeColor(pRubik, 16, color) && !pRubik->getEdge(16)->getLockedPosition()) { //4.5
+	if (checkEdgeColor(pRubik, 16, color) && !pRubik->getEdge(16)->isLocked()) { //4.5
 		pRubik->B2(); pRubik->Di(); pRubik->R(); pRubik->Fi();
 		return 16;
 	}

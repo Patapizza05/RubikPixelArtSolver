@@ -23,16 +23,49 @@
 #define _Di "Di"
 #define _D2 "D2"
 
+/// <summary>
+/// Class representing a face of the cube
+/// </summary>
 class Face {
 	public:
-		Face(int,RubikColor);
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Face" /> class.
+		/// </summary>
+		/// <param name="number">The number of the piece (This is NOT the position on the cube)</param>
+		/// <param name="color">The color of the piece</param>
+		Face(int number, RubikColor color);
+
+		/// <summary>
+		/// Gets the number.
+		/// </summary>
+		/// <returns></returns>
 		int getNumber() { return number; }
+
+		/// <summary>
+		/// Sets the number.
+		/// </summary>
+		/// <param name="">The .</param>
 		void setNumber(int);
-		bool getLockedPosition() { return lockedPosition; }
-		void setLockedPosition(bool value);
+
+		/// <summary>
+		/// Determines whether this piece is locked.
+		/// </summary>
+		/// <returns></returns>
+		bool isLocked() { return isLockedPosition; }
+
+		/// <summary>
+		/// Locks or unlocks the piece
+		/// </summary>
+		/// <param name="value">if set to <c>true</c>, locks the piece.</param>
+		void setLocked(bool value);
+
+		/// <summary>
+		/// Gets the color.
+		/// </summary>
+		/// <returns></returns>
 		RubikColor getColor() { return color; }
 	protected:
-		bool lockedPosition = FALSE;
+		bool isLockedPosition = false;
 		int number;
 		RubikColor color;
 };

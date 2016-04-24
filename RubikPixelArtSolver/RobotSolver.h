@@ -6,7 +6,7 @@
 #include <vector>
 #include "Robot.h"
 
-class RobotSolver : public HumanStepSolver {
+class RobotSolver : public AbstractHumanStepSolver {
 public:
 	RobotSolver(Robot * pRobot);
 protected:
