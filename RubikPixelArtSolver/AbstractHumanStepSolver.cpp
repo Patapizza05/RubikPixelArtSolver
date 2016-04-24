@@ -1,4 +1,4 @@
-#include "HumanStepSolver.h"
+#include "AbstractHumanStepSolver.h"
 #include "Rubik.h"
 
 void AbstractHumanStepSolver::resolve(Rubik * pRubik, RubikColor colors[]) {
@@ -76,6 +76,7 @@ void AbstractHumanStepSolver::resolveCorners(Rubik * pRubik, RubikColor colors[]
 
 }
 
+
 bool AbstractHumanStepSolver::checkEdgeColor(Rubik * pRubik, int index, RubikColor color) { //locked
 	if (pRubik->getEdge(index)->isLocked() == false && pRubik->getEdge(index)->getColor() == color)
 	{
@@ -83,6 +84,9 @@ bool AbstractHumanStepSolver::checkEdgeColor(Rubik * pRubik, int index, RubikCol
 	}
 	return false;
 }
+
+
+
 
 bool AbstractHumanStepSolver::checkCornerColor(Rubik * pRubik, int index, RubikColor color) { //locked
 	if (pRubik->getCorner(index)->isLocked() == false && pRubik->getCorner(index)->getColor() == color)

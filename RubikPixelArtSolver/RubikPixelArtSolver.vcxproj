@@ -135,7 +135,7 @@
     <ClCompile Include="EdgeFace.cpp" />
     <ClCompile Include="Face.cpp" />
     <ClCompile Include="HumanSolver.cpp" />
-    <ClCompile Include="HumanStepSolver.cpp" />
+    <ClCompile Include="AbstractHumanStepSolver.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MiddleFace.cpp" />
     <ClCompile Include="Robot.cpp" />
@@ -153,7 +153,7 @@
     <ClInclude Include="EdgeFace.h" />
     <ClInclude Include="Face.h" />
     <ClInclude Include="HumanSolver.h" />
-    <ClInclude Include="HumanStepSolver.h" />
+    <ClInclude Include="AbstractHumanStepSolver.h" />
     <ClInclude Include="IndexOutOfBoundsException.h" />
     <ClInclude Include="MiddleFace.h" />
     <ClInclude Include="ResolutionException.h" />

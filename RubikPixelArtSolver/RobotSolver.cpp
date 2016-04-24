@@ -5,6 +5,7 @@ RobotSolver::RobotSolver(Robot * pRobot) {
 	this->pRobot = pRobot;
 }
 
+
 bool RobotSolver::getMinCost(Rubik * pRubik, std::vector<std::string>& tempMoves, int& minCost) {
 	int cost;
 	if (pRubik->getMoves().size() == 0) {
@@ -467,7 +468,7 @@ int RobotSolver::searchEdgeColorIndex(Rubik * pRubik, RubikColor color, int solv
 		return result;
 	}
 
-int RobotSolver::searchCornerColorIndex(Rubik * pRubik, RubikColor color, int solvedEdges) {
+int RobotSolver::searchCornerColorIndex(Rubik * pRubik, RubikColor color, int solvedCorners) {
 		int result = -1;
 		int minCost = -1;
 		std::vector<std::string> tempMoves;

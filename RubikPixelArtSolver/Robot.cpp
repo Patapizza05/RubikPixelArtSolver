@@ -599,7 +599,7 @@ std::vector<std::vector<SquareRubik>> Robot::launchCapture(){
 					this->setSquareCount(this->getSquareCount() + 1);
 					rectangle(frame_RGB, rec, Scalar(0, 255, 0), 2);
 					putText(frame_RGB, text, cv::Point2f(rec.x + rec.width / 2, rec.y + rec.height / 2), cv::FONT_HERSHEY_SIMPLEX, 1, Scalar(0, 255, 0, 0));
-					points.push_back(SquareRubik(cv::Point2f(rec.x, rec.y), ColorRubik(j)));
+					points.push_back(SquareRubik(cv::Point2f(rec.x, rec.y), RubikColor(j)));
 				}
 			}
 		}

@@ -9,7 +9,7 @@
 /// <summary>
 /// The colors of the rubik's cube
 /// </summary>
-enum RubikColor { WHITE = 0, GREEN, RED, BLUE, ORANGE, YELLOW };
+enum RubikColor { WHITE = 0, GREEN = 1, RED = 2, BLUE = 3, ORANGE = 4, YELLOW = 5 };
 
 /// <summary>
 /// The colors used to print in colors in the console. The order can not be changed

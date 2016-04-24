@@ -212,6 +212,8 @@ int HumanSolver::searchEdgeColorIndex(Rubik * pRubik, RubikColor color, int solv
 	return -1;
 }
 
+
+
 int HumanSolver::searchCornerColorIndex(Rubik * pRubik, RubikColor color, int solvedCorners) {
 
 	if (checkCornerColor(pRubik, 16, color)) { //0

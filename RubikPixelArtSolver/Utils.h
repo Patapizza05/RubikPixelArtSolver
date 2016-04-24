@@ -4,6 +4,7 @@
 #include "opencv2/core.hpp"
 #include "opencv2/imgproc.hpp"
 #include "opencv2/highgui.hpp"
+#include "RubikColor.h"
 
 using cv::Scalar;
 using cv::String;
@@ -12,20 +13,11 @@ using cv::VideoCapture;
 using cv::Mat;
 using cv::Vec4i;
 
-enum ColorRubik{
-	white = 0,
-	green = 1,
-	red = 2,
-	blue = 3,
-	orange = 4,
-	yellow = 5
-};
-
 struct SquareRubik{
 	cv::Point2f position;
-	ColorRubik color;
+	RubikColor color;
 
-	SquareRubik(cv::Point2f point, ColorRubik col) : position(point), color(col) {}
+	SquareRubik(cv::Point2f point, RubikColor col) : position(point), color(col) {}
 };
 
 #endif

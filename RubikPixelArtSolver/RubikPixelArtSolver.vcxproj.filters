@@ -51,13 +51,13 @@
     <ClCompile Include="RobotController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="HumanStepSolver.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="HumanSolver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RobotSolver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AbstractHumanStepSolver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -101,13 +101,13 @@
     <ClInclude Include="AbstractSolver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="HumanStepSolver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="HumanSolver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RobotSolver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AbstractHumanStepSolver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
