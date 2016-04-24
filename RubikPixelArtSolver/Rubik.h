@@ -30,20 +30,19 @@ struct Offset {
 /// </summary>
 class Rubik {
 	public:
-
 		/// <summary>
-		/// Initializes a new instance of the <see cref="Rubik"/> class from an array representing the colors of the cube
-		/// This constructor can be used after scanning the Rubik's cube with OpenCV and the robot
+		/// Initializes a new instance of the <see cref="Rubik"/> class from an array representing the colors of the cube. 
+		/// This constructor can be used after scanning the Rubik's cube with OpenCV and the robot.
 		/// </summary>
-		/// <param name="">an array representing the colors of the cube in this order (the scanning order of the cube with the robot) :
+		/// <param name="">an array representing the colors of the cube in this order (the scanning order of the cube with the robot): 
 		///					[		Cell 5		]
 		/// [	Cell 2		][		Cell 3		][		Cell 0		][		Cell 1		]
-		///					[		Cell 4		]	
+		///					[		Cell 4		].	
 		/// In each cell is a vector of size 9 giving the colors of the pieces in this order :
 		///	[0	1	2
 		///  3	4	5
 		///	 6	7	8]
-		/// (first row, second row, third row)</param>
+		///  (first row, second row, third row)</param>
 		Rubik(std::vector<std::vector<int>>&);
 
 
@@ -78,8 +77,8 @@ class Rubik {
 		/// <summary>
 		/// Enables or disables the console prints when resolving the cube
 		/// </summary>
-		/// <param name="">if set to <c>true</c> [].</param>
-		static void setVerbose(bool);
+		/// <param name="value">if set to <c>true</c>, prints the resolving steps in the console</param>
+		static void setVerbose(bool value);
 
 		/// <summary>
 		/// Verifies the rubik colors.
@@ -263,8 +262,8 @@ class Rubik {
 		/// <summary>
 		/// Prints the error to the console
 		/// </summary>
-		/// <param name="">The text to print</param>
-		void error(std::string);	
+		/// <param name="str">The string.</param>
+		void error(std::string str);
 
 		/// <summary>
 		/// Checks each move to find moves that can be simplified. Normally, this method is not needed since the addMove method optimises before adding the move to the list
@@ -272,16 +271,16 @@ class Rubik {
 		void optimise();	
 
 		/// <summary>
-		/// Translates the "string" moves to actual corresponding functions (eg. "R" calls the function this->R())
+		/// Translates the "string" moves to actual corresponding functions (eg. "R" calls the function this-&gt;R())
 		/// </summary>
-		/// <param name="">The array of string representing moves</param>
-		void applyMoves(std::vector<std::string>&);		
+		/// <param name="arrayOfMoves">The array of moves.</param>
+		void applyMoves(std::vector<std::string>& arrayOfMoves);
 
 		/// <summary>
-		/// Translates the "string" move to actual corresponding function (eg. "R" calls the function this->R())
+		/// Translates the "string" move to actual corresponding function (eg. "R" calls the function this-&gt;R())
 		/// </summary>
-		/// <param name="">The string representing the move</param>
-		void applyMove(std::string);
+		/// <param name="move">The move.</param>
+		void applyMove(std::string move);
 
 		/// <summary>
 		/// Gets the moves applied to this cube
@@ -306,64 +305,226 @@ class Rubik {
 		/// <summary>
 		/// Gets the corner at corresponding index
 		/// </summary>
-		/// <param name="">The index</param>
-		/// <returns></returns>
-		CornerFace * getCorner(int);
+		/// <param name="index">The index.</param>
+		/// <returns>The corresponding corner</returns>
+		CornerFace * getCorner(int index);
 		
 		/// <summary>
 		/// Gets the edge at corresponding index
 		/// </summary>
-		/// <param name="">The index</param>
-		/// <returns></returns>
-		EdgeFace * getEdge(int);
+		/// <param name="index">The index.</param>
+		/// <returns>The corresponding edge</returns>
+		EdgeFace * getEdge(int index);
 		
 		/// <summary>
 		/// Gets the middle face at corresponding index
 		/// </summary>
+		/// <param name="index">The index.</param>
+		/// <returns>
+		/// The corresponding middle face
+		/// </returns>
+		MiddleFace * getMiddle(int index);
+		
+		/// <summary>
+		/// Gets the move at correspond index in the <c>moves</c> array
+		/// </summary>
 		/// <param name="">The index</param>
-		/// <returns></returns>
-		MiddleFace * getMiddle(int);
-
+		/// <returns>
+		/// The corresponding move
+		/// </returns>
 		std::string getMoveAtIndex(int);
+		
+		/// <summary>
+		/// Gets the number of moves in the <c>moves</c> array
+		/// </summary>
+		/// <returns>The number of moves in the <c>moves</c> array</returns>
 		int getNbMoves();
 
 	private:
+		//Static array giving the # used to represent the cube
 		static int lines[9][12];
+
+		//Gives the actual move in the changed referential
 		std::map<std::string, std::string> movesDictionary;
+
+		//Gives the function corresponding to a string (representing a rubik move)
 		std::map<std::string, pfunc> movesFunctions;
 
 		CornerFace * corners[24];
 		EdgeFace * edges[24];
 		MiddleFace * middle[8];
 
+		//Array of moves
 		std::vector<std::string> moves;
+		
+		/// <summary>
+		/// Initializes the moves dictionary.
+		/// </summary>
+		void initMovesDictionaryAndFunctions();
+		/// <summary>
+		/// Initializes the corners and edges from the array given in the constructor
+		/// </summary>
+		/// <param name="arr">The arr.</param>
+		void initCornersAndEdges(int arr[]);
+		
+		/// <summary>
+		/// Initializes the corners and edges from the array given in the constructor
+		/// </summary>
+		/// <param name="arr">The arr.</param>
+		void initCornersAndEdges(std::vector<std::vector<int>>& arr);
 
-		void initMovesDictionary();
-		struct Offset getOffset(int);
-		void addMove(std::string);
-		void addEdge(int, int);
-		void addCorner(int, int);
-		void addMiddle(int, int);
-		void addCornerColor(int, RubikColor);
-		void addEdgeColor(int, RubikColor);
-		void addMiddleColor(int, RubikColor);
-		void computeFaceLabels();
-		void computeAllEdgeFaceLabels();
-		void computeEdgeFaceLabels(int);
-		std::vector<int> getPossibleEdgeNumbersFromColor(RubikColor);
+		/// <summary>
+		/// Gives the offset used to read the indexes in the Rubik::lines static variable
+		/// </summary>
+		/// <param name="scannedLayerPosition">The layer index for the scanned cube array (std::vector<std::vector<int>>)</param>
+		struct Offset getOffset(int scannedLayerPosition);
+		
+		/// <summary>
+		/// Adds the move to the moves array. Will simplify the move according to the previous move in the array if possible.
+		/// </summary>
+		/// <param name="move">The move.</param>
+		void addMove(std::string move);
+		
+		/// <summary>
+		/// Finds the color corresponding to the # of the piece and adds the edge to the edges of the cube 
+		/// </summary>
+		/// <param name="position">The # of the piece</param>
+		/// <param name="number">The actual position in the disordered cube</param>
+		void addEdge(int position, int number);
+		
+		/// <summary>
+		/// Finds the color corresponding to the # of the piece and adds the corner to the corners of the cube
+		/// </summary>
+		/// <param name="position">The position.</param>
+		/// <param name="number">The number.</param>
+		void addCorner(int position, int number);
+		
+		/// <summary>
+		/// Finds the color corresponding to the # of the piece and adds the middle face to the middle faces of the cube
+		/// </summary>
+		/// <param name="position">The position.</param>
+		/// <param name="number">The number.</param>
+		void addMiddle(int position, int number);
+		
+		/// <summary>
+		/// Add a corner with a certain color but without the corresponding # (will have to be computed later)
+		/// </summary>
+		/// <param name="index">The index.</param>
+		/// <param name="color">The color.</param>
+		void addCornerColor(int index, RubikColor color);
 
-		void computeAllCornerFaceLabels();
-		void computeCornerFaceLabels(int);
-		std::vector<int> getPossibleCornerNumbersFromColor(RubikColor);
+		/// <summary>
+		/// Add an edge with a certain color but without the corresponding # (will have to be computed later)
+		/// </summary>
+		/// <param name="index">The index.</param>
+		/// <param name="color">The color.</param>
+		void addEdgeColor(int index, RubikColor color);
 
-		void initCornersAndEdges(int[]);
-		void initCornersAndEdges(std::vector<std::vector<int>>&);
-		void translate(Face * array[], int i1, int i2, int i3, int i4);
-		void translate(CornerFace * array[], int i1, int i2, int i3, int i4);
-		void translate(EdgeFace * array[], int i1, int i2, int i3, int i4);
-		void translate(MiddleFace * array[], int i1, int i2, int i3, int i4);
+		/// <summary>
+		/// Adds a middle face with a certain color but without the corresponding # (will have to be computed later)
+		/// </summary>
+		/// <param name="index">The index.</param>
+		/// <param name="color">The color.</param>
+		void addMiddleColor(int index, RubikColor color);
+
+		/// <summary>
+		/// Initializes the face numbers from colors.
+		/// </summary>
+		void initAllFacesNumbersFromColors();
+
+		/// <summary>
+		/// Initializes the edge numbers from colors.
+		/// </summary>
+		void initAllEdgesNumbersFromColors();
+
+
+		/// <summary>
+		/// Computes the edge piece numbers from colors.
+		/// </summary>
+		/// <param name="">The edge index (modulo 12)</param>
+		void computeEdgePieceNumbersFromColors(int);
+
+
+		/// <summary>
+		/// Gets the possible edge numbers corresponding to the given color.
+		/// </summary>
+		/// <param name="color">The color.</param>
+		/// <returns>
+		/// An array with the possible edge numbers
+		/// </returns>
+		std::vector<int> getPossibleEdgeNumbersFromColor(RubikColor color);
+
+		/// <summary>
+		/// Initializes all corners numbers from colors.
+		/// </summary>
+		void initAllCornersNumbersFromColors();
+		
+		/// <summary>
+		/// Computes the corner piece number from colors.
+		/// </summary>
+		/// <param name="">The .</param>
+		void computeCornerPieceNumberFromColors(int);
+		
+		/// <summary>
+		/// Gets the possible corner numbers corresponding to the given color.
+		/// </summary>
+		/// <param name="color">The color.</param>
+		/// <returns>An array with the possible corner numbers</returns>
+		std::vector<int> getPossibleCornerNumbersFromColor(RubikColor color);
+
+		/// <summary>
+		/// Shifts i1 --> i2 --> i3 --> i4 [--> i1
+		/// </summary>
+		/// <param name="array">The array.</param>
+		/// <param name="i1">The i1.</param>
+		/// <param name="i2">The i2.</param>
+		/// <param name="i3">The i3.</param>
+		/// <param name="i4">The i4.</param>
+		void shift(Face * array[], int i1, int i2, int i3, int i4);
+		
+		/// <summary>
+		/// Shifts i1 --> i2 --> i3 --> i4 [--> i1
+		/// </summary>
+		/// <param name="array">The array.</param>
+		/// <param name="i1">The i1.</param>
+		/// <param name="i2">The i2.</param>
+		/// <param name="i3">The i3.</param>
+		/// <param name="i4">The i4.</param>
+		void shift(CornerFace * array[], int i1, int i2, int i3, int i4);
+		
+		/// <summary>
+		/// Shifts i1 --> i2 --> i3 --> i4 [--> i1
+		/// </summary>
+		/// <param name="array">The array.</param>
+		/// <param name="i1">The i1.</param>
+		/// <param name="i2">The i2.</param>
+		/// <param name="i3">The i3.</param>
+		/// <param name="i4">The i4.</param>
+		void shift(EdgeFace * array[], int i1, int i2, int i3, int i4);
+		
+		/// <summary>
+		/// Shifts i1 --> i2 --> i3 --> i4 [--> i1
+		/// </summary>
+		/// <param name="array">The array.</param>
+		/// <param name="i1">The i1.</param>
+		/// <param name="i2">The i2.</param>
+		/// <param name="i3">The i3.</param>
+		/// <param name="i4">The i4.</param>
+		void shift(MiddleFace * array[], int i1, int i2, int i3, int i4);
+		
+		/// <summary>
+		/// Swaps i1 and i2 in the array
+		/// </summary>
+		/// <param name="array">The array.</param>
+		/// <param name="i1">The i1.</param>
+		/// <param name="i2">The i2.</param>
 		void swap(Face * array[], int i1, int i2);
 
+		/// <summary>
+		/// When adding a move, shortens the current move with the previous move in the array (eg. 'R' and 'R' becomes 'R2')
+		/// </summary>
+		/// <param name="">The .</param>
+		/// <returns></returns>
 		int shortenMoves(int);
 };
 

@@ -1,8 +1,5 @@
 #include "Rubik.h"
 
-/// <summary>
-/// The debug{CC2D43FA-BBC4-448A-9D0B-7B57ADF2655C}
-/// </summary>
 bool Rubik::debug = false;
 
 int Rubik::lines[9][12] = {
@@ -19,103 +16,87 @@ int Rubik::lines[9][12] = {
 
 Rubik::Rubik(std::vector<std::vector<int>>& piecesColors) {
 	initCornersAndEdges(piecesColors);
-	initMovesDictionary();
+	initMovesDictionaryAndFunctions();
 }
 
 Rubik::Rubik(int pieces[]) 	
 {
 	initCornersAndEdges(pieces);
-	initMovesDictionary();
+	initMovesDictionaryAndFunctions();
 }
 
-void Rubik::initMovesDictionary() {
-	movesDictionary[_R] = _R;
-	movesFunctions[_R] = &Rubik::R;
-	movesDictionary[_Ri] = _Ri;
-	movesFunctions[_Ri] = &Rubik::Ri;
-	movesDictionary[_R2] = _R2;
-	movesFunctions[_R2] = &Rubik::R2;
+Rubik::~Rubik() {
+	for (int i = 0; i < 24; i++) {
+		delete this->corners[i];
+		delete this->edges[i];
+	}
+	for (int i = 0; i < 6; i++) {
+		delete this->middle[i];
+	}
+	this->moves.clear();
+}
 
-	movesDictionary[_L] = _L;
-	movesFunctions[_L] = &Rubik::L;
-	movesDictionary[_Li] = _Li;
-	movesFunctions[_Li] = &Rubik::Li;
-	movesDictionary[_L2] = _L2;
-	movesFunctions[_L2] = &Rubik::L2;
+void Rubik::initMovesDictionaryAndFunctions() {
+	movesDictionary[_R] = _R;	movesFunctions[_R] = &Rubik::R;
+	movesDictionary[_Ri] = _Ri;	movesFunctions[_Ri] = &Rubik::Ri;
+	movesDictionary[_R2] = _R2;	movesFunctions[_R2] = &Rubik::R2;
 
-	movesDictionary[_U] = _U;
-	movesFunctions[_U] = &Rubik::U;
-	movesDictionary[_Ui] = _Ui;
-	movesFunctions[_Ui] = &Rubik::Ui;
-	movesDictionary[_U2] = _U2;
-	movesFunctions[_U2] = &Rubik::U2;
+	movesDictionary[_L] = _L;	movesFunctions[_L] = &Rubik::L;
+	movesDictionary[_Li] = _Li;	movesFunctions[_Li] = &Rubik::Li;
+	movesDictionary[_L2] = _L2;	movesFunctions[_L2] = &Rubik::L2;
 
-	movesDictionary[_B] = _B;
-	movesFunctions[_B] = &Rubik::B;
-	movesDictionary[_Bi] = _Bi;
-	movesFunctions[_Bi] = &Rubik::Bi;
-	movesDictionary[_B2] = _B2;
-	movesFunctions[_B2] = &Rubik::B2;
+	movesDictionary[_U] = _U;	movesFunctions[_U] = &Rubik::U;
+	movesDictionary[_Ui] = _Ui;	movesFunctions[_Ui] = &Rubik::Ui;
+	movesDictionary[_U2] = _U2;	movesFunctions[_U2] = &Rubik::U2;
 
-	movesDictionary[_F] = _F;
-	movesFunctions[_F] = &Rubik::F;
-	movesDictionary[_Fi] = _Fi;
-	movesFunctions[_Fi] = &Rubik::Fi;
-	movesDictionary[_F2] = _F2;
-	movesFunctions[_F2] = &Rubik::F2;
+	movesDictionary[_B] = _B;	movesFunctions[_B] = &Rubik::B;
+	movesDictionary[_Bi] = _Bi; movesFunctions[_Bi] = &Rubik::Bi;
+	movesDictionary[_B2] = _B2; movesFunctions[_B2] = &Rubik::B2;
 
-	movesDictionary[_D] = _D;
-	movesFunctions[_D] = &Rubik::D;
-	movesDictionary[_Di] = _Di;
-	movesFunctions[_Di] = &Rubik::Di;
-	movesDictionary[_D2] = _D2;
-	movesFunctions[_D2] = &Rubik::D2;
+	movesDictionary[_F] = _F;	movesFunctions[_F] = &Rubik::F;
+	movesDictionary[_Fi] = _Fi;	movesFunctions[_Fi] = &Rubik::Fi;
+	movesDictionary[_F2] = _F2;	movesFunctions[_F2] = &Rubik::F2;
+
+	movesDictionary[_D] = _D;	movesFunctions[_D] = &Rubik::D;
+	movesDictionary[_Di] = _Di;	movesFunctions[_Di] = &Rubik::Di;
+	movesDictionary[_D2] = _D2;	movesFunctions[_D2] = &Rubik::D2;
 }
 
 struct Offset Rubik::getOffset(int face) {
 	struct Offset offset;
 	switch (face) {
 	case 0:
-		offset.x = 3;
-		offset.y = 3;
-		break;
+		offset.x = 3; offset.y = 3; break;
 	case 1:
-		offset.x = 6;
-		offset.y = 3;
-		break;
+		offset.x = 6; offset.y = 3;	break;
 	case 2:
-		offset.x = 9;
-		offset.y = 3;
-		break;
+		offset.x = 9; offset.y = 3;	break;
 	case 3:
-		offset.x = 0;
-		offset.y = 3;
-		break;
+		offset.x = 0; offset.y = 3;	break;
 	case 4:
-		offset.x = 3;
-		offset.y = 6;
-		break;
+		offset.x = 3; offset.y = 6;	break;
 	case 5:
-		offset.x = 3;
-		offset.y = 0;
-		break;
+		offset.x = 3; offset.y = 0;	break;
 	default:
-		offset.x = 0;
-		offset.y = 0;
-		break;
+		offset.x = 0; offset.y = 0;	break;
 	}
 	return offset;
 }
 
+
 void Rubik::initCornersAndEdges(std::vector<std::vector<int>>& colors) {
+
+	//Initialization
 	struct Offset offset;
 	offset.x = 0;
 	offset.y = 0;
 
 	int size = colors.size();
-	for (int i = 0; i < size; i++) {
+	for (int i = 0; i < size; i++) { //For each layer
 		int nbPieces = colors[i].size();
-		for (int j = 0; j < nbPieces; j++) {
+		for (int j = 0; j < nbPieces; j++) { //For each piece in this layer
+
+			//Finds coordinates to use
 			offset = getOffset(i);
 			int x = j;
 			int y = 0;
@@ -125,6 +106,9 @@ void Rubik::initCornersAndEdges(std::vector<std::vector<int>>& colors) {
 			}
 			x += offset.x;
 			y += offset.y;
+
+			//Determines Edge/Middle/Corner
+			//We're only adding the colors as we don't have the # of the pieces yet. We can compute them only once all the colors are added.
 			if (j % 2 != 0) { //Edge
 				addEdgeColor(Rubik::lines[y][x], ::translate(colors[i][j]));
 			}
@@ -137,169 +121,139 @@ void Rubik::initCornersAndEdges(std::vector<std::vector<int>>& colors) {
 		}
 	}
 
-	computeFaceLabels();
+	//Computes the piece # according to the given colors
+	initAllFacesNumbersFromColors();
 }
 
-void Rubik::computeFaceLabels() {
-	//Middles
+void Rubik::initAllFacesNumbersFromColors() {
+	//Initializes Middles
 		//Already done
 
-	//Edges
-	computeAllEdgeFaceLabels();
+	//Initializes Edges
+	initAllEdgesNumbersFromColors();
 
-	//Corners
-	computeAllCornerFaceLabels();
+	//Initializes Corners
+	initAllCornersNumbersFromColors();
+}
+
+
+void Rubik::initAllEdgesNumbersFromColors() {
+	int modulo = 12;
+	for (int i1 = 0; i1 < modulo; i1++) //Iterates from edge piece 0 to edge piece 12
+	{
+		computeEdgePieceNumbersFromColors(i1);
+	}
+}
+
+void Rubik::computeEdgePieceNumbersFromColors(int i1) {
+	i1 = i1 % 12; //Retries the smallest index from this pieces (In case of the piece 0,12 returns 0)
+	int i2 = i1 + 12;
+
+	//Find the possible indexes for each individual piece
+	std::vector<int> number1 = getPossibleEdgeNumbersFromColor(this->edges[i1]->getColor());
+	std::vector<int> number2 = getPossibleEdgeNumbersFromColor(this->edges[i2]->getColor());
+
+	//Find the two indexes that match (modulo 12)
+	int size1 = number1.size();
+	int size2 = number2.size();
+	for (int a = 0; a < size1; a++) {
+		for (int b = 0; b < size2; b++) {
+			if (number1[a] % 12 == number2[b] % 12) {
+				this->edges[i1]->setNumber(number1[a]);
+				this->edges[i2]->setNumber(number2[b]);
+				return;
+			}
+		}
+	}
+	error("error finding egde from colors");
 }
 
 std::vector<int> Rubik::getPossibleEdgeNumbersFromColor(RubikColor color) {
 	std::vector<int> colors;
 	switch (color) {
 	case RED:
-		colors.push_back(0);
-		colors.push_back(1);
-		colors.push_back(2);
-		colors.push_back(3);
+		colors.push_back(0); colors.push_back(1); colors.push_back(2); colors.push_back(3);
 		break;
 	case GREEN:
-		colors.push_back(15);
-		colors.push_back(18);
-		colors.push_back(20);
-		colors.push_back(23);
+		colors.push_back(15); colors.push_back(18);	colors.push_back(20); colors.push_back(23);
 		break;
 	case YELLOW:
-		colors.push_back(5);
-		colors.push_back(8);
-		colors.push_back(9);
-		colors.push_back(14);
+		colors.push_back(5); colors.push_back(8); colors.push_back(9); colors.push_back(14);
 		break;
 	case BLUE:
-		colors.push_back(10);
-		colors.push_back(13);
-		colors.push_back(19);
-		colors.push_back(21);
+		colors.push_back(10); colors.push_back(13);	colors.push_back(19); colors.push_back(21);
 		break;
 	case ORANGE:
-		colors.push_back(11);
-		colors.push_back(16);
-		colors.push_back(17);
-		colors.push_back(22);
+		colors.push_back(11); colors.push_back(16); colors.push_back(17); colors.push_back(22);
 		break;
 	case WHITE:
-		colors.push_back(4);
-		colors.push_back(6);
-		colors.push_back(7);
-		colors.push_back(12);
+		colors.push_back(4); colors.push_back(6); colors.push_back(7);	colors.push_back(12);
 		break;
 	}
-
 	return colors;
 }
 
-void Rubik::computeEdgeFaceLabels(int i1) {
-	i1 = i1 % 12;
-	int i2 = i1 + 12;
-	std::vector<int> color1 = getPossibleEdgeNumbersFromColor(this->edges[i1]->getColor());
-	std::vector<int> color2 = getPossibleEdgeNumbersFromColor(this->edges[i2]->getColor());
-	int size1 = color1.size();
-	int size2 = color2.size();
-	for (int a = 0; a < size1; a++) {
-		for (int b = 0; b < size2; b++) {
-			if (color1[a] % 12 == color2[b] % 12) {
-				this->edges[i1]->setNumber(color1[a]);
-				this->edges[i2]->setNumber(color2[b]);
-				return;
-			}
-		}
-	}
-	std::cout << "error finding egde from colors" << std::endl;
-}
-
-void Rubik::computeAllEdgeFaceLabels() {
-
-	int modulo = 12;
-
-	for (int i1 = 0; i1 < modulo; i1++)
-	{
-		computeEdgeFaceLabels(i1);
-	}
-}
-
-void Rubik::computeAllCornerFaceLabels() {
+void Rubik::initAllCornersNumbersFromColors() {
 	int modulo = 8;
-
-	for (int i1 = 0; i1 < modulo; i1++)
+	for (int i1 = 0; i1 < modulo; i1++) //Iterate from corner piece 0 to corner piece 8
 	{
-		computeCornerFaceLabels(i1);
+		computeCornerPieceNumberFromColors(i1);
 	}
 }
-void Rubik::computeCornerFaceLabels(int i1) {
+
+
+void Rubik::computeCornerPieceNumberFromColors(int i1) {
+	//Compute the 3 # of the corner piece (modulo 8)
 	i1 = i1 % 8;
 	int i2 = i1 + 8;
 	int i3 = i2 + 8;
-	std::vector<int> color1 = getPossibleCornerNumbersFromColor(this->corners[i1]->getColor());
-	std::vector<int> color2 = getPossibleCornerNumbersFromColor(this->corners[i2]->getColor());
-	std::vector<int> color3 = getPossibleCornerNumbersFromColor(this->corners[i3]->getColor());
-	int size1 = color1.size();
-	int size2 = color2.size();
-	int size3 = color3.size();
 
+	//Find the individual possible indexes for the given colors
+	std::vector<int> number1 = getPossibleCornerNumbersFromColor(this->corners[i1]->getColor());
+	std::vector<int> number2 = getPossibleCornerNumbersFromColor(this->corners[i2]->getColor());
+	std::vector<int> number3 = getPossibleCornerNumbersFromColor(this->corners[i3]->getColor());
+	int size1 = number1.size();
+	int size2 = number2.size();
+	int size3 = number3.size();
+
+	//Find the numbers that match (modulo 8)
 	for (int a = 0; a < size1; a++) {
 		for (int b = 0; b < size2; b++) {
 			for (int c = 0; c < size3; c++) {
-				if (color1[a] % 8 == color2[b] % 8 && color2[b] % 8 == color3[c] % 8) {
-					this->corners[i1]->setNumber(color1[a]);
-					this->corners[i2]->setNumber(color2[b]);
-					this->corners[i3]->setNumber(color3[c]);
+				if (number1[a] % 8 == number2[b] % 8 && number2[b] % 8 == number3[c] % 8) {
+					this->corners[i1]->setNumber(number1[a]);
+					this->corners[i2]->setNumber(number2[b]);
+					this->corners[i3]->setNumber(number3[c]);
 					return;
 				}
 			}
 		}
 	}
-	std::cout << "error finding corner from colors" << std::endl;
+	error("error finding corner from colors");
 }
-
 
 std::vector<int> Rubik::getPossibleCornerNumbersFromColor(RubikColor color) {
 	std::vector<int> colors;
 	switch (color) {
 	case RED:
-		colors.push_back(0);
-		colors.push_back(1);
-		colors.push_back(2);
-		colors.push_back(3);
+		colors.push_back(0); colors.push_back(1); colors.push_back(2); colors.push_back(3);
 		break;
 	case GREEN:
-		colors.push_back(8);
-		colors.push_back(14);
-		colors.push_back(18);
-		colors.push_back(20);
+		colors.push_back(8); colors.push_back(14); colors.push_back(18); colors.push_back(20);
 		break;
 	case YELLOW:
-		colors.push_back(4);
-		colors.push_back(5);
-		colors.push_back(10);
-		colors.push_back(19);
+		colors.push_back(4); colors.push_back(5); colors.push_back(10); colors.push_back(19);
 		break;
 	case BLUE:
-		colors.push_back(11);
-		colors.push_back(13);
-		colors.push_back(17);
-		colors.push_back(23);
+		colors.push_back(11); colors.push_back(13); colors.push_back(17); colors.push_back(23);
 		break;
 	case ORANGE:
-		colors.push_back(12);
-		colors.push_back(15);
-		colors.push_back(21);
-		colors.push_back(22);
+		colors.push_back(12); colors.push_back(15); colors.push_back(21); colors.push_back(22);
 		break;
 	case WHITE:
-		colors.push_back(6);
-		colors.push_back(7);
-		colors.push_back(9);
-		colors.push_back(16);
+		colors.push_back(6); colors.push_back(7); colors.push_back(9); colors.push_back(16);
 		break;
 	}
-
 	return colors;
 }
 
@@ -315,58 +269,42 @@ void Rubik::addMiddleColor(int i, RubikColor color) {
 	int number = -1;
 	switch (color) {
 	case RED:
-		number = 0;
-		break;
+		number = 0;	break;
 	case BLUE:
-		number = 4;
-		break;
+		number = 4;	break;
 	case ORANGE:
-		number = 5;
-		break;
+		number = 5;	break;
 	case YELLOW:
-		number = 2;
-		break;
+		number = 2;	break;
 	case GREEN:
-		number = 3;
-		break;
+		number = 3;	break;
 	case WHITE:
-		number = 1;
-		break;
+		number = 1;	break;
 	default:
 		break;
 	}
-
 	this->middle[i] = new MiddleFace(number, color);
 }
 
+
 void Rubik::initCornersAndEdges(int pieces[]) {
 	int index;
-	/*int lines[9][12] = {
-		{ -1, -1, -1, 6, 4, 7, -1, -1, -1, -1, -1, -1 },
-		{ -1, -1, -1, 6, 1, 7, -1, -1, -1, -1, -1, -1 },
-		{ -1, -1, -1, 16, 12, 9, -1, -1, -1, -1, -1, -1 },
-		{ 14, 18, 8, 0, 0, 1, 17, 19, 23, 15, 16, 22 },
-		{ 23, 3, 15, 3, 0, 1, 13, 4, 10, 22, 5, 11 },
-		{ 20, 20, 18, 2, 2, 3, 11, 21, 13, 21, 17, 12 },
-		{ -1, -1, -1, 10, 14, 19, -1, -1, -1, -1, -1, -1 },
-		{ -1, -1, -1, 8, 2, 9, -1, -1, -1, -1, -1, -1 },
-		{ -1, -1, -1, 4, 5, 5, -1, -1, -1, -1, -1, -1 }
-	};*/
 	int i = 0;
 	for (int y = 0; y < 9; y++) {
 		for (int x = 0; x < 12; x++) {
-			index = Rubik::lines[y][x];
+			index = Rubik::lines[y][x]; //Compute index of the given face
 
+			//Determines if it's a corner, edge or middle and adds to the corresponding array
 			if (index != -1)
 			{
 				if (y % 3 == 0 || y % 3 == 2)
 				{
-					if (x % 3 == 0 || x % 3 == 2)
+					if (x % 3 == 0 || x % 3 == 2) //Corner
 					{
 						addCorner(index, pieces[i]);
 						i++;
 					}
-					else
+					else //Edge
 					{
 						addEdge(index, pieces[i]);
 						i++;
@@ -375,12 +313,12 @@ void Rubik::initCornersAndEdges(int pieces[]) {
 				}
 				else
 				{
-					if (x % 3 == 0 || x % 3 == 2)
+					if (x % 3 == 0 || x % 3 == 2) //Edge
 					{
 						addEdge(index, pieces[i]);
 						i++;
 					}
-					else
+					else //Middle
 					{
 						addMiddle(index, pieces[i]);
 						i++;
@@ -395,40 +333,22 @@ void Rubik::addCorner(int i, int number)
 {
 	RubikColor color;
 	switch (number) {
-	case 0:
-	case 1:
-	case 2:
-	case 3:
+	case 0:	case 1:	case 2:	case 3:
 		color = RubikColor::RED;
 		break;
-	case 6:
-	case 7:
-	case 9:
-	case 16:
+	case 6:	case 7:	case 9:	case 16:
 		color = RubikColor::WHITE;
 		break;
-	case 10:
-	case 19:
-	case 4:
-	case 5:
+	case 10: case 19: case 4: case 5:
 		color = RubikColor::YELLOW;
 		break;
-	case 14:
-	case 8:
-	case 18:
-	case 20:
+	case 14: case 8: case 18: case 20:
 		color = RubikColor::GREEN;
 		break;
-	case 17:
-	case 23:
-	case 13:
-	case 11:
+	case 17: case 23: case 13: case 11:
 		color = RubikColor::BLUE;
 		break;
-	case 15:
-	case 22:
-	case 12:
-	case 21:
+	case 15: case 22: case 12: case 21:
 		color = RubikColor::ORANGE;
 		break;
 	default:
@@ -442,40 +362,22 @@ void Rubik::addEdge(int i, int number)
 {
 	RubikColor color;
 	switch (number) {
-	case 0:
-	case 1:
-	case 2:
-	case 3:
+	case 0: case 1: case 2: case 3:
 		color = RubikColor::RED;
 		break;
-	case 4:
-	case 7:
-	case 12:
-	case 6:
+	case 4: case 7: case 12: case 6:
 		color = RubikColor::WHITE;
 		break;
-	case 14:
-	case 9:
-	case 5:
-	case 8:
+	case 14: case 9: case 5: case 8:
 		color = RubikColor::YELLOW;
 		break;
-	case 18:
-	case 20:
-	case 23:
-	case 15:
+	case 18: case 20: case 23: case 15:
 		color = RubikColor::GREEN;
 		break;
-	case 10:
-	case 13:
-	case 19:
-	case 21:
+	case 10: case 13: case 19: case 21:
 		color = RubikColor::BLUE;
 		break;
-	case 11:
-	case 16:
-	case 17:
-	case 22:
+	case 11: case 16: case 17: case 22:
 		color = RubikColor::ORANGE;
 		break;
 	default:
@@ -515,21 +417,12 @@ void Rubik::addMiddle(int i, int number)
 }
 
 
+
 void Rubik::error(std::string error) {
 	//exception
 	std::cout << "ERREUR : " << error << std::endl;
 }
 
-Rubik::~Rubik() {
-	for (int i = 0; i < 24; i++) {
-		delete this->corners[i];
-		delete this->edges[i];
-	}
-	for (int i = 0; i < 6; i++) {
-		delete this->middle[i];
-	}
-	this->moves.clear();
-}
 
 void Rubik::setVerbose(bool value) {
 	Rubik::debug = value;
@@ -537,27 +430,21 @@ void Rubik::setVerbose(bool value) {
 
 
 void Rubik::printCube() {
-
 	int number;
 	int index;
-
 	for (int y = 0; y < 9; y++) {
-
 		std::cout << std::endl;
 
-
 		for (int x = 0; x < 12; x++) {
-
 			index = Rubik::lines[y][x];
-
-			if (index == -1) {
+			if (index == -1) { //Space
 				std::cout << "  ";
 			}
 			else
 			{
 				if (y % 3 == 0 || y % 3 == 2)
 				{
-					if (x % 3 == 0 || x % 3 == 2)
+					if (x % 3 == 0 || x % 3 == 2) //Corner
 					{
 						number = this->corners[Rubik::lines[y][x]]->getNumber();
 						if (number < 10) {
@@ -565,7 +452,7 @@ void Rubik::printCube() {
 						}
 						std::cout << setcolor(this->corners[Rubik::lines[y][x]]->getColor()) << number;
 					}
-					else
+					else //Edge
 					{
 						number = this->edges[Rubik::lines[y][x]]->getNumber();
 						if (number < 10) {
@@ -577,7 +464,7 @@ void Rubik::printCube() {
 				}
 				else
 				{
-					if (x % 3 == 0 || x % 3 == 2)
+					if (x % 3 == 0 || x % 3 == 2) //Edge
 					{
 						number = this->edges[Rubik::lines[y][x]]->getNumber();
 						if (number < 10) {
@@ -585,7 +472,7 @@ void Rubik::printCube() {
 						}
 						std::cout << setcolor(this->edges[Rubik::lines[y][x]]->getColor()) << number;
 					}
-					else
+					else //Middle
 					{
 						number = this->middle[Rubik::lines[y][x]]->getNumber();
 						std::cout << " " << setcolor(this->middle[Rubik::lines[y][x]]->getColor()) << number;
@@ -594,10 +481,9 @@ void Rubik::printCube() {
 			}
 
 			std::cout << " ";
-
 		}
 	}
-	std::cout << setcolor(RubikColor::WHITE) << std::endl;
+	std::cout << setcolor(RubikColor::WHITE) << std::endl; //Change the color of the terminal
 }
 
 bool Rubik::verifyRubikColors(RubikColor colors[]) {
@@ -606,24 +492,26 @@ bool Rubik::verifyRubikColors(RubikColor colors[]) {
 	int i = 0;
 	while (!result && rotate < 4) {
 		if (this->corners[6]->getColor() == colors[i++] 
-				&& this->edges[4]->getColor() == colors[i++] 
-					&& this->corners[7]->getColor() == colors[i++]
+			&& this->edges[4]->getColor() == colors[i++] 
+			&& this->corners[7]->getColor() == colors[i++]
 			&& this->edges[6]->getColor() == colors[i++] 
-				&& this->middle[1]->getColor() == colors[i++] 
-					&& this->edges[7]->getColor() == colors[i++]
+			&& this->middle[1]->getColor() == colors[i++] 
+			&& this->edges[7]->getColor() == colors[i++]
 			&& this->corners[16]->getColor() == colors[i++] 
-				&& this->edges[12]->getColor() == colors[i++]
-					&& this->corners[9]->getColor() == colors[i++])
+			&& this->edges[12]->getColor() == colors[i++]
+			&& this->corners[9]->getColor() == colors[i++])
 		{
 			result = true;
 		}
+
+		//If it's not matching, turn the top layer of the cube to check if the cube is not just badly-oriented
 		rotate++;
 		U();
 	}
 	return result;
 }
 
-void Rubik::translate(Face * array[], int i1, int i2, int i3, int i4) {
+void Rubik::shift(Face * array[], int i1, int i2, int i3, int i4) {
 	Face * temp = array[i1];
 	array[i1] = array[i2];
 	array[i2] = array[i3];
@@ -631,15 +519,15 @@ void Rubik::translate(Face * array[], int i1, int i2, int i3, int i4) {
 	array[i4] = temp;
 }
 
-void Rubik::translate(CornerFace * array[], int i1, int i2, int i3, int i4) {
-	this->translate((Face**)array, i1, i2, i3, i4);
+void Rubik::shift(CornerFace * array[], int i1, int i2, int i3, int i4) {
+	this->shift((Face**)array, i1, i2, i3, i4);
 }
-void Rubik::translate(EdgeFace * array[], int i1, int i2, int i3, int i4) {
-	this->translate((Face**)array, i1, i2, i3, i4);
+void Rubik::shift(EdgeFace * array[], int i1, int i2, int i3, int i4) {
+	this->shift((Face**)array, i1, i2, i3, i4);
 }
 
-void Rubik::translate(MiddleFace * array[], int i1, int i2, int i3, int i4) {
-	this->translate((Face**)array, i1, i2, i3, i4);
+void Rubik::shift(MiddleFace * array[], int i1, int i2, int i3, int i4) {
+	this->shift((Face**)array, i1, i2, i3, i4);
 }
 
 void Rubik::swap(Face * array[], int i1, int i2) {
@@ -650,11 +538,11 @@ void Rubik::swap(Face * array[], int i1, int i2) {
 
 
 void Rubik::Ri(bool isAddToMoves) {
-	translate(this->corners, 9, 15, 5, 3);
-	translate(this->corners, 7, 21, 19, 1);
-	translate(this->corners, 17, 23, 13, 11);
-	translate(this->edges, 7, 22, 9, 1);
-	translate(this->edges, 19, 10, 21, 13);
+	shift(this->corners, 9, 15, 5, 3);
+	shift(this->corners, 7, 21, 19, 1);
+	shift(this->corners, 17, 23, 13, 11);
+	shift(this->edges, 7, 22, 9, 1);
+	shift(this->edges, 19, 10, 21, 13);
 
 	if (isAddToMoves)
 		addMove(this->movesDictionary[_Ri]);
@@ -662,11 +550,11 @@ void Rubik::Ri(bool isAddToMoves) {
 
 
 void Rubik::R(bool isAddToMoves) {
-	translate(this->corners, 3, 5, 15, 9);
-	translate(this->corners, 1, 19, 21, 7);
-	translate(this->corners, 11, 13, 23, 17);
-	translate(this->edges, 1, 9, 22, 7);
-	translate(this->edges, 13, 21, 10, 19);
+	shift(this->corners, 3, 5, 15, 9);
+	shift(this->corners, 1, 19, 21, 7);
+	shift(this->corners, 11, 13, 23, 17);
+	shift(this->edges, 1, 9, 22, 7);
+	shift(this->edges, 13, 21, 10, 19);
 
 	if (isAddToMoves)
 		addMove(this->movesDictionary[_R]);
@@ -688,21 +576,21 @@ void Rubik::R2(bool isAddToMoves) {
 		addMove(this->movesDictionary[_R2]);
 }
 void Rubik::Li(bool isAddToMoves) {
-	translate(this->corners, 16, 2, 4, 22);
-	translate(this->corners, 6, 0, 10, 12);
-	translate(this->corners, 8, 18, 20, 14);
-	translate(this->edges, 6, 3, 8, 11);
-	translate(this->edges, 18, 15, 20, 23);
+	shift(this->corners, 16, 2, 4, 22);
+	shift(this->corners, 6, 0, 10, 12);
+	shift(this->corners, 8, 18, 20, 14);
+	shift(this->edges, 6, 3, 8, 11);
+	shift(this->edges, 18, 15, 20, 23);
 
 	if (isAddToMoves)
 		addMove(this->movesDictionary[_Li]);
 }
 void Rubik::L(bool isAddToMoves) {
-	translate(this->corners, 22, 4, 2, 16);
-	translate(this->corners, 12, 10, 0, 6);
-	translate(this->corners, 14, 20, 18, 8);
-	translate(this->edges, 11, 8, 3, 6);
-	translate(this->edges, 23, 20, 15, 18);
+	shift(this->corners, 22, 4, 2, 16);
+	shift(this->corners, 12, 10, 0, 6);
+	shift(this->corners, 14, 20, 18, 8);
+	shift(this->edges, 11, 8, 3, 6);
+	shift(this->edges, 23, 20, 15, 18);
 
 	if (isAddToMoves)
 		addMove(this->movesDictionary[_L]);
@@ -725,21 +613,21 @@ void Rubik::L2(bool isAddToMoves) {
 		addMove(this->movesDictionary[_L2]);
 }
 void Rubik::Ui(bool isAddToMoves) {
-	translate(this->corners, 9, 16, 6, 7);
-	translate(this->corners, 1, 8, 22, 23);
-	translate(this->corners, 0, 14, 15, 17);
-	translate(this->edges, 4, 7, 12, 6);
-	translate(this->edges, 0, 18, 16, 19);
+	shift(this->corners, 9, 16, 6, 7);
+	shift(this->corners, 1, 8, 22, 23);
+	shift(this->corners, 0, 14, 15, 17);
+	shift(this->edges, 4, 7, 12, 6);
+	shift(this->edges, 0, 18, 16, 19);
 
 	if (isAddToMoves)
 		addMove(this->movesDictionary[_Ui]);
 }
 void Rubik::U(bool isAddToMoves) {
-	translate(this->corners, 7, 6, 16, 9);
-	translate(this->corners, 23, 22, 8, 1);
-	translate(this->corners, 17, 15, 14, 0);
-	translate(this->edges, 6, 12, 7, 4);
-	translate(this->edges, 19, 16, 18, 0);
+	shift(this->corners, 7, 6, 16, 9);
+	shift(this->corners, 23, 22, 8, 1);
+	shift(this->corners, 17, 15, 14, 0);
+	shift(this->edges, 6, 12, 7, 4);
+	shift(this->edges, 19, 16, 18, 0);
 
 	if (isAddToMoves)
 		addMove(this->movesDictionary[_U]);
@@ -762,21 +650,21 @@ void Rubik::U2(bool isAddToMoves) {
 		addMove(this->movesDictionary[_U2]);
 }
 void Rubik::Bi(bool isAddToMoves) {
-	translate(this->corners, 7, 14, 4, 13);
-	translate(this->corners, 6, 20, 5, 23);
-	translate(this->corners, 22, 12, 21, 15);
-	translate(this->edges, 4, 23, 5, 10);
-	translate(this->edges, 16, 11, 17, 22);
+	shift(this->corners, 7, 14, 4, 13);
+	shift(this->corners, 6, 20, 5, 23);
+	shift(this->corners, 22, 12, 21, 15);
+	shift(this->edges, 4, 23, 5, 10);
+	shift(this->edges, 16, 11, 17, 22);
 
 	if (isAddToMoves)
 		addMove(this->movesDictionary[_Bi]);
 }
 void Rubik::B(bool isAddToMoves) {
-	translate(this->corners, 13, 4, 14, 7);
-	translate(this->corners, 23, 5, 20, 6);
-	translate(this->corners, 15, 21, 12, 22);
-	translate(this->edges, 10, 5, 23, 4);
-	translate(this->edges, 22, 17, 11, 16);
+	shift(this->corners, 13, 4, 14, 7);
+	shift(this->corners, 23, 5, 20, 6);
+	shift(this->corners, 15, 21, 12, 22);
+	shift(this->edges, 10, 5, 23, 4);
+	shift(this->edges, 22, 17, 11, 16);
 
 	if (isAddToMoves)
 		addMove(this->movesDictionary[_B]);
@@ -798,21 +686,21 @@ void Rubik::B2(bool isAddToMoves) {
 		addMove(this->movesDictionary[_B2]);
 }
 void Rubik::Fi(bool isAddToMoves) {
-	translate(this->corners, 9, 11, 10, 8);
-	translate(this->corners, 16, 17, 19, 18);
-	translate(this->corners, 0, 1, 3, 2);
-	translate(this->edges, 12, 13, 14, 15);
-	translate(this->edges, 0, 1, 2, 3);
+	shift(this->corners, 9, 11, 10, 8);
+	shift(this->corners, 16, 17, 19, 18);
+	shift(this->corners, 0, 1, 3, 2);
+	shift(this->edges, 12, 13, 14, 15);
+	shift(this->edges, 0, 1, 2, 3);
 
 	if (isAddToMoves)
 		addMove(this->movesDictionary[_Fi]);
 }
 void Rubik::F(bool isAddToMoves) {
-	translate(this->corners, 8, 10, 11, 9);
-	translate(this->corners, 18, 19, 17, 16);
-	translate(this->corners, 2, 3, 1, 0);
-	translate(this->edges, 15, 14, 13, 12);
-	translate(this->edges, 3, 2, 1, 0);
+	shift(this->corners, 8, 10, 11, 9);
+	shift(this->corners, 18, 19, 17, 16);
+	shift(this->corners, 2, 3, 1, 0);
+	shift(this->edges, 15, 14, 13, 12);
+	shift(this->edges, 3, 2, 1, 0);
 
 	if (isAddToMoves)
 		addMove(this->movesDictionary[_F]);
@@ -834,21 +722,21 @@ void Rubik::F2(bool isAddToMoves) {
 		addMove(this->movesDictionary[_F2]);
 }
 void Rubik::Di(bool isAddToMoves) {
-	translate(this->corners, 3, 13, 12, 18);
-	translate(this->corners, 2, 11, 21, 20);
-	translate(this->corners, 19, 5, 4, 10);
-	translate(this->edges, 2, 21, 17, 20);
-	translate(this->edges, 14, 9, 5, 8);
+	shift(this->corners, 3, 13, 12, 18);
+	shift(this->corners, 2, 11, 21, 20);
+	shift(this->corners, 19, 5, 4, 10);
+	shift(this->edges, 2, 21, 17, 20);
+	shift(this->edges, 14, 9, 5, 8);
 
 	if (isAddToMoves)
 		addMove(this->movesDictionary[_Di]);
 }
 void Rubik::D(bool isAddToMoves) {
-	translate(this->corners, 18, 12, 13, 3);
-	translate(this->corners, 20, 21, 11, 2);
-	translate(this->corners, 10, 4, 5, 19);
-	translate(this->edges, 20, 17, 21, 2);
-	translate(this->edges, 8, 5, 9, 14);
+	shift(this->corners, 18, 12, 13, 3);
+	shift(this->corners, 20, 21, 11, 2);
+	shift(this->corners, 10, 4, 5, 19);
+	shift(this->edges, 20, 17, 21, 2);
+	shift(this->edges, 8, 5, 9, 14);
 
 	if (isAddToMoves)
 		addMove(this->movesDictionary[_D]);
@@ -889,9 +777,9 @@ void Rubik::resolve(RubikColor colors[], Robot * pRobot) {
 void Rubik::turnCubeRight() { //White to blue
 	Fi(false);
 	B(false);
-	this->translate(this->middle, 3, 1, 4, 2);
-	this->translate(this->edges, 6, 19, 9, 20);
-	this->translate(this->edges, 7, 21, 8, 18);
+	this->shift(this->middle, 3, 1, 4, 2);
+	this->shift(this->edges, 6, 19, 9, 20);
+	this->shift(this->edges, 7, 21, 8, 18);
 
 	std::map<std::string, std::string> tempMap(movesDictionary);
 	//Dictionary
@@ -919,9 +807,9 @@ void Rubik::turnCubeRight() { //White to blue
 void Rubik::turnCubeUp() { //White to orange
 	Ri(false);
 	L(false);
-	this->translate(this->middle, 0, 1, 5, 2);
-	this->translate(this->edges, 4, 17, 14, 0);
-	this->translate(this->edges, 12, 16, 5, 2);
+	this->shift(this->middle, 0, 1, 5, 2);
+	this->shift(this->edges, 4, 17, 14, 0);
+	this->shift(this->edges, 12, 16, 5, 2);
 
 	std::map<std::string, std::string> tempMap(movesDictionary);
 	//Dictionary
@@ -948,9 +836,9 @@ void Rubik::turnCubeUp() { //White to orange
 void Rubik::turnCubeDown() { //White to red
 	R(false);
 	Li(false);
-	this->translate(this->middle, 0, 2, 5, 1);
-	this->translate(this->edges, 4, 0, 14, 17);
-	this->translate(this->edges, 12, 2, 5, 16);
+	this->shift(this->middle, 0, 2, 5, 1);
+	this->shift(this->edges, 4, 0, 14, 17);
+	this->shift(this->edges, 12, 2, 5, 16);
 
 	std::map<std::string, std::string> tempMap(movesDictionary);
 
@@ -978,9 +866,9 @@ void Rubik::turnCubeDown() { //White to red
 void Rubik::turnCubeLeft() { //White to green
 	F(false);
 	Bi(false);
-	this->translate(this->middle, 3, 2, 4, 1);
-	this->translate(this->edges, 6, 20, 9, 19);
-	this->translate(this->edges, 7, 18, 8, 21);
+	this->shift(this->middle, 3, 2, 4, 1);
+	this->shift(this->edges, 6, 20, 9, 19);
+	this->shift(this->edges, 7, 18, 8, 21);
 
 	std::map<std::string, std::string> tempMap(movesDictionary);
 	//Dictionary
@@ -1012,12 +900,14 @@ void Rubik::setLockedEdge(int index, bool value) {
 	this->edges[edgeIndex + 12]->setLockedPosition(value);
 }
 
+
 void Rubik::applyMoves(std::vector<std::string>& m) {
 	int size = m.size();
 	for (int i = 0; i < size; i++) {
 		applyMove(m[i]);
 	}
 }
+
 
 void Rubik::applyMove(std::string m) {
 	pfunc f = movesFunctions[m];
@@ -1031,12 +921,14 @@ void Rubik::setLockedCorner(int index, bool value) {
 	this->corners[cornerIndex + 16]->setLockedPosition(value);
 }
 
+
 CornerFace * Rubik::getCorner(int i) {
 	if (i < 0 || i > 23) {
 		return NULL;
 	}
 	return this->corners[i];
 }
+
 
 EdgeFace * Rubik::getEdge(int i) {
 	if (i < 0 || i > 23) {
@@ -1045,12 +937,14 @@ EdgeFace * Rubik::getEdge(int i) {
 	return this->edges[i];
 }
 
+
 MiddleFace * Rubik::getMiddle(int i) {
 	if (i < 0 || i > 7) {
 		return NULL;
 	}
 	return this->middle[i];
 }
+
 
 std::string Rubik::getMoveAtIndex(int i) {
 	if (i >= 0 && i < this->moves.size()) {
@@ -1064,7 +958,7 @@ int Rubik::getNbMoves() {
 }
 
 
-/*void Rubik::optimise() {
+void Rubik::optimise() {
 	int size = this->moves.size();
 
 	if (size < 2)
@@ -1089,7 +983,7 @@ int Rubik::getNbMoves() {
 		index = index + 1 - shortenMoves(index);
 		size = this->moves.size();
 	}
-}*/
+}
 
 int Rubik::shortenMoves(int i1)
 {
@@ -1165,6 +1059,7 @@ int Rubik::shortenMoves(int i1)
 	}
 	return 0;
 }
+
 
 void Rubik::addMove(std::string m2) {
 	if (this->moves.size() <= 0) {
