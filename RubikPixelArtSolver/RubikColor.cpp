@@ -23,7 +23,7 @@ ConsoleColor translate(RubikColor color) {
 		case RubikColor::BLUE:
 			return ConsoleColor::BLUE_;
 		case RubikColor::ORANGE:
-			return ConsoleColor::PINK_;
+			return ConsoleColor::PINK_; //Orange not available
 		case RubikColor::YELLOW:
 			return ConsoleColor::YELLOW_;
 	}

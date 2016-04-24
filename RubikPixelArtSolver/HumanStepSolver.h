@@ -4,6 +4,10 @@
 
 #include "AbstractSolver.h"
 
+/// <summary>
+/// Rubik solver that first solves the middle, then the cross (edges) and then the corners
+/// </summary>
+/// <seealso cref="AbstractSolver" />
 class AbstractHumanStepSolver : public AbstractSolver {
 public:
 	virtual void resolve(Rubik * pRubik, RubikColor colors[]);

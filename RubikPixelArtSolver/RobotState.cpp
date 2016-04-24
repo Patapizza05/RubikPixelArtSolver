@@ -2,19 +2,15 @@
 
 std::map<std::string, RobotState> RobotState::robotStates = initRobotStatesMap();
 
-RobotState::RobotState() {
-	reset();
-}
-
 RobotState::RobotState(int height, bool balancier, int rotator, std::string referential) {
-	this->balancier = balancier;
+	this->balancer = balancier;
 	this->height = height;
 	this->referential = referential;
 	this->rotator = rotator;
 }
 
 void RobotState::reset() {
-	this->balancier = false;
+	this->balancer = false;
 	this->height = 0;
 	this->referential = _U;
 	this->rotator = 1;

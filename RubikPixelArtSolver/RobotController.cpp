@@ -2,11 +2,6 @@
 
 bool RobotController::debug = false;
 
-RobotController::RobotController() {
-	this->port = "COM3";
-	this->initPort();
-}
-
 RobotController::RobotController(std::string port){
 	this->port = port;
 	this->initPort();

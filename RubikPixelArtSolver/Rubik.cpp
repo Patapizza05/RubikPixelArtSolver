@@ -169,28 +169,22 @@ void Rubik::computeEdgePieceNumbersFromColors(int i1) {
 }
 
 std::vector<int> Rubik::getPossibleEdgeNumbersFromColor(RubikColor color) {
-	std::vector<int> colors;
 	switch (color) {
 	case RED:
-		colors.push_back(0); colors.push_back(1); colors.push_back(2); colors.push_back(3);
-		break;
+		return std::vector<int>{0, 1, 2, 3};
 	case GREEN:
-		colors.push_back(15); colors.push_back(18);	colors.push_back(20); colors.push_back(23);
-		break;
+		return std::vector<int>{15, 18, 20, 23};
 	case YELLOW:
-		colors.push_back(5); colors.push_back(8); colors.push_back(9); colors.push_back(14);
-		break;
+		return std::vector<int>{5, 8, 9, 14};
 	case BLUE:
-		colors.push_back(10); colors.push_back(13);	colors.push_back(19); colors.push_back(21);
-		break;
+		return std::vector<int>{10, 13, 19, 21};
 	case ORANGE:
-		colors.push_back(11); colors.push_back(16); colors.push_back(17); colors.push_back(22);
-		break;
+		return std::vector<int>{11, 16, 17, 22};
 	case WHITE:
-		colors.push_back(4); colors.push_back(6); colors.push_back(7);	colors.push_back(12);
-		break;
+		return std::vector<int>{4, 6, 7, 12};
 	}
-	return colors;
+
+	return std::vector<int>();
 }
 
 void Rubik::initAllCornersNumbersFromColors() {
@@ -233,28 +227,21 @@ void Rubik::computeCornerPieceNumberFromColors(int i1) {
 }
 
 std::vector<int> Rubik::getPossibleCornerNumbersFromColor(RubikColor color) {
-	std::vector<int> colors;
 	switch (color) {
 	case RED:
-		colors.push_back(0); colors.push_back(1); colors.push_back(2); colors.push_back(3);
-		break;
+		return std::vector<int>{0, 1, 2, 3};
 	case GREEN:
-		colors.push_back(8); colors.push_back(14); colors.push_back(18); colors.push_back(20);
-		break;
+		return std::vector<int>{8, 14, 18, 20};
 	case YELLOW:
-		colors.push_back(4); colors.push_back(5); colors.push_back(10); colors.push_back(19);
-		break;
+		return std::vector<int>{4, 5, 10, 19};
 	case BLUE:
-		colors.push_back(11); colors.push_back(13); colors.push_back(17); colors.push_back(23);
-		break;
+		return std::vector<int>{11, 13, 17, 23};
 	case ORANGE:
-		colors.push_back(12); colors.push_back(15); colors.push_back(21); colors.push_back(22);
-		break;
+		return std::vector<int>{12, 15, 21, 22};
 	case WHITE:
-		colors.push_back(6); colors.push_back(7); colors.push_back(9); colors.push_back(16);
-		break;
+		return std::vector<int>{6, 7, 9, 16};
 	}
-	return colors;
+	return std::vector<int>();
 }
 
 void Rubik::addCornerColor(int i, RubikColor color) {

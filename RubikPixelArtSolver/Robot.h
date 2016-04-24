@@ -273,20 +273,64 @@ private:
 	bool D3();
 
 
+	/// <summary>
+	/// Put the cube in reversed position
+	/// </summary>
+	/// <returns></returns>
 	bool Bi();
-	bool B();
-	void resetHeight();
-	void addHeight(int);
-	void goDown(int);
-	void goUp(int);
-	void rotate(int);
 
+	/// <summary>
+	/// Put the cube in non-reversed position
+	/// </summary>
+	/// <returns></returns>
+	bool B();
+
+	/// <summary>
+	/// Resets the height position (goes back to height 0)
+	/// </summary>
+	void resetHeight();
+
+	/// <summary>
+	/// Goes up or down, according to the height value specified (positive or negative value)
+	/// </summary>
+	/// <param name="height">The height to go up</param>
+	void addHeight(int);
+
+	/// <summary>
+	/// Goes down according to the height value specified
+	/// </summary>
+	/// <param name="height">How low to go</param>
+	void goDown(int);
+
+	/// <summary>
+	/// Goes up according to the height value specified
+	/// </summary>
+	/// <param name="height">How high to go</param>
+	void goUp(int);
+
+	/// <summary>
+	/// Rotates <c>value</c> times
+	/// </summary>
+	/// <param name="nbRotations">The number of rotations to make (positive = clockwise, negative = counterclockwise)</param>
+	void rotate(int);
+	
+	/// <summary>
+	/// Sends the message and waits for the robot to send a message, reads it and checks if it corresponds to the sent message
+	/// </summary>
+	/// <param name="">The message</param>
+	/// <returns>true if the read message from the robot is the same as the one sent</returns>
 	bool sendMessageAndRead(std::string);
 
 	int camera_id;
 	int square_count;
 	bool filterRect(cv::Rect);
 	cv::String window_name;
+	
+	/// <summary>
+	/// Defines the color text.
+	/// </summary>
+	/// <param name="colorid">The color id</param>
+	/// <returns>The color letter to print</returns>
 	cv::String defineColorText(int);
 };
 

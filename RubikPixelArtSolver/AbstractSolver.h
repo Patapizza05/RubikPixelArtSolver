@@ -7,8 +7,16 @@
 
 class Rubik;
 
+/// <summary>
+/// Abstract solver : From a given <c>Rubik</c> instance, make moves to get to a final state
+/// </summary>
 class AbstractSolver {
-public:
+public:	
+	/// <summary>
+	/// Resolves the specified p rubik.
+	/// </summary>
+	/// <param name="pRubik">The p rubik.</param>
+	/// <param name="colors">The colors.</param>
 	virtual void resolve(Rubik * pRubik, RubikColor colors[]) = 0;
 };
 

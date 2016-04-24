@@ -6,9 +6,16 @@
 #include <windows.h>
 #include <iomanip>
 
+/// <summary>
+/// The colors of the rubik's cube
+/// </summary>
 enum RubikColor { WHITE = 0, GREEN, RED, BLUE, ORANGE, YELLOW };
 
-enum ConsoleColor { DARKBLUE_ = 1, DARKGREEN_, DARKTEAL_, DARKRED_, DARKPINK_, DARKYELLOW_, GRAY_, DARKGRAY_, BLUE_, GREEN_, TEAL_, RED_, PINK_, YELLOW_, WHITE_ };
+/// <summary>
+/// The colors used to print in colors in the console. The order can not be changed
+/// </summary>
+enum ConsoleColor { DARKBLUE_ = 1, DARKGREEN_, DARKTEAL_, DARKRED_, DARKPINK_, DARKYELLOW_, GRAY_, DARKGRAY_, BLUE_, GREEN_, TEAL_, RED_, PINK_ /*ORANGE*/, YELLOW_, WHITE_ };
+
 
 ConsoleColor translate(RubikColor color);
 
@@ -18,7 +25,6 @@ struct setcolor
 {
 	ConsoleColor _c;
 	HANDLE _console_handle;
-	//TODO : Ajouter la couleur orange
 	setcolor(RubikColor c, HANDLE console_handle = GetStdHandle(STD_OUTPUT_HANDLE))
 		: _c(translate(c)), _console_handle(0)
 	{

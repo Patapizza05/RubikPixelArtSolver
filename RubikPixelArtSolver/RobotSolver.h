@@ -6,6 +6,10 @@
 #include <vector>
 #include "Robot.h"
 
+/// <summary>
+/// Rubik's cube solver that considering the cost of the robot moves (and not the cost of human moves)
+/// </summary>
+/// <seealso cref="AbstractHumanStepSolver" />
 class RobotSolver : public AbstractHumanStepSolver {
 public:
 	RobotSolver(Robot * pRobot);

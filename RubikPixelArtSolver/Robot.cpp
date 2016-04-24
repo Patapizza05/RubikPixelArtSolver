@@ -14,16 +14,6 @@ http://opencv-srf.blogspot.fr/2010/09/object-detection-using-color-seperation.ht
 std::vector<Scalar> minColor{ Scalar(70, 20, 130), Scalar(60, 110, 110), Scalar(120, 120, 140), Scalar(80, 180, 190), Scalar(5, 150, 150), Scalar(20, 100, 100) };
 std::vector<Scalar> maxColor{ Scalar(180, 110, 255), Scalar(100, 220, 250), Scalar(180, 250, 200), Scalar(120, 255, 255), Scalar(15, 235, 250), Scalar(40, 255, 255) };
 
-/*Robot::Robot() : Robot(0) {
-}*/
-
-/*Robot::Robot(int camera_id){
-	this->state = RobotState(0, false, 1, _U);
-	this->setCameraId(camera_id);
-	this->setSquareCount(0);
-	this->setWindowName("Default Rubik Window");
-}*/
-
 Robot::Robot(int camera_id, String window_name){
 	this->state = RobotState(0, false, 1, _U);
 	this->setCameraId(camera_id);
@@ -107,7 +97,7 @@ int Robot::getRubikMovesCost(std::vector<std::string> rubikMoves, std::string pr
 bool Robot::sendMessageAndRead(std::string m) {
 	this->controller.send(m[0]);
 
-	if (this->controller.read() == m[0] || ROBOT_DEBUG) {
+	if (this->controller.read() == m[0] || ROBOT_DEBUG) { //Blocks until the robot responds (if ROBOT_DEBUG == 0)
 		rmoves.push_back(m);
 		return true;
 	}
@@ -311,7 +301,7 @@ bool Robot::D3() {
 
 bool Robot::Bi() {
 	if (sendMessageAndRead(robot_Bi)) {
-		state.balancier = true;
+		state.balancer = true;
 		return true;
 	}
 	return false;
@@ -319,7 +309,7 @@ bool Robot::Bi() {
 
 bool Robot::B() {
 	if (sendMessageAndRead(robot_B)) {
-		state.balancier = false;
+		state.balancer = false;
 		return true;
 	}
 	return false;
@@ -399,11 +389,6 @@ void Robot::addHeight(int height) {
 
 void Robot::addMove(std::string rubikMove) {
 	RobotState state = RobotState::getState(rubikMove);
-	/*int height; //Niveau de hauteur à atteindre (0, 1, 2, 3)
-	bool balancier; //Etat du balancier après mouvement
-	int rotator; //Rotation à ajouter (-1, 1, ou 2)
-	std::string referential; //U, F ou R
-	*/
 	
 	//Vérification du référentiel (Le balancier est donc géré)
 		//Si changement : hauteur = 0

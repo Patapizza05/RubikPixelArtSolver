@@ -6,27 +6,83 @@
 #include <windows.h>
 #include <commctrl.h>
 
-/* 3 moteurs */
-
+/// <summary>
+/// Handles the communication with the Arduino card and therefore with the Robot's motors
+/// </summary>
 class RobotController {
 private:
 	std::string port;
 	HANDLE hComm;
+
+	/// <summary>
+	/// Sends the s byte.
+	/// </summary>
+	/// <param name="">The char to send</param>
+	/// <returns></returns>
 	bool sendSByte(unsigned char);
+
+	/// <summary>
+	/// Reads the s byte.
+	/// </summary>
+	/// <returns>The read char</returns>
 	unsigned char readSByte();
+	
+	/// <summary>
+	/// Opens the port to communicate with Arduino
+	/// </summary>
+	/// <returns></returns>
 	bool openPort();
+	
+	/// <summary>
+	/// Closes the port with Arduino
+	/// </summary>
+	/// <returns></returns>
 	bool closePort();
+	
+	/// <summary>
+	/// Setups the port.
+	/// </summary>
+	/// <returns></returns>
 	bool setupPort();
 
 public:
 	static bool RobotController::debug;
-	RobotController();
-	RobotController(std::string);
-	RobotController(std::string, int);
+	/// <summary>
+	/// Initializes a new instance of the <see cref="RobotController"/> class.
+	/// </summary>
+	/// <param name="port">The port used to communicate with Arduino</param>
+	RobotController(std::string port = "COM3");
+
+	/// <summary>
+	/// Sends the specified char
+	/// </summary>
+	/// <param name="">The char to send</param>
+	/// <returns></returns>
 	bool send(unsigned char);
+
+
+	/// <summary>
+	/// Waits until Arduino sends a char to read
+	/// </summary>
+	/// <returns>The read char</returns>
 	unsigned char read();
+	
+	/// <summary>
+	/// Initializes the port.
+	/// </summary>
+	/// <returns></returns>
 	bool initPort();
+	
+	/// <summary>
+	/// Sets the port.
+	/// </summary>
+	/// <param name="">The .</param>
 	void setPort(std::string);
+	
+	/// <summary>
+	/// Gets the port.
+	/// </summary>
+	/// <returns></returns>
 	std::string getPort();
 
 };
