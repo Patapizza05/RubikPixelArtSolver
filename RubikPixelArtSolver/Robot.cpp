@@ -501,7 +501,7 @@ String Robot::getWindowName(){
 }
 
 bool Robot::filterRect(Rect rec){
-
+	/* Delimited a zone on the frame to analyze */
 	if (rec.x < 100 || rec.x > 450){
 		return false;
 	}
@@ -509,6 +509,7 @@ bool Robot::filterRect(Rect rec){
 		return false;
 	}
 
+	/* Size of the shape */
 	if (rec.width == 78 && rec.height == 78){
 		return true;
 	}
@@ -524,30 +525,30 @@ bool Robot::filterRect(Rect rec){
 
 String Robot::defineColorText(int color_id){
 	switch (color_id){
-	case 0:
-		return "W";
-	case 1:
-		return "G";
-	case 2:
-		return "R";
-	case 3:
-		return "B";
-	case 4:
-		return "O";
-	case 5:
-		return "Y";
-	default:
-		return "";
+		case 0:
+			return "W";
+		case 1:
+			return "G";
+		case 2:
+			return "R";
+		case 3:
+			return "B";
+		case 4:
+			return "O";
+		case 5:
+			return "Y";
+		default:
+			return "";
 	}
 }
 
 std::vector<std::vector<SquareRubik>> Robot::launchCapture(){
-
 	VideoCapture cap(this->camera_id);
 
-	cap.set(CV_CAP_PROP_SETTINGS, 1);
+	cap.set(CV_CAP_PROP_SETTINGS, 1); // Show the properties window
 
-	if (!cap.isOpened())  // if not success, exit program
+	// Handle error when opening the camera
+	if (!cap.isOpened()) 
 	{
 		std::cout << "Cannot open the video file" << std::endl;
 		return {};
@@ -555,8 +556,11 @@ std::vector<std::vector<SquareRubik>> Robot::launchCapture(){
 
 	namedWindow(this->getWindowName(), CV_WINDOW_AUTOSIZE);
 
+	// Variables's initialization
 	std::vector<std::vector<cv::Point> > contours;
 	std::vector<Vec4i> hierarchy;
+	std::vector<std::vector<SquareRubik>> results;
+	std::vector<std::vector<std::vector<cv::Point>>> finalContours;
 
 	Mat frame_RGB;
 	Mat filter;
@@ -565,32 +569,31 @@ std::vector<std::vector<SquareRubik>> Robot::launchCapture(){
 	Mat imgray;
 	Mat result;
 
-	std::vector<std::vector<SquareRubik>> results;
-	std::vector<std::vector<std::vector<cv::Point>>> finalContours;
-
 	int nb_capture = 0;
 
+	// Detect frame while we have the all sides of the Rubik's Cube
 	while (nb_capture < NB_CAPTURE)
 	{
 		std::vector<SquareRubik> points;
 
-		this->setSquareCount(0);
-		cap.read(frame_RGB); // read a new frame from video
+		this->setSquareCount(0); // Initialization : 0 squares found on the actual side
+		cap.read(frame_RGB); // Read a new frame from video
 		bilateralFilter(frame_RGB, filter, 9, 75, 75);
-		cvtColor(filter, frame_HSV, cv::COLOR_BGR2HSV);
+		cvtColor(filter, frame_HSV, cv::COLOR_BGR2HSV); // Change from RGB to HSV
 
+		// For each color, detect if there is the color in the frame
 		for (int i = 0; i < minColor.size(); i++){
 			inRange(frame_HSV, minColor[i], maxColor[i], frame_threshed);
 			imgray = frame_threshed;
-
 			threshold(frame_threshed, result, 127, 255, 0);
 
 			findContours(result, contours, hierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
 			finalContours.push_back(contours);
 		}
 
+		// For each shape found, we filter it and add it if it match
 		for (unsigned int j = 0; j < finalContours.size(); j++){
-			String text = defineColorText(j);
+			String text = defineColorText(j); // Letter to display on the camera Window
 
 			for (unsigned int i = 0; i < finalContours[j].size(); i++){
 				Rect rec = cv::boundingRect(finalContours[j][i]);
@@ -604,29 +607,31 @@ std::vector<std::vector<SquareRubik>> Robot::launchCapture(){
 			}
 		}
 
-		imshow(this->getWindowName(), frame_RGB);
+		imshow(this->getWindowName(), frame_RGB); // Display the RGB frame with the found squares
 
+		// If the camera doesn't detect the 9 squares, the user can press 's' to move to the next step
 		if (cv::waitKey(20) == 's'){
 			results.push_back(points);
-			std::cout << "next" << std::endl;
 			nb_capture++;
+			// Change the position of the Rubik's cube to get the next side
 			if (!this->setRobotPosition(nb_capture)){
-				//HANDLE ERROR @TODO
+				throw RobotPositionException("Failed when changing position of the Rubik's cube");
 			}
 		}
 		else if (this->getSquareCount() == 9) { // Found all cube of a side!
 			points = sortResult(points);
 
+			// Convention in order to have the a ordered list which match with the algorithm part
 			if (nb_capture == 5){
 				std::reverse(points.begin(), points.end());
 			}
 
-			printSide(points);
 			results.push_back(points);
 
 			nb_capture++;
+			// Change the position of the Rubik's cube to get the next side
 			if (!this->setRobotPosition(nb_capture)){
-				//HANDLE ERROR @TODO
+				throw RobotPositionException("Failed when changing position of the Rubik's cube");
 			}
 		}
 
@@ -636,6 +641,7 @@ std::vector<std::vector<SquareRubik>> Robot::launchCapture(){
 
 	cv::destroyWindow(this->window_name);
 
+	// Convention in order to have the a ordered list which match with the algorithm part
 	std::swap(results[0], results[5]);
 	std::swap(results[1], results[3]);
 	std::swap(results[2], results[4]);
@@ -649,34 +655,29 @@ bool Robot::setRobotPosition(int id){
 			if(!this->H3()) return false;
 			if(!this->U()) return false;
 			if(!this->D3()) return false;
-			//H3 - U - D3
 			return true;
 		case 2:
 			if(!this->Ui()) return false;
 			if(!this->H3()) return false;
 			if(!this->U()) return false;
 			if(!this->D3()) return false;
-			//Ui - H3 - U - D3
 			return true;
 		case 3:
 			if (!this->Ui()) return false;
 			if (!this->H3()) return false;
 			if (!this->U()) return false;
 			if (!this->D3()) return false;
-			// Ui - H3 - U - D3
 			return true;
 		case 4:
 			if (!this->Bi()) return false;
 			if (!this->H3()) return false;
 			if (!this->B()) return false;
-			// Bi - H3 - B
 			return true;
 		case 5:
 			if (!this->H3()) return false;
 			if (!this->Ui()) return false;
 			if (!this->Ui()) return false;
 			if (!this->D3()) return false;
-			// H3 - Ui - Ui - D3
 			return true;
 		default:
 			return false;
@@ -684,16 +685,13 @@ bool Robot::setRobotPosition(int id){
 
 }
 
-void Robot::printSide(std::vector<SquareRubik> points){
-	for (int i = 0; i < points.size(); i++){
-		std::cout << points.at(i).color;
-		if ((i + 1) % 3 == 0){
-			std::cout << std::endl;
-		}
-	}
-}
-
 std::vector<SquareRubik> Robot::sortResult(std::vector<SquareRubik> points){
+	/*We sort the list with the Y axis to have the 3 lines not ordered yet. Then we sort each line to have the final result : 
+			ADECFBIGH --> BCA - FED - GIH --> ABC - DEF - GHI with (xa < xb < xc and xd < xd < xe and ...)
+												ABC			012
+												DEF  ==>	345
+												GHI			678
+	*/
 	std::sort(points.begin(), points.end(), Robot::sortYAxis);
 	std::sort(points.begin(), points.begin() + 3, Robot::sortXAxis);
 	std::sort(points.begin() + 3, points.begin() + 6, Robot::sortXAxis);

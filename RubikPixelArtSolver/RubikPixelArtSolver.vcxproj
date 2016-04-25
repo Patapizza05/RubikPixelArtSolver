@@ -158,6 +158,7 @@
     <ClInclude Include="MiddleFace.h" />
     <ClInclude Include="ResolutionException.h" />
     <ClInclude Include="Robot.h" />
+    <ClInclude Include="RobotPositionException.h" />
     <ClInclude Include="RobotSolver.h" />
     <ClInclude Include="RobotState.h" />
     <ClInclude Include="RubikColor.h" />

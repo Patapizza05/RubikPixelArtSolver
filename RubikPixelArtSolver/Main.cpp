@@ -93,8 +93,8 @@ void testOneCubeSolveMain() {
 
 int main(int argc, char* argv[]) {
 	//runCampaignMain();
-	//openCVMain();
-	runCampaignMain();
+	openCVMain();
+	//runCampaignMain();
 
 	//Rubik::debug = true;
 	//testOneCubeSolveMain();

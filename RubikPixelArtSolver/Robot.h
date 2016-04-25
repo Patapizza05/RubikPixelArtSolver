@@ -30,7 +30,7 @@ public:
 	/// <summary>
 	/// Gets the robot moves filled by the "sendRubikMoves" function
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>The list of the robot moves</returns>
 	std::vector<std::string> getRobotMoves() { return rmoves; };
 	
 	/// <summary>
@@ -50,7 +50,7 @@ public:
 	/// <summary>
 	/// Launches the capture with OpenCV and the camera
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>The representation of the Rubik's Cube which is in the robot</returns>
 	std::vector<std::vector<SquareRubik>> launchCapture();
 	
 	/// <summary>
@@ -68,39 +68,42 @@ public:
 	/// <summary>
 	/// Sets the square count.
 	/// </summary>
-	/// <param name="">The .</param>
+	/// <param name="">The number of square found on a single side</param>
 	void setSquareCount(int);
 	
 	/// <summary>
 	/// Gets the square count.
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>The number of square found on a single side</returns>
 	int getSquareCount();
 	
 	/// <summary>
 	/// Sets the name of the window.
 	/// </summary>
-	/// <param name="">The .</param>
+	/// <param name="">The name of the window</param>
 	void setWindowName(cv::String);
 	
 	/// <summary>
 	/// Gets the name of the window.
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>The name of the window</returns>
 	cv::String getWindowName();
 	
 	/// <summary>
 	/// Sets the robot position.
 	/// </summary>
-	/// <param name="">The .</param>
+	/// <param name="">The position in which the robot has to be to take a picture of the Rubik's cube</param>
 	/// <returns></returns>
 	bool setRobotPosition(int);
-	
+		
 	/// <summary>
-	/// Prints the side.
+	/// Sorts the result.
 	/// </summary>
-	/// <param name="">Array of SquareRubik</param>
-	void printSide(std::vector<SquareRubik>);
+	/// <param name="">The list of each square on a single side</param>
+	/// <returns>The list of each square sorted with this pattern :
+	///								012
+	///								345
+	///								678 </returns>
 	std::vector<SquareRubik> sortResult(std::vector<SquareRubik>);
 	
 	/// <summary>
@@ -108,19 +111,25 @@ public:
 	/// </summary>
 	/// <param name="r1">The first SquareRubik</param>
 	/// <param name="r2">The second SquareRubik</param>
-	/// <returns></returns>
+	/// <returns>If the x position of r2 is greater than the one of r1</returns>
 	static bool sortXAxis(SquareRubik r1, SquareRubik r2) { return r1.position.x < r2.position.x; };
 	
 	/// <summary>
 	/// Sorts the y axis.
 	/// </summary>
-	/// <param name="r1">The r1.</param>
-	/// <param name="r2">The r2.</param>
-	/// <returns></returns>
+	/// <param name="r1">The first SquareRubik</param>
+	/// <param name="r2">The second SquareRubik</param>
+	/// <returns>If the y position of r2 is greater than the one of r1</returns>
 	static bool sortYAxis(SquareRubik r1, SquareRubik r2) { return r1.position.y < r2.position.y; };
 
-private:
-	RobotState state;
+private:	
+	/// <summary>
+	/// The state of the robot
+	/// </summary>
+	RobotState state;	
+	/// <summary>
+	/// Handles the communication with the Arduino card and therefore with the Robot's motors
+	/// </summary>
 	RobotController controller;
 
 	/// <summary>
@@ -142,147 +151,147 @@ private:
 	/// <summary>
 	/// Turns the top motor to 180°
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>If the move has succeeded or not</returns>
 	bool U0();
 	
 	/// <summary>
 	/// Turns the top motor to 90°
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>If the move has succeeded or not</returns>
 	bool U1();
 	
 	/// <summary>
 	/// Turns the top motor to 0°
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>If the move has succeeded or not</returns>
 	bool U2();
 	
 	/// <summary>
 	/// Adds 90° to the motor position
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>If the move has succeeded or not</returns>
 	bool U();
 	
 	/// <summary>
 	/// Removes 90° from the motor position
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>If the move has succeeded or not</returns>
 	bool Ui();
 	
 	/// <summary>
 	/// Goes up from height 0 to height 1
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>If the move has succeeded or not</returns>
 	bool H0_to_1();
 	
 	/// <summary>
 	/// Goes up from height 0 to height 2
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>If the move has succeeded or not</returns>
 	bool H0_to_2();
 	
 	/// <summary>
 	/// Goes up from height 0 to height 3
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>If the move has succeeded or not</returns>
 	bool H0_to_3();
 	
 	/// <summary>
 	/// Goes up from height 1 to height 2
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>If the move has succeeded or not</returns>
 	bool H1_to_2();
 	
 	/// <summary>
 	/// Goes up from height 1 to height 3
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>If the move has succeeded or not</returns>
 	bool H1_to_3();
 	
 	/// <summary>
 	/// Goes up from height 2 to height 3
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>If the move has succeeded or not</returns>
 	bool H2_to_3();
 	
 	/// <summary>
 	/// Goes down from height 3 to height 0
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>If the move has succeeded or not</returns>
 	bool D3_to_0();
 	
 	/// <summary>
 	/// Goes down from height 2 to height 0
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>If the move has succeeded or not</returns>
 	bool D2_to_0();
 	
 	/// <summary>
 	/// Goes down from height 1 to height 0
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>If the move has succeeded or not</returns>
 	bool D1_to_0();
 	
 	/// <summary>
 	/// Goes down from height 2 to height 1
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>If the move has succeeded or not</returns>
 	bool D2_to_1();
 	
 	/// <summary>
 	/// Goes down from height 3 to height 2
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>If the move has succeeded or not</returns>
 	bool D3_to_2();
 	
 	/// <summary>
 	/// Goes down from height 3 to height 1
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>If the move has succeeded or not</returns>
 	bool D3_to_1();
 	
 	/// <summary>
 	/// Goes up one level
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>If the move has succeeded or not</returns>
 	bool H1();
 	
 	/// <summary> Goes up two levels
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>If the move has succeeded or not</returns>
 	bool H2();
 	
 	/// <summary> Goes up three levels
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>If the move has succeeded or not</returns>
 	bool H3();
 	
 	/// <summary> Goes down one level
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>If the move has succeeded or not</returns>
 	bool D1();
 	
 	/// <summary> Goes down two levels
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>If the move has succeeded or not</returns>
 	bool D2();
 	
 	/// <summary> Goes down three levels
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>If the move has succeeded or not</returns>
 	bool D3();
 
 
 	/// <summary>
 	/// Put the cube in reversed position
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>If the move has succeeded or not</returns>
 	bool Bi();
 
 	/// <summary>
 	/// Put the cube in non-reversed position
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>If the move has succeeded or not</returns>
 	bool B();
 
 	/// <summary>
@@ -320,10 +329,27 @@ private:
 	/// <param name="">The message</param>
 	/// <returns>true if the read message from the robot is the same as the one sent</returns>
 	bool sendMessageAndRead(std::string);
-
+	
+	/// <summary>
+	/// The id of the camera
+	/// </summary>
 	int camera_id;
+	
+	/// <summary>
+	/// The number of square found on a single side
+	/// </summary>
 	int square_count;
+	
+	/// <summary>
+	/// Filter the frame to only detect squares we need
+	/// </summary>
+	/// <param name="rec">The square found by OpenCV</param>
+	/// <returns>If the rectangle shape is part of the Rubik's cube</returns>
 	bool filterRect(cv::Rect);
+	
+	/// <summary>
+	/// The name of the camera window
+	/// </summary>
 	cv::String window_name;
 	
 	/// <summary>
