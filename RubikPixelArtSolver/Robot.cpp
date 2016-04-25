@@ -95,9 +95,7 @@ int Robot::getRubikMovesCost(std::vector<std::string> rubikMoves, std::string pr
 }
 
 bool Robot::sendMessageAndRead(std::string m) {
-	this->controller.send(m[0]);
-
-	if (this->controller.read() == m[0] || ROBOT_DEBUG) { //Blocks until the robot responds (if ROBOT_DEBUG == 0)
+	if (this->controller.send(m[0]) || ROBOT_DEBUG){ //Blocks until the robot responds (if ROBOT_DEBUG == 0)
 		rmoves.push_back(m);
 		return true;
 	}
