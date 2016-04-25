@@ -82,23 +82,39 @@ void testOneCubeSolveMain() {
 	}
 
 	RubikColor colors[9] = {
-		RubikColor::WHITE, RubikColor::WHITE, RubikColor::WHITE,
-		RubikColor::WHITE, RubikColor::RED, RubikColor::RED,
-		RubikColor::WHITE, RubikColor::WHITE, RubikColor::WHITE
+		RubikColor::RED, RubikColor::RED, RubikColor::RED,
+		RubikColor::RED, RubikColor::RED, RubikColor::RED,
+		RubikColor::RED, RubikColor::GREEN, RubikColor::GREEN
 	};
 
 	TestCampaign testCampaign(rubikColors);
 	testCampaign.solveOneCube(colors);
 }
 
+void runTimeTest() {
+	int colorOrder[] = { 2, 3, 4, 1, 5, 0 };
+
+	std::vector<std::vector<int>> rubikColors;
+	for (int colorIndex = 0; colorIndex < 6; colorIndex++) {
+		std::vector<int> piecesColors;
+		for (int i = 0; i < 9; i++) {
+			piecesColors.push_back(colorOrder[colorIndex]);
+		}
+		rubikColors.push_back(piecesColors);
+	}
+
+	TestCampaign testCampaign(rubikColors);
+	testCampaign.time();
+}
+
 int main(int argc, char* argv[]) {
 	//runCampaignMain();
 	//openCVMain();
-	runCampaignMain();
-
-	//Rubik::debug = true;
-	//testOneCubeSolveMain();
-	//testRobotMovesMain();
+	//runCampaignMain();
+	runTimeTest();
+	/*Rubik::debug = true;
+	testOneCubeSolveMain();
+	testRobotMovesMain();*/
 	getchar();
 	return 0;
 }

@@ -7,6 +7,7 @@
 #include "Rubik.h"
 #include "ResolutionException.h"
 #include <vector>
+#include <ctime>
 
 /// <summary>
 /// Test campaigns to make sure the solvers can solve the cubes without error
@@ -22,7 +23,9 @@ private:
 	bool isRubikColors = false;
 	std::vector<std::vector<int>> copyRubikColors();
 	void resolveTests();
+	void resolveTimeTests();
 	void resolveOneCube(RubikColor colors[]);
+	void time_resolveOneCube(RubikColor colors[], Robot& robot);
 	Rubik makeRubik();
 public:
 	/// <summary>
@@ -41,7 +44,12 @@ public:
 	/// Runs the campaign : Solve all the possible colors of a given rubik's cube
 	/// </summary>
 	void run();
-	
+
+	/// <summary>
+	/// Runs the time campaign : Computes how long it takes to solve cubes
+	/// </summary>
+	void time();
+
 	/// <summary>
 	/// Solves the rubik's cube with the given colors
 	/// </summary>

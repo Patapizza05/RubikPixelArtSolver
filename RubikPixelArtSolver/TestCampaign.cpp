@@ -24,6 +24,81 @@ void TestCampaign::run() {
 	}
 }
 
+void TestCampaign::time() {
+	Rubik::setVerbose(false);
+	try {
+		resolveTimeTests();
+	}
+	catch (ResolutionException ex) {
+		std::cout << "Failed" << std::endl;
+		Rubik::setVerbose(true);
+		solveOneCube(ex.getColors());
+	}
+}
+
+void TestCampaign::resolveTimeTests() {
+	Robot robot;
+	this->passed = 0;
+	std::clock_t start;
+	double duration;
+
+	start = std::clock();
+
+	RubikColor rubikColors[6] = { RubikColor::WHITE, RubikColor::GREEN, RubikColor::RED, RubikColor::BLUE, RubikColor::ORANGE, RubikColor::YELLOW };
+	RubikColor colors[9];
+
+	for (int i1 = 0; i1 < 6; i1++) {
+		colors[0] = rubikColors[i1];
+		for (int i2 = 0; i2 < 6; i2++) {
+			colors[1] = rubikColors[i2];
+			for (int i3 = 0; i3 < 6; i3++) {
+				colors[2] = rubikColors[i3];
+
+				for (int i4 = 0; i4 < 6; i4++) {
+					colors[3] = rubikColors[i4];
+
+					for (int i6 = 0; i6 < 6; i6++) {
+						colors[5] = rubikColors[i6];
+						for (int i7 = 0; i7 < 6; i7++) {
+							colors[6] = rubikColors[i7];
+
+							std::cout << "RESULTS" << std::endl;
+							std::cout << "Number of tests : " << this->passed << std::endl;
+							if (this->passed > 0) std::cout << "Time per cube: " << ((std::clock() - start) / (double)CLOCKS_PER_SEC)/this->passed << std::endl;
+							std::cout << std::endl;
+
+							for (int i8 = 0; i8 < 6; i8++) {
+								colors[7] = rubikColors[i8];
+								for (int i9 = 0; i9 < 6; i9++) {
+									colors[8] = rubikColors[i9];
+									for (int i5 = 0; i5 < 6; i5++) {
+										colors[4] = rubikColors[i5];
+
+										time_resolveOneCube(colors, robot);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	std::cout << "RESULTS" << std::endl;
+	std::cout << "Number of tests : " << this->passed << std::endl;
+	if (this->passed > 0) std::cout << "Time per cube: " << ((std::clock() - start) / (double)CLOCKS_PER_SEC) / this->passed << std::endl;
+	std::cout << std::endl;
+	getchar();
+
+}
+
+void TestCampaign::time_resolveOneCube(RubikColor colors[], Robot& robot) {
+	Rubik r = makeRubik();
+	r.resolve(colors, &robot);
+	this->passed++;
+}
+
 void TestCampaign::resolveTests() {
 	this->failed = 0;
 	this->passed = 0;
