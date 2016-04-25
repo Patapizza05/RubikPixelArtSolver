@@ -5,6 +5,7 @@
 #include "opencv2/imgproc.hpp"
 #include "opencv2/highgui.hpp"
 #include "RubikColor.h"
+#include "RobotPositionException.h"
 
 using cv::Scalar;
 using cv::String;

@@ -9,13 +9,12 @@ RobotController::RobotController(std::string port){
 
 bool RobotController::send(unsigned char msg){
 	this->sendSByte(msg);
-	/*if (this->read() == msg){
+	if (this->read() == msg){
 		return true;
 	}
 	else {
 		return false;
-	}*/
-	return true;
+	}
 }
 
 unsigned char RobotController::read(){
