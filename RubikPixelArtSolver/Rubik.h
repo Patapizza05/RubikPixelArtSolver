@@ -35,9 +35,9 @@ class Rubik {
 		/// This constructor can be used after scanning the Rubik's cube with OpenCV and the robot.
 		/// </summary>
 		/// <param name="">an array representing the colors of the cube in this order (the scanning order of the cube with the robot): 
-		///					[		Cell 5		]
-		/// [	Cell 2		][		Cell 3		][		Cell 0		][		Cell 1		]
-		///					[		Cell 4		].	
+		///					[		Cell 0		]
+		/// [	Cell 1		][		Cell 2		][		Cell 3		][		Cell 4		]
+		///					[		Cell 5		].	
 		/// In each cell is a vector of size 9 giving the colors of the pieces in this order :
 		///	[0	1	2
 		///  3	4	5
@@ -50,15 +50,15 @@ class Rubik {
 		/// Initializes a new instance of the <see cref="Rubik"/> class from an array giving the # of each piece
 		/// </summary>
 		/// <param name="">The array representing the # of each piece in the following order :
-		/// [Top Layer, Row 1] 0, 1, 2 
-		///[Top Layer, Row 2] 3, 4, 5 
-		///[Top Layer, Row 3] 6, 7, 8 
-		///[Left Layer, Row 1] 9, 10, 11 [Front Layer, Row 1] 12, 13, 14 [Right Layer, Row 1] 15, 16, 17 [Back Layer, Row 1] 18, 19, 20
-		///[Left Layer, Row 2] 21, 22, 23 [Front Layer, Row 2] 24, 25, 26 [Right Layer, Row 2] 27, 28, 29 [Back Layer, Row 2] 30, 31, 32
-		///[Left Layer, Row 3] 33, 34, 35 [Front Layer, Row 3] 36, 37, 38 [Right Layer, Row 3] 39, 40, 41 [Back Layer, Row 3] 42, 43, 44
-		///[Bottom Layer, Row 1] 45, 46, 47
-		///[Bottom Layer, Row 2] 48, 49, 50
-		///[Bottom Layer, Row 3]51, 52, 53
+		///									[Top Layer, Row 1] 0, 1, 2 
+		///									[Top Layer, Row 2] 3, 4, 5 
+		///									[Top Layer, Row 3] 6, 7, 8 
+		///[Left Layer, Row 1] 9, 10, 11	[Front Layer, Row 1] 12, 13, 14		[Right Layer, Row 1] 15, 16, 17		[Back Layer, Row 1] 18, 19, 20
+		///[Left Layer, Row 2] 21, 22, 23	[Front Layer, Row 2] 24, 25, 26		[Right Layer, Row 2] 27, 28, 29		[Back Layer, Row 2] 30, 31, 32
+		///[Left Layer, Row 3] 33, 34, 35	[Front Layer, Row 3] 36, 37, 38		[Right Layer, Row 3] 39, 40, 41		[Back Layer, Row 3] 42, 43, 44
+		///									[Bottom Layer, Row 1] 45, 46, 47
+		///									[Bottom Layer, Row 2] 48, 49, 50
+		///									[Bottom Layer, Row 3]51, 52, 53
 		///</param>
 		Rubik(int[]);
 
