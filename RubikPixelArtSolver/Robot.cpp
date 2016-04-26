@@ -93,28 +93,85 @@ bool Robot::sendMessageAndRead(std::string m) {
 	return false;
 }
 
-bool Robot::U0() {
-	if (sendMessageAndRead(robot_U0)) {
-		state.rotator = 0;
-		return true;
-	}
-	return false;
-}
-
-bool Robot::U1() {
-	if (sendMessageAndRead(robot_U1)) {
+bool Robot::U0_to_1() {
+	if (sendMessageAndRead(robot_U0_to_1)) {
 		state.rotator = 1;
 		return true;
 	}
 	return false;
 }
 
-bool Robot::U2() {
-	if (sendMessageAndRead(robot_U2)) {
+bool Robot::U0_to_2() {
+	if (sendMessageAndRead(robot_U0_to_2)) {
 		state.rotator = 2;
 		return true;
 	}
 	return false;
+}
+
+bool Robot::U1_to_0() {
+	if (sendMessageAndRead(robot_U1_to_0)) {
+		state.rotator = 0;
+		return true;
+	}
+	return false;
+}
+
+bool Robot::U1_to_2() {
+	if (sendMessageAndRead(robot_U1_to_2)) {
+		state.rotator = 2;
+		return true;
+	}
+	return false;
+}
+
+bool Robot::U2_to_0() {
+	if (sendMessageAndRead(robot_U2_to_0)) {
+		state.rotator = 0;
+		return true;
+	}
+	return false;
+}
+
+bool Robot::U2_to_1() {
+	if (sendMessageAndRead(robot_U2_to_1)) {
+		state.rotator = 1;
+		return true;
+	}
+	return false;
+}
+
+bool Robot::U0() {
+	switch (state.rotator) {
+	case 1:
+		return U1_to_0();
+	case 2:
+		return U2_to_0();
+	default:
+		return false;
+	}
+}
+
+bool Robot::U1() {
+	switch (state.rotator) {
+	case 0:
+		return U0_to_1();
+	case 2:
+		return U2_to_1();
+	default:
+		return false;
+	}
+}
+
+bool Robot::U2() {
+	switch (state.rotator) {
+	case 0:
+		return U0_to_2();
+	case 1:
+		return U1_to_2();
+	default:
+		return false;
+	}
 }
 
 bool Robot::U() {

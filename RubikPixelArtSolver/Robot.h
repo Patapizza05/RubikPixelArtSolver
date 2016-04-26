@@ -178,6 +178,36 @@ private:
 	std::vector<std::string> rmoves;
 	
 	/// <summary>
+	/// Turn the top motor from 180° to 90°
+	/// </summary>
+	bool U0_to_1();
+
+	/// <summary>
+	/// Turn the top motor from 180° to 0°
+	/// </summary>
+	bool U0_to_2();
+
+	/// <summary>
+	/// Turn the top motor from 90° to 0°
+	/// </summary>
+	bool U1_to_0();
+
+	/// <summary>
+	/// Turn the top motor from 90° to 0°
+	/// </summary>
+	bool U1_to_2();
+
+	/// <summary>
+	/// Turn the top motor from 0° to 180°
+	/// </summary>
+	bool U2_to_0();
+
+	/// <summary>
+	/// Turn the top motor from 0° to 180°
+	/// </summary>
+	bool U2_to_1();
+
+	/// <summary>
 	/// Turns the top motor to 180°
 	/// </summary>
 	/// <returns>If the move has succeeded or not</returns>
