@@ -66,17 +66,17 @@ struct Offset Rubik::getOffset(int face) {
 	struct Offset offset;
 	switch (face) {
 	case 0:
-		offset.x = 3; offset.y = 3; break;
+		offset.x = 3; offset.y = 0; break;
 	case 1:
-		offset.x = 6; offset.y = 3;	break;
-	case 2:
-		offset.x = 9; offset.y = 3;	break;
-	case 3:
 		offset.x = 0; offset.y = 3;	break;
+	case 2:
+		offset.x = 3; offset.y = 3;	break;
+	case 3:
+		offset.x = 6; offset.y = 3;	break;
 	case 4:
-		offset.x = 3; offset.y = 6;	break;
+		offset.x = 9; offset.y = 3;	break;
 	case 5:
-		offset.x = 3; offset.y = 0;	break;
+		offset.x = 3; offset.y = 6;	break;
 	default:
 		offset.x = 0; offset.y = 0;	break;
 	}
