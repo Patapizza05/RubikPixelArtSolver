@@ -112,11 +112,47 @@ void runTimeTest() {
 	testCampaign.time();
 }
 
+std::vector<int> swap(std::vector<int> oldIndexes, std::vector<int> newIndexes) {
+	std::vector<int> temp = oldIndexes;
+	int size = newIndexes.size();
+	for (int i = 0; i < size; i++) {
+		oldIndexes[i] = temp[newIndexes[i]];
+	}
+
+	return oldIndexes;
+}
+
 int main(int argc, char* argv[]) {
+	std::vector<int> test;
+	
+	for (int i = 0; i < 9; i++){
+		test.push_back(i);
+	}
+
+	/*std::vector<std::vector<int>> results;
+	results.push_back(test);
+
+	for (int i = 0; i < results[0].size(); i++){
+		std::cout << results[0].at(i);
+	}*/
+
+	std::cout << std::endl;
+
+	/*std::reverse(results[0].begin(), results[0].begin() + 3);
+	std::reverse(results[0].begin() + 3, results[0].begin() + 6);
+	std::reverse(results[0].begin() + 6, results[0].end());
+	std::reverse(results[0].begin(), results[0].end());
+
+	for (int i = 0; i < results[0].size(); i++){
+		std::cout << results[0].at(i);
+	}*/
+
+	std::cout << std::endl;
+
 	//runCampaignMain();
 	//openCVMain();
 	//runCampaignMain();
-	runTimeTest();
+	//runTimeTest();
 	/*Rubik::debug = true;
 	testOneCubeSolveMain();
 	testRobotMovesMain();*/

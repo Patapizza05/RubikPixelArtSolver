@@ -48,10 +48,39 @@ public:
 	RobotController& getController();
 	
 	/// <summary>
+	/// Determines if one cv::Rect intersect an another cv::Rect.
+	/// </summary>
+	/// <param name="">The list of contours delimited the cv::Rect</param>
+	/// <returns>If one cv::Rect intersects an another cv::Rect</returns>
+	bool isRectCollision(std::vector<SquareRubik>);
+		
+	/// <summary>
+	/// Formats the structure in order to be formatted as the input of the algorithm.
+	/// </summary>
+	/// <param name="">The structure to be format</param>
+	/// <returns>The formatted list</returns>
+	std::vector<std::vector<int>> formatToAlgorithm(std::vector<std::vector<SquareRubik>>);
+	
+	/// <summary>
+	/// Swaps the specified side.
+	/// </summary>
+	/// <param name="">The side to be swap</param>
+	/// <param name="">The ordered indexes</param>
+	/// <returns></returns>
+	std::vector<SquareRubik> Robot::swap(std::vector<SquareRubik>, std::vector<int>);
+		
+	/// <summary>
+	/// Formats the sides.
+	/// </summary>
+	/// <param name="sides">The sides.</param>
+	/// <returns>The formatted sides</returns>
+	std::vector<std::vector<SquareRubik>> formatSides(std::vector<std::vector<SquareRubik>>);
+
+	/// <summary>
 	/// Launches the capture with OpenCV and the camera
 	/// </summary>
 	/// <returns>The representation of the Rubik's Cube which is in the robot</returns>
-	std::vector<std::vector<SquareRubik>> launchCapture();
+	std::vector<std::vector<int>> launchCapture();
 	
 	/// <summary>
 	/// Sets the camera identifier.

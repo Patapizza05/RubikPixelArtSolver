@@ -15,10 +15,11 @@ using cv::Mat;
 using cv::Vec4i;
 
 struct SquareRubik{
+	Rect rect;
 	cv::Point2f position;
 	RubikColor color;
 
-	SquareRubik(cv::Point2f point, RubikColor col) : position(point), color(col) {}
+	SquareRubik(Rect rec, cv::Point2f point, RubikColor col) : rect(rec), position(point), color(col) {}
 };
 
 #endif

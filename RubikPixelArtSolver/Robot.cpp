@@ -1,18 +1,8 @@
 #include "Robot.h"
 
-
-/* Hue values of basic colors
-Orange  0-22
-Yellow 22- 38
-Green 38-75
-Blue 75-130
-Violet 130-160
-Red 160-179
-
-http://opencv-srf.blogspot.fr/2010/09/object-detection-using-color-seperation.html */
 /* White - Green - Red - Blue - Orange - Yellow */
-std::vector<Scalar> minColor{ Scalar(70, 20, 130), Scalar(60, 110, 110), Scalar(120, 120, 140), Scalar(80, 180, 190), Scalar(5, 150, 150), Scalar(20, 100, 100) };
-std::vector<Scalar> maxColor{ Scalar(180, 110, 255), Scalar(100, 220, 250), Scalar(180, 250, 200), Scalar(120, 255, 255), Scalar(15, 235, 250), Scalar(40, 255, 255) };
+std::vector<Scalar> minColor{ Scalar(70, 10, 130), Scalar(60, 110, 110), Scalar(120, 120, 140), Scalar(75, 100, 100), Scalar(5, 150, 150), Scalar(20, 100, 100) };
+std::vector<Scalar> maxColor{ Scalar(180, 110, 255), Scalar(100, 220, 250), Scalar(180, 250, 200), Scalar(130, 255, 255), Scalar(15, 235, 250), Scalar(40, 255, 255) };
 
 Robot::Robot(int camera_id, String window_name){
 	this->state = RobotState(0, false, 1, _U);
@@ -507,13 +497,9 @@ bool Robot::filterRect(Rect rec){
 		return false;
 	}
 
-	/* Size of the shape */
-	if (rec.width == 78 && rec.height == 78){
-		return true;
-	}
-
-	if (rec.width > 75 && rec.width < 85){
-		if (rec.height > 75 && rec.height < 85){
+	/* Keep only shape with a width and height between 60 and 75*/
+	if (rec.width >= 60 && rec.width <= 75){
+		if (rec.height >= 60 && rec.height <= 75){
 			return true;
 		}
 	}
@@ -540,7 +526,67 @@ String Robot::defineColorText(int color_id){
 	}
 }
 
-std::vector<std::vector<SquareRubik>> Robot::launchCapture(){
+bool Robot::isRectCollision(std::vector<SquareRubik> points){
+	for (int i = 0; i < points.size(); i++){
+		for (int j = i + 1; i < points.size() - 2; j++){
+			Rect rec = points.at(i).rect & points.at(j).rect;
+
+			if (rec.x == 0 && rec.y == 0){
+				return false;
+			}
+			else {
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+std::vector<std::vector<int>> Robot::formatToAlgorithm(std::vector<std::vector<SquareRubik>> sides){
+	std::vector<std::vector<int>> result;
+
+	for (int i = 0; i < sides.size(); i++){
+		for (int j = 0; j < sides.at(i).size(); j++){
+			result.at(i).push_back(sides.at(i).at(j).color);
+		}
+	}
+
+	return result;
+}
+
+std::vector<SquareRubik> Robot::swap(std::vector<SquareRubik> side, std::vector<int> newIndexes) {
+	std::vector<SquareRubik> temp = side;
+	int size = newIndexes.size();
+	for (int i = 0; i < size; i++) {
+		side[i] = temp.at(newIndexes.at(i));
+	}
+
+	return side;
+}
+
+std::vector<std::vector<SquareRubik>> Robot::formatSides(std::vector<std::vector<SquareRubik>> sides){
+	// Convention in order to have the a ordered list which match with the algorithm part
+	std::swap(sides[1], sides[0]);
+	std::swap(sides[0], sides[2]);
+	std::swap(sides[3], sides[2]);
+	std::swap(sides[2], sides[5]);
+
+	// 2 & 5 OK
+	sides[1] = this->swap(sides[1], std::vector <int>{ 6, 3, 0, 7, 4, 1, 8, 5, 2 });
+	// Convention in order to have the a ordered list which match with the algorithm part
+	std::reverse(sides[0].begin(), sides[0].end()); // 0 
+	//3 - colonne
+	sides[3] = this->swap(sides[3], std::vector <int>{ 2, 5, 8, 1, 4, 7, 0, 3, 6 });
+	//4 - ligne 
+	std::reverse(sides[4].begin(), sides[4].begin() + 3);
+	std::reverse(sides[4].begin() + 3, sides[4].begin() + 6);
+	std::reverse(sides[4].begin() + 6, sides[4].end());
+
+	return sides;
+}
+
+std::vector<std::vector<int>> Robot::launchCapture(){
 	VideoCapture cap(this->camera_id);
 
 	cap.set(CV_CAP_PROP_SETTINGS, 1); // Show the properties window
@@ -600,7 +646,7 @@ std::vector<std::vector<SquareRubik>> Robot::launchCapture(){
 					this->setSquareCount(this->getSquareCount() + 1);
 					rectangle(frame_RGB, rec, Scalar(0, 255, 0), 2);
 					putText(frame_RGB, text, cv::Point2f(rec.x + rec.width / 2, rec.y + rec.height / 2), cv::FONT_HERSHEY_SIMPLEX, 1, Scalar(0, 255, 0, 0));
-					points.push_back(SquareRubik(cv::Point2f(rec.x, rec.y), RubikColor(j)));
+					points.push_back(SquareRubik(rec, cv::Point2f(rec.x, rec.y), RubikColor(j)));
 				}
 			}
 		}
@@ -616,13 +662,8 @@ std::vector<std::vector<SquareRubik>> Robot::launchCapture(){
 				throw RobotPositionException("Failed when changing position of the Rubik's cube");
 			}
 		}
-		else if (this->getSquareCount() == 9) { // Found all cube of a side!
+		else if (this->getSquareCount() == 9 && !isRectCollision(points)) { // Found all cube of a side!
 			points = sortResult(points);
-
-			// Convention in order to have the a ordered list which match with the algorithm part
-			if (nb_capture == 5){
-				std::reverse(points.begin(), points.end());
-			}
 
 			results.push_back(points);
 
@@ -639,12 +680,9 @@ std::vector<std::vector<SquareRubik>> Robot::launchCapture(){
 
 	cv::destroyWindow(this->window_name);
 
-	// Convention in order to have the a ordered list which match with the algorithm part
-	std::swap(results[0], results[5]);
-	std::swap(results[1], results[3]);
-	std::swap(results[2], results[4]);
+	results = this->formatSides(results);
 
-	return results;
+	return formatToAlgorithm(results);
 }
 
 bool Robot::setRobotPosition(int id){
@@ -670,12 +708,14 @@ bool Robot::setRobotPosition(int id){
 			if (!this->Bi()) return false;
 			if (!this->H3()) return false;
 			if (!this->B()) return false;
+			if (!this->D3()) return false;
 			return true;
 		case 5:
 			if (!this->H3()) return false;
 			if (!this->Ui()) return false;
 			if (!this->Ui()) return false;
 			if (!this->D3()) return false;
+			// Ui / H3 / U / D3 / Ui / H3 / U / D3 si 0/90°
 			return true;
 		default:
 			return false;
