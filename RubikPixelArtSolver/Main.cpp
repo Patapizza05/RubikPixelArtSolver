@@ -103,22 +103,8 @@ void runTimeTest() {
 	testCampaign.time();
 }
 
-void testPrintCube() {
-	std::vector<std::vector<int>> rubikColors;
-	for (int colorIndex = 0; colorIndex < 6; colorIndex++) {
-		std::vector<int> piecesColors;
-		for (int i = 0; i < 9; i++) {
-			piecesColors.push_back(colorIndex);
-		}
-		rubikColors.push_back(piecesColors);
-	}
-
-	Rubik rubik(rubikColors);
-	rubik.printCube();
-}
-
 int main(int argc, char* argv[]) {
-	testPrintCube();
+	//testPrintCube();
 	//runCampaignMain();
 	//openCVMain();
 	//runCampaignMain();

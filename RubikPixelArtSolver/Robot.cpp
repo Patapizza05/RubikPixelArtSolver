@@ -547,9 +547,11 @@ std::vector<std::vector<int>> Robot::formatToAlgorithm(std::vector<std::vector<S
 	std::vector<std::vector<int>> result;
 
 	for (int i = 0; i < sides.size(); i++){
+		std::vector<int> side;
 		for (int j = 0; j < sides.at(i).size(); j++){
-			result.at(i).push_back(sides.at(i).at(j).color);
+			side.push_back(sides.at(i).at(j).color);
 		}
+		result.push_back(side);
 	}
 
 	return result;
@@ -566,22 +568,26 @@ std::vector<SquareRubik> Robot::swap(std::vector<SquareRubik> side, std::vector<
 }
 
 std::vector<std::vector<SquareRubik>> Robot::formatSides(std::vector<std::vector<SquareRubik>> sides){
+	// Convention in order to have the a ordered list which match with the algorithm part as explained in the report
+	sides[0] = swap(sides[0], std::vector <int>{ 6, 3, 0, 7, 4, 1, 8, 5, 2 });
+	std::reverse(sides[3].begin(), sides[3].end()); 
+	sides[2] = swap(sides[2], std::vector <int>{ 2, 5, 8, 1, 4, 7, 0, 3, 6 });
+
+	std::reverse(sides[4].begin(), sides[4].begin() + 3);
+	std::reverse(sides[4].begin() + 3, sides[4].begin() + 6);
+	std::reverse(sides[4].begin() + 6, sides[4].end());
+
+	// Convention in order to have the a ordered list which match with the algorithm part
+	std::swap(sides[0], sides[1]);
+	std::swap(sides[0], sides[5]);
+	std::swap(sides[0], sides[2]);
+	std::swap(sides[0], sides[3]);
+
 	// Convention in order to have the a ordered list which match with the algorithm part
 	std::swap(sides[1], sides[0]);
 	std::swap(sides[0], sides[2]);
 	std::swap(sides[3], sides[2]);
 	std::swap(sides[2], sides[5]);
-
-	// 2 & 5 OK
-	sides[1] = this->swap(sides[1], std::vector <int>{ 6, 3, 0, 7, 4, 1, 8, 5, 2 });
-	// Convention in order to have the a ordered list which match with the algorithm part
-	std::reverse(sides[0].begin(), sides[0].end()); // 0 
-	//3 - colonne
-	sides[3] = this->swap(sides[3], std::vector <int>{ 2, 5, 8, 1, 4, 7, 0, 3, 6 });
-	//4 - ligne 
-	std::reverse(sides[4].begin(), sides[4].begin() + 3);
-	std::reverse(sides[4].begin() + 3, sides[4].begin() + 6);
-	std::reverse(sides[4].begin() + 6, sides[4].end());
 
 	return sides;
 }
