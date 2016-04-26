@@ -1,5 +1,8 @@
 #include "RobotController.h"
 
+/// <summary>
+/// The boolean debug mode
+/// </summary>
 bool RobotController::debug = false;
 
 RobotController::RobotController(std::string port){

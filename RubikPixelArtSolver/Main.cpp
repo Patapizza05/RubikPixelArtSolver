@@ -22,8 +22,13 @@ void openCVMain()
 
 	//getchar();
 
-	robot.launchCapture(); 
-
+	try{
+		robot.launchCapture();
+	}
+	catch (RobotPositionException ex){
+		std::cerr << "Error when getting the initial state" << std::endl;
+	}
+	 
 	getchar();
 }
 

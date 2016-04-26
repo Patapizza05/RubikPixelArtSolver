@@ -680,7 +680,6 @@ bool Robot::setRobotPosition(int id){
 		default:
 			return false;
 	}
-
 }
 
 std::vector<SquareRubik> Robot::sortResult(std::vector<SquareRubik> points){
