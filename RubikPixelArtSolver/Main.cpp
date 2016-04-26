@@ -23,7 +23,9 @@ void openCVMain()
 	//getchar();
 
 	try{
-		robot.launchCapture();
+		std::vector<std::vector<int>> sides = robot.launchCapture();
+		Rubik r(sides);
+		r.printCube();
 	}
 	catch (RobotPositionException ex){
 		std::cerr << "Error when getting the initial state" << std::endl;
@@ -106,7 +108,7 @@ void runTimeTest() {
 int main(int argc, char* argv[]) {
 	//testPrintCube();
 	//runCampaignMain();
-	//openCVMain();
+	openCVMain();
 	//runCampaignMain();
 	//runTimeTest();
 	/*Rubik::debug = true;

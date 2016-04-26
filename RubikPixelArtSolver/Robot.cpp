@@ -630,21 +630,11 @@ std::vector<std::vector<SquareRubik>> Robot::formatSides(std::vector<std::vector
 	std::reverse(sides[3].begin(), sides[3].end()); 
 	sides[2] = swap(sides[2], std::vector <int>{ 2, 5, 8, 1, 4, 7, 0, 3, 6 });
 
-	std::reverse(sides[4].begin(), sides[4].begin() + 3);
-	std::reverse(sides[4].begin() + 3, sides[4].begin() + 6);
-	std::reverse(sides[4].begin() + 6, sides[4].end());
-
 	// Convention in order to have the a ordered list which match with the algorithm part
 	std::swap(sides[0], sides[1]);
 	std::swap(sides[0], sides[5]);
 	std::swap(sides[0], sides[2]);
 	std::swap(sides[0], sides[3]);
-
-	// Convention in order to have the a ordered list which match with the algorithm part
-	std::swap(sides[1], sides[0]);
-	std::swap(sides[0], sides[2]);
-	std::swap(sides[3], sides[2]);
-	std::swap(sides[2], sides[5]);
 
 	return sides;
 }
@@ -663,28 +653,30 @@ std::vector<std::vector<int>> Robot::launchCapture(){
 
 	namedWindow(this->getWindowName(), CV_WINDOW_AUTOSIZE);
 
-	// Variables's initialization
-	std::vector<std::vector<cv::Point> > contours;
-	std::vector<Vec4i> hierarchy;
+
 	std::vector<std::vector<SquareRubik>> results;
-	std::vector<std::vector<std::vector<cv::Point>>> finalContours;
-
-	Mat frame_RGB;
-	Mat filter;
-	Mat frame_HSV;
-	Mat frame_threshed;
-	Mat imgray;
-	Mat result;
-
+	
 	int nb_capture = 0;
 
 	// Detect frame while we have the all sides of the Rubik's Cube
 	while (nb_capture < NB_CAPTURE)
 	{
 		std::vector<SquareRubik> points;
+		// Variables's initialization
+		std::vector<std::vector<cv::Point> > contours;
+		std::vector<Vec4i> hierarchy;
+		
+		std::vector<std::vector<std::vector<cv::Point>>> finalContours;
 
+		Mat frame_RGB;
+		Mat filter;
+		Mat frame_HSV;
+		Mat frame_threshed;
+		Mat imgray;
+		Mat result;
+		
 		this->setSquareCount(0); // Initialization : 0 squares found on the actual side
-		cap.read(frame_RGB); // Read a new frame from video
+		cap.read(frame_RGB);
 		bilateralFilter(frame_RGB, filter, 9, 75, 75);
 		cvtColor(filter, frame_HSV, cv::COLOR_BGR2HSV); // Change from RGB to HSV
 
@@ -724,19 +716,28 @@ std::vector<std::vector<int>> Robot::launchCapture(){
 			if (!this->setRobotPosition(nb_capture)){
 				throw RobotPositionException("Failed when changing position of the Rubik's cube");
 			}
+			else {
+				cap.read(frame_RGB);
+			}
 		}
 		else if (this->getSquareCount() == 9 && !isRectCollision(points)) { // Found all cube of a side!
 			points = sortResult(points);
+			std::cout << "found" << std::endl;
 
 			results.push_back(points);
 
 			nb_capture++;
+
 			// Change the position of the Rubik's cube to get the next side
 			if (!this->setRobotPosition(nb_capture)){
 				throw RobotPositionException("Failed when changing position of the Rubik's cube");
 			}
+			else {
+				cap.read(frame_RGB);
+			}
 		}
 
+		contours.clear();
 		finalContours.clear();
 		hierarchy.clear();
 	}
