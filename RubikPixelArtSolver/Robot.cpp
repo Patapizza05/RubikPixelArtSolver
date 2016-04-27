@@ -1,14 +1,14 @@
 #include "Robot.h"
 
-/* White - Green - Red - Blue - Orange - Yellow */
-std::vector<Scalar> minColor{ Scalar(70, 10, 130), Scalar(60, 110, 110), Scalar(120, 120, 140), Scalar(75, 100, 100), Scalar(5, 150, 150), Scalar(20, 100, 100) };
-std::vector<Scalar> maxColor{ Scalar(180, 110, 255), Scalar(100, 220, 250), Scalar(180, 250, 200), Scalar(130, 255, 255), Scalar(15, 235, 250), Scalar(40, 255, 255) };
-
 Robot::Robot(int camera_id, String window_name){
 	this->state = RobotState(0, false, 1, _U);
 	this->setCameraId(camera_id);
 	this->setSquareCount(0);
 	this->setWindowName(window_name);
+
+	/* The order is : White - Green - Red - Blue - Orange - Yellow */
+	this->minColor = { Scalar(70, 10, 130), Scalar(60, 110, 110), Scalar(120, 120, 140), Scalar(75, 100, 100), Scalar(5, 150, 150), Scalar(20, 100, 100) };
+	this->maxColor = { Scalar(180, 110, 255), Scalar(100, 220, 250), Scalar(180, 250, 200), Scalar(130, 255, 255), Scalar(15, 235, 250), Scalar(40, 255, 255) };
 }
 
 void Robot::sendRubikMoves(std::vector<std::string> rubikMoves) {
@@ -370,9 +370,6 @@ void Robot::resetHeight() {
 	else if (state.height == 1) {
 		D1();
 	}
-	/*else if (state.height == 0) {
-		//Nothing
-	}*/
 }
 
 void Robot::goDown(int height) {
@@ -584,6 +581,7 @@ String Robot::defineColorText(int color_id){
 }
 
 bool Robot::isRectCollision(std::vector<SquareRubik> points){
+	/* Detect if a cv::Rect intersect an another cv::Rect */
 	for (int i = 0; i < points.size(); i++){
 		for (int j = i + 1; i < points.size() - 2; j++){
 			Rect rec = points.at(i).rect & points.at(j).rect;
@@ -600,7 +598,7 @@ bool Robot::isRectCollision(std::vector<SquareRubik> points){
 	return false;
 }
 
-std::vector<std::vector<int>> Robot::formatToAlgorithm(std::vector<std::vector<SquareRubik>> sides){
+std::vector<std::vector<int>> Robot::formatToAlgorithm(std::vector<std::vector<SquareRubik>> sides) {
 	std::vector<std::vector<int>> result;
 
 	for (int i = 0; i < sides.size(); i++){
@@ -630,7 +628,6 @@ std::vector<std::vector<SquareRubik>> Robot::formatSides(std::vector<std::vector
 	std::reverse(sides[3].begin(), sides[3].end()); 
 	sides[2] = swap(sides[2], std::vector <int>{ 2, 5, 8, 1, 4, 7, 0, 3, 6 });
 
-	// Convention in order to have the a ordered list which match with the algorithm part
 	std::swap(sides[0], sides[1]);
 	std::swap(sides[0], sides[5]);
 	std::swap(sides[0], sides[2]);
@@ -681,8 +678,8 @@ std::vector<std::vector<int>> Robot::launchCapture(){
 		cvtColor(filter, frame_HSV, cv::COLOR_BGR2HSV); // Change from RGB to HSV
 
 		// For each color, detect if there is the color in the frame
-		for (int i = 0; i < minColor.size(); i++){
-			inRange(frame_HSV, minColor[i], maxColor[i], frame_threshed);
+		for (int i = 0; i < this->minColor.size(); i++){
+			inRange(frame_HSV, this->minColor[i], this->maxColor[i], frame_threshed);
 			imgray = frame_threshed;
 			threshold(frame_threshed, result, 127, 255, 0);
 
@@ -722,8 +719,6 @@ std::vector<std::vector<int>> Robot::launchCapture(){
 		}
 		else if (this->getSquareCount() == 9 && !isRectCollision(points)) { // Found all cube of a side!
 			points = sortResult(points);
-			std::cout << "found" << std::endl;
-
 			results.push_back(points);
 
 			nb_capture++;
@@ -750,6 +745,7 @@ std::vector<std::vector<int>> Robot::launchCapture(){
 }
 
 bool Robot::setRobotPosition(int id){
+	/* List of robot moves to do in order to have the correct side in front of the camera */
 	switch (id){
 		case 1:
 			if(!this->H3()) return false;
@@ -779,7 +775,6 @@ bool Robot::setRobotPosition(int id){
 			if (!this->Ui()) return false;
 			if (!this->Ui()) return false;
 			if (!this->D3()) return false;
-			// Ui / H3 / U / D3 / Ui / H3 / U / D3 si 0/90°
 			return true;
 		default:
 			return false;

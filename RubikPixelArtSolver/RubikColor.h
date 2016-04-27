@@ -16,7 +16,6 @@ enum RubikColor { WHITE = 0, GREEN = 1, RED = 2, BLUE = 3, ORANGE = 4, YELLOW = 
 /// </summary>
 enum ConsoleColor { DARKBLUE_ = 1, DARKGREEN_, DARKTEAL_, DARKRED_, DARKPINK_, DARKYELLOW_, GRAY_, DARKGRAY_, BLUE_, GREEN_, TEAL_, RED_, PINK_ /*ORANGE*/, YELLOW_, WHITE_ };
 
-
 ConsoleColor translate(RubikColor color);
 
 RubikColor translate(int color);
