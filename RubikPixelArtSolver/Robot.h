@@ -10,7 +10,7 @@
 #include <vector>
 
 #define NB_CAPTURE 6
-#define ROBOT_DEBUG 1
+#define ROBOT_DEBUG 0
 
 /// <summary>
 /// Class representing the robot
@@ -68,13 +68,14 @@ public:
 		
 	/// <summary>
 	/// Formats the structure in order to be formatted as the input of the algorithm.
+	/// It'll change a vector<vector<SquareRubik>> to vector<vector<int>>. It only keep the color of each square.
 	/// </summary>
 	/// <param name="">The structure to be format</param>
 	/// <returns>The formatted list</returns>
 	std::vector<std::vector<int>> formatToAlgorithm(std::vector<std::vector<SquareRubik>>);
 	
 	/// <summary>
-	/// Swaps the specified side.
+	/// Swaps the specified side with an order defined by the second parameter.
 	/// </summary>
 	/// <param name="">The side to be swap</param>
 	/// <param name="">The ordered indexes</param>
@@ -82,7 +83,7 @@ public:
 	std::vector<SquareRubik> Robot::swap(std::vector<SquareRubik>, std::vector<int>);
 		
 	/// <summary>
-	/// Formats the sides.
+	/// Formats the sides (Convention on the report).
 	/// </summary>
 	/// <param name="sides">The sides.</param>
 	/// <returns>The formatted sides</returns>
@@ -173,11 +174,14 @@ private:
 	/// </summary>
 	RobotController controller;
 
-
 	/// <summary>
 	/// Previous Rubik Move
 	/// </summary>
 	std::string previousRubikMove = "";
+
+
+	std::vector<Scalar> minColor;
+	std::vector<Scalar> maxColor;
 
 	/// <summary>
 	/// Converts rubik move and sends the associated robot moves
