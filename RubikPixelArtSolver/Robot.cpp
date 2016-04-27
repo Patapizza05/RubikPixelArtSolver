@@ -18,6 +18,142 @@ void Robot::sendRubikMoves(std::vector<std::string> rubikMoves) {
 	this->endMove();
 }
 
+void Robot::printSentRobotMoves() {
+	int size = rmoves.size();
+	for (int i = 0; i < size; i++) {
+		std::string m = rmoves[i];
+		if (m == robot_U0_to_1) {
+			std::cout << "U0_to_1 ";
+		}
+		else if (m == robot_U1_to_0) {
+			std::cout << "U1_to_0 ";
+		}
+		else if (m == robot_U0_to_2) {
+			std::cout << "U0_to_2 ";
+		}
+		else if (m == robot_U2_to_0) {
+			std::cout << "U2_to_0 ";
+		}
+		else if (m == robot_U1_to_2) {
+			std::cout << "U1_to_2 ";
+		}
+		else if (m == robot_U2_to_1) {
+			std::cout << "U2_to_1 ";
+		}
+		else if (m == robot_H0_to_3) {
+			std::cout << "H0_to_3 ";
+		}
+		else if (m == robot_D3_to_0) {
+			std::cout << "D3_to_0 ";
+		}
+		else if (m == robot_H0_to_2) {
+			std::cout << "H0_to_2 ";
+		}
+		else if (m == robot_D2_to_0) {
+			std::cout << "D2_to_0 ";
+		}
+		else if (m == robot_H0_to_1) {
+			std::cout << "H0_to_1 ";
+		}
+		else if (m == robot_D1_to_0) {
+			std::cout << "D1_to_0 ";
+		}
+		else if (m == robot_H1_to_2) {
+			std::cout << "H1_to_2 ";
+		}
+		else if (m == robot_D2_to_1) {
+			std::cout << "D2_to_1 ";
+		}
+		else if (m == robot_H1_to_3) {
+			std::cout << "H1_to_3 ";
+		}
+		else if (m == robot_D3_to_1) {
+			std::cout << "D3_to_1 ";
+		}
+		else if (m == robot_H2_to_3) {
+			std::cout << "H2_to_3 ";
+		}
+		else if (m == robot_D3_to_2) {
+			std::cout << "D3_to_2 ";
+		}
+		else if (m == robot_Bi) {
+			std::cout << "Bi ";
+		}
+		else if (m == robot_B) {
+			std::cout << "B ";
+		}
+	}
+	std::cout << std::endl;
+}
+
+void Robot::printSimplifiedSentRobotMoves() {
+	int size = rmoves.size();
+	for (int i = 0; i < size; i++) {
+		std::string m = rmoves[i];
+		if (m == robot_U0_to_1) {
+			std::cout << "U ";
+		}
+		else if (m == robot_U1_to_0) {
+			std::cout << "Ui ";
+		}
+		else if (m == robot_U0_to_2) {
+			std::cout << "U ";
+		}
+		else if (m == robot_U2_to_0) {
+			std::cout << "Ui ";
+		}
+		else if (m == robot_U1_to_2) {
+			std::cout << "U ";
+		}
+		else if (m == robot_U2_to_1) {
+			std::cout << "Ui ";
+		}
+		else if (m == robot_H0_to_3) {
+			std::cout << "H3 ";
+		}
+		else if (m == robot_D3_to_0) {
+			std::cout << "D3 ";
+		}
+		else if (m == robot_H0_to_2) {
+			std::cout << "H2 ";
+		}
+		else if (m == robot_D2_to_0) {
+			std::cout << "D2 ";
+		}
+		else if (m == robot_H0_to_1) {
+			std::cout << "H1 ";
+		}
+		else if (m == robot_D1_to_0) {
+			std::cout << "D1 ";
+		}
+		else if (m == robot_H1_to_2) {
+			std::cout << "H1 ";
+		}
+		else if (m == robot_D2_to_1) {
+			std::cout << "D1 ";
+		}
+		else if (m == robot_H1_to_3) {
+			std::cout << "H2 ";
+		}
+		else if (m == robot_D3_to_1) {
+			std::cout << "D2 ";
+		}
+		else if (m == robot_H2_to_3) {
+			std::cout << "H1 ";
+		}
+		else if (m == robot_D3_to_2) {
+			std::cout << "D1 ";
+		}
+		else if (m == robot_Bi) {
+			std::cout << "Bi ";
+		}
+		else if (m == robot_B) {
+			std::cout << "B ";
+		}
+	}
+	std::cout << std::endl;
+}
+
 int Robot::getRubikMovesCost(std::vector<std::string> rubikMoves, std::string previousRubikMove) {
 
 	RobotState previousState;
@@ -433,6 +569,20 @@ void Robot::addHeight(int height) {
 }
 
 void Robot::addMove(std::string rubikMove) {
+
+	//Vérification du référentiel
+	//Si le mouvement est L, Li, B, Bi, D ou Di, le référentiel a changé.
+	if (this->previousRubikMove == _L || previousRubikMove == _B || previousRubikMove == _D) {
+		goUp(3 - this->state.height); //Go to top
+		Ui(); //Go back to previous referential
+	}
+	else if (previousRubikMove == _Li || previousRubikMove == _Bi || previousRubikMove == _Di) {
+		goUp(3 - this->state.height); //Go to top
+		U(); //Go back to previous referential
+	}
+
+	this->previousRubikMove = rubikMove;
+
 	RobotState state = RobotState::getState(rubikMove);
 	
 	//Vérification du référentiel (Le balancier est donc géré)
@@ -444,7 +594,7 @@ void Robot::addMove(std::string rubikMove) {
 				B();
 			}
 			else if (state.referential == _R) {
-				if (state.rotator == 2) {
+				if (this->state.rotator == 2) {
 					resetHeight();
 					Ui();
 				}
@@ -458,7 +608,7 @@ void Robot::addMove(std::string rubikMove) {
 				Bi();
 			}
 			else if (state.referential == _R) {
-				if (state.rotator == 2) {
+				if (this->state.rotator == 2) {
 					Ui();
 				}
 				Bi(); H3(); U(); D3(); B();
@@ -466,7 +616,7 @@ void Robot::addMove(std::string rubikMove) {
 		}
 		else if (this->state.referential == _R) {
 			resetHeight();
-			if (state.rotator == 0) {
+			if (this->state.rotator == 0) {
 				U();
 			}
 			Bi(); H3(); Ui();
@@ -490,6 +640,7 @@ void Robot::addMove(std::string rubikMove) {
 	}
 	else if (state.rotator == -1) {
 		if (this->state.rotator == 0) {
+			resetHeight();
 			U();
 		}
 		//else : OK
@@ -499,6 +650,7 @@ void Robot::addMove(std::string rubikMove) {
 			state.rotator = -2; //We can rotate backwards to perform U2
 		}
 		else if (this->state.rotator == 1) {
+			resetHeight();
 			Ui();
 		}
 	}
@@ -515,6 +667,7 @@ void Robot::endMove() {
 	/*if (this->state.balancier) {
 		Bi();
 	}*/
+	this->previousRubikMove = "";
 }
 
 RobotController& Robot::getController(){

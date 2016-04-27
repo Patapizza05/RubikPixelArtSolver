@@ -26,6 +26,18 @@ public:
 	/// </summary>
 	/// <param name="rubikMoves">The rubik moves.</param>
 	void sendRubikMoves(std::vector<std::string> rubikMoves);
+
+	/// <summary>
+	/// Prints the content of the array rmoves, by translating the chars to the human-form move name ('a' --> "U0_to_1")
+	/// </summary>
+	/// <param name="rubikMoves">The rubik moves.</param>
+	void printSentRobotMoves();
+
+	/// <summary>
+	/// Prints the simplified content of the array rmoves, by translating the chars to the human-form move name ('a' --> "U0_to_1")
+	/// </summary>
+	/// <param name="rubikMoves">The rubik moves.</param>
+	void printSimplifiedSentRobotMoves();
 	
 	/// <summary>
 	/// Gets the robot moves filled by the "sendRubikMoves" function
@@ -160,6 +172,12 @@ private:
 	/// Handles the communication with the Arduino card and therefore with the Robot's motors
 	/// </summary>
 	RobotController controller;
+
+
+	/// <summary>
+	/// Previous Rubik Move
+	/// </summary>
+	std::string previousRubikMove = "";
 
 	/// <summary>
 	/// Converts rubik move and sends the associated robot moves

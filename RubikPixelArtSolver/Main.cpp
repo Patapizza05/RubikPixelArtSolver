@@ -58,13 +58,23 @@ void testRobotMovesMain() {
 	}
 
 	Rubik r(rubikColors);
-	r.R(); //r.applyMove("R");
-	//r.resolve(colors);
-	robot.sendRubikMoves(r.getMoves());
-	std::vector<std::string> moves = robot.getRobotMoves();
+	//r.F();
+	r.L();
+	r.Di();
+	//r.Li();
+	std::vector<std::string> moves = r.getMoves();
 	for (int i = 0; i < moves.size(); i++) {
 		std::cout << moves[i] << " ";
 	}
+	std::cout << std::endl;
+	//r.resolve(colors);
+	robot.sendRubikMoves(moves);
+	std::vector<std::string> rmoves = robot.getRobotMoves();
+	for (int i = 0; i < rmoves.size(); i++) {
+		std::cout << rmoves[i] << " ";
+	}
+	std::cout << std::endl;
+	robot.printSimplifiedSentRobotMoves();
 	std::cout << std::endl;
 	std::cout << "END" << std::endl;
 }
@@ -104,28 +114,29 @@ void runTimeTest() {
 }
 
 void testPrintCube() {
-	std::vector<std::vector<int>> rubikColors;
-	for (int colorIndex = 0; colorIndex < 6; colorIndex++) {
-		std::vector<int> piecesColors;
-		for (int i = 0; i < 9; i++) {
-			piecesColors.push_back(colorIndex);
-		}
-		rubikColors.push_back(piecesColors);
-	}
+	//WHITE = 0, GREEN = 1, RED = 2, BLUE = 3, ORANGE = 4, YELLOW = 5
+	std::vector<int> a0{5,3,1,4,1,4,4,0,4};
+	std::vector<int> a1{2,0,0,1,0,0,0,5,1};
+	std::vector<int> a2{1,2,3,1,2,1,3,3,1};
+	std::vector<int> a3{5,5,3,3,3,1,2,5,5};
+	std::vector<int> a4{4,4,3,2,4,4,4,5,5};
+	std::vector<int> a5{2,2,0,3,5,0,2,2,0};
 
-	Rubik rubik(rubikColors);
+	std::vector<std::vector<int>> pieces{ a0, a1, a2, a3, a4, a5 };
+
+	Rubik rubik(pieces);
 	rubik.printCube();
 }
 
 int main(int argc, char* argv[]) {
-	testPrintCube();
+	//testPrintCube();
 	//runCampaignMain();
 	//openCVMain();
 	//runCampaignMain();
 	//runTimeTest();
 	/*Rubik::debug = true;
-	testOneCubeSolveMain();
-	testRobotMovesMain();*/
+	testOneCubeSolveMain();*/
+	testRobotMovesMain();
 	//Rubik::debug = true;
 	//testOneCubeSolveMain();
 	//testRobotMovesMain();
