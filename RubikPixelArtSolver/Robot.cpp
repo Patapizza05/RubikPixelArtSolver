@@ -736,11 +736,11 @@ String Robot::defineColorText(int color_id){
 bool Robot::isRectCollision(std::vector<SquareRubik> points){
 	/* Detect if a cv::Rect intersect an another cv::Rect */
 	for (int i = 0; i < points.size(); i++){
-		for (int j = i + 1; i < points.size() - 2; j++){
+		for (int j = i + 1; j < points.size(); j++){
 			Rect rec = points.at(i).rect & points.at(j).rect;
 
 			if (rec.x == 0 && rec.y == 0){
-				return false;
+				
 			}
 			else {
 				return true;
@@ -803,8 +803,13 @@ std::vector<std::vector<int>> Robot::launchCapture(){
 
 	namedWindow(this->getWindowName(), CV_WINDOW_AUTOSIZE);
 
-
 	std::vector<std::vector<SquareRubik>> results;
+
+	// Empty vector in case of skipping side by the user
+	std::vector<SquareRubik> empty;
+	for (int i = 0; i < 9; i++){
+		empty.push_back(SquareRubik(Rect(), cv::Point2f(0, 0), RubikColor(-1)));
+	}
 	
 	int nb_capture = 0;
 
@@ -860,7 +865,7 @@ std::vector<std::vector<int>> Robot::launchCapture(){
 
 		// If the camera doesn't detect the 9 squares, the user can press 's' to move to the next step
 		if (cv::waitKey(20) == 's'){
-			results.push_back(points);
+			results.push_back(empty);
 			nb_capture++;
 			// Change the position of the Rubik's cube to get the next side
 			if (!this->setRobotPosition(nb_capture)){
@@ -869,13 +874,16 @@ std::vector<std::vector<int>> Robot::launchCapture(){
 			else {
 				cap.read(frame_RGB);
 			}
+
+			/*// Debug Mode
+			cv::waitKey(2000);
+			cap.read(frame_RGB);*/
 		}
 		else if (this->getSquareCount() == 9 && !isRectCollision(points)) { // Found all cube of a side!
 			points = sortResult(points);
 			results.push_back(points);
-
+			
 			nb_capture++;
-
 			// Change the position of the Rubik's cube to get the next side
 			if (!this->setRobotPosition(nb_capture)){
 				throw RobotPositionException("Failed when changing position of the Rubik's cube");
@@ -883,11 +891,19 @@ std::vector<std::vector<int>> Robot::launchCapture(){
 			else {
 				cap.read(frame_RGB);
 			}
+
+			/*// Debug Mode
+			cv::waitKey(2000);
+			cap.read(frame_RGB);*/
+
 		}
 
 		contours.clear();
 		finalContours.clear();
 		hierarchy.clear();
+		if (cv::waitKey(20) == 'q'){
+			return {};
+		}
 	}
 
 	cv::destroyWindow(this->window_name);
