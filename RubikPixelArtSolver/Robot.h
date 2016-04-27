@@ -10,7 +10,7 @@
 #include <vector>
 
 #define NB_CAPTURE 6
-#define ROBOT_DEBUG 0
+#define ROBOT_DEBUG 1
 
 /// <summary>
 /// Class representing the robot

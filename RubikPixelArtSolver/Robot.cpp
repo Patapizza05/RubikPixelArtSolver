@@ -595,7 +595,7 @@ void Robot::addMove(std::string rubikMove) {
 					resetHeight();
 					Ui();
 				}
-				addHeight(3 - this->state.height);
+				goUp(3 - this->state.height);
 				U(); D3(); B();
 			}
 		}

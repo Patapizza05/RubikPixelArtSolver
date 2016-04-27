@@ -58,10 +58,10 @@ void testRobotMovesMain() {
 	}
 
 	Rubik r(rubikColors);
-	//r.F();
+	r.F();
 	r.L();
 	r.Di();
-	//r.Li();
+	r.Li();
 	std::vector<std::string> moves = r.getMoves();
 	for (int i = 0; i < moves.size(); i++) {
 		std::cout << moves[i] << " ";
