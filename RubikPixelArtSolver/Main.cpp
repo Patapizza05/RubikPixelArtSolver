@@ -58,10 +58,7 @@ void testRobotMovesMain() {
 	}
 
 	Rubik r(rubikColors);
-	r.F();
-	r.L();
-	r.Di();
-	r.Li();
+	r.F2();
 	std::vector<std::string> moves = r.getMoves();
 	for (int i = 0; i < moves.size(); i++) {
 		std::cout << moves[i] << " ";
@@ -90,9 +87,9 @@ void testOneCubeSolveMain() {
 	}
 
 	RubikColor colors[9] = {
-		RubikColor::RED, RubikColor::WHITE, RubikColor::WHITE,
-		RubikColor::RED, RubikColor::WHITE, RubikColor::WHITE,
-		RubikColor::WHITE, RubikColor::WHITE, RubikColor::WHITE
+		RubikColor::WHITE, RubikColor::WHITE, RubikColor::WHITE,
+		RubikColor::WHITE, RubikColor::WHITE, RubikColor::WHITE,
+		RubikColor::YELLOW, RubikColor::YELLOW, RubikColor::YELLOW
 	};
 
 	TestCampaign testCampaign(rubikColors);
@@ -136,10 +133,10 @@ int main(int argc, char* argv[]) {
 	//runTimeTest();
 	/*Rubik::debug = true;
 	testOneCubeSolveMain();*/
-	testRobotMovesMain();
+	//testRobotMovesMain();
 	//Rubik::debug = true;
 	//testOneCubeSolveMain();
-	//testRobotMovesMain();
+	testRobotMovesMain();
 	getchar();
 	return 0;
 }

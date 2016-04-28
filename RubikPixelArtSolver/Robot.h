@@ -367,13 +367,13 @@ private:
 	/// Put the cube in reversed position
 	/// </summary>
 	/// <returns>If the move has succeeded or not</returns>
-	bool Bi();
+	bool B();
 
 	/// <summary>
 	/// Put the cube in non-reversed position
 	/// </summary>
 	/// <returns>If the move has succeeded or not</returns>
-	bool B();
+	bool Bi();
 
 	/// <summary>
 	/// Resets the height position (goes back to height 0)

@@ -230,7 +230,7 @@ bool Robot::sendMessageAndRead(std::string m) {
 }
 
 bool Robot::U0_to_1() {
-	if (sendMessageAndRead(robot_U0_to_1)) {
+	if (state.rotator == 0 && sendMessageAndRead(robot_U0_to_1)) {
 		state.rotator = 1;
 		return true;
 	}
@@ -238,7 +238,7 @@ bool Robot::U0_to_1() {
 }
 
 bool Robot::U0_to_2() {
-	if (sendMessageAndRead(robot_U0_to_2)) {
+	if (state.rotator == 0 && sendMessageAndRead(robot_U0_to_2)) {
 		state.rotator = 2;
 		return true;
 	}
@@ -246,7 +246,7 @@ bool Robot::U0_to_2() {
 }
 
 bool Robot::U1_to_0() {
-	if (sendMessageAndRead(robot_U1_to_0)) {
+	if (state.rotator == 1 && sendMessageAndRead(robot_U1_to_0)) {
 		state.rotator = 0;
 		return true;
 	}
@@ -254,7 +254,7 @@ bool Robot::U1_to_0() {
 }
 
 bool Robot::U1_to_2() {
-	if (sendMessageAndRead(robot_U1_to_2)) {
+	if (state.rotator == 1 && sendMessageAndRead(robot_U1_to_2)) {
 		state.rotator = 2;
 		return true;
 	}
@@ -262,7 +262,7 @@ bool Robot::U1_to_2() {
 }
 
 bool Robot::U2_to_0() {
-	if (sendMessageAndRead(robot_U2_to_0)) {
+	if (state.rotator == 2 && sendMessageAndRead(robot_U2_to_0)) {
 		state.rotator = 0;
 		return true;
 	}
@@ -270,7 +270,7 @@ bool Robot::U2_to_0() {
 }
 
 bool Robot::U2_to_1() {
-	if (sendMessageAndRead(robot_U2_to_1)) {
+	if (state.rotator == 2 && sendMessageAndRead(robot_U2_to_1)) {
 		state.rotator = 1;
 		return true;
 	}
@@ -330,7 +330,7 @@ bool Robot::Ui() {
 }
 
 bool Robot::H0_to_1() {
-	if (sendMessageAndRead(robot_H0_to_1)) {
+	if (state.height == 0 && sendMessageAndRead(robot_H0_to_1)) {
 		state.height = 1;
 		return true;
 	}
@@ -338,7 +338,7 @@ bool Robot::H0_to_1() {
 	return false;
 }
 bool Robot::H0_to_2() {
-	if (sendMessageAndRead(robot_H0_to_2)) {
+	if (state.height == 0 && sendMessageAndRead(robot_H0_to_2)) {
 		state.height = 2;
 		return true;
 	}
@@ -346,7 +346,7 @@ bool Robot::H0_to_2() {
 	return false;
 }
 bool Robot::H0_to_3() {
-	if (sendMessageAndRead(robot_H0_to_3)) {
+	if (state.height == 0 && sendMessageAndRead(robot_H0_to_3)) {
 		state.height = 3;
 		return true;
 	}
@@ -354,7 +354,7 @@ bool Robot::H0_to_3() {
 	return false;
 }
 bool Robot::H1_to_2() {
-	if (sendMessageAndRead(robot_H1_to_2)) {
+	if (state.height == 1 && sendMessageAndRead(robot_H1_to_2)) {
 		state.height = 2;
 		return true;
 	}
@@ -362,7 +362,7 @@ bool Robot::H1_to_2() {
 	return false;
 }
 bool Robot::H1_to_3() {
-	if (sendMessageAndRead(robot_H1_to_3)) {
+	if (state.height == 1 && sendMessageAndRead(robot_H1_to_3)) {
 		state.height = 3;
 		return true;
 	}
@@ -370,7 +370,7 @@ bool Robot::H1_to_3() {
 	return false;
 }
 bool Robot::H2_to_3() {
-	if (sendMessageAndRead(robot_H2_to_3)) {
+	if (state.height == 2 && sendMessageAndRead(robot_H2_to_3)) {
 		state.height = 3;
 		return true;
 	}
@@ -378,42 +378,42 @@ bool Robot::H2_to_3() {
 }
 
 bool Robot::D3_to_0() {
-	if (sendMessageAndRead(robot_D3_to_0)) {
+	if (state.height == 3 && sendMessageAndRead(robot_D3_to_0)) {
 		state.height = 0;
 		return true;
 	}
 	return false;
 }
 bool Robot::D2_to_0() {
-	if (sendMessageAndRead(robot_D2_to_0)) {
+	if (state.height == 2 && sendMessageAndRead(robot_D2_to_0)) {
 		state.height = 0;
 		return true;
 	}
 	return false;
 }
 bool Robot::D1_to_0() {
-	if (sendMessageAndRead(robot_D1_to_0)) {
+	if (state.height == 1 && sendMessageAndRead(robot_D1_to_0)) {
 		state.height = 0;
 		return true;
 	}
 	return false;
 }
 bool Robot::D2_to_1() {
-	if (sendMessageAndRead(robot_D2_to_1)) {
+	if (state.height == 2 && sendMessageAndRead(robot_D2_to_1)) {
 		state.height = 1;
 		return true;
 	}
 	return false;
 }
 bool Robot::D3_to_2() {
-	if (sendMessageAndRead(robot_D3_to_2)) {
+	if (state.height == 3 && (robot_D3_to_2)) {
 		state.height = 2;
 		return true;
 	}
 	return false;
 }
 bool Robot::D3_to_1() {
-	if (sendMessageAndRead(robot_D3_to_1)) {
+	if (state.height == 3 && sendMessageAndRead(robot_D3_to_1)) {
 		state.height = 1;
 		return true;
 	}
@@ -480,17 +480,17 @@ bool Robot::D3() {
 }
 
 
-bool Robot::Bi() {
-	if (sendMessageAndRead(robot_Bi)) {
-		state.balancer = true;
+bool Robot::B() {
+	if (state.balancer && sendMessageAndRead(robot_B)) {
+		state.balancer = false;
 		return true;
 	}
 	return false;
 }
 
-bool Robot::B() {
-	if (sendMessageAndRead(robot_B)) {
-		state.balancer = false;
+bool Robot::Bi() {
+	if (!state.balancer && sendMessageAndRead(robot_Bi)) {
+		state.balancer = true;
 		return true;
 	}
 	return false;
@@ -588,7 +588,7 @@ void Robot::addMove(std::string rubikMove) {
 		if (this->state.referential == _U) {
 			if (state.referential == _F) {
 				resetHeight();
-				B();
+				Bi();
 			}
 			else if (state.referential == _R) {
 				if (this->state.rotator == 2) {
@@ -596,19 +596,19 @@ void Robot::addMove(std::string rubikMove) {
 					Ui();
 				}
 				goUp(3 - this->state.height);
-				U(); D3(); B();
+				U(); D3(); Bi();
 			}
 		}
 		else if (this->state.referential == _F) {
 			resetHeight();
 			if (state.referential == _U) {
-				Bi();
+				B();
 			}
 			else if (state.referential == _R) {
 				if (this->state.rotator == 2) {
 					Ui();
 				}
-				Bi(); H3(); U(); D3(); B();
+				B(); H3(); U(); D3(); Bi();
 			}
 		}
 		else if (this->state.referential == _R) {
@@ -616,12 +616,12 @@ void Robot::addMove(std::string rubikMove) {
 			if (this->state.rotator == 0) {
 				U();
 			}
-			Bi(); H3(); Ui();
+			B(); H3(); Ui();
 			if (state.referential == _U) {
 				//Done
 			}
 			else if (state.referential == _F) {
-				B();
+				Bi();
 			}
 		}
 		this->state.referential = state.referential;
@@ -934,9 +934,9 @@ bool Robot::setRobotPosition(int id){
 			if (!this->D3()) return false;
 			return true;
 		case 4:
-			if (!this->Bi()) return false;
-			if (!this->H3()) return false;
 			if (!this->B()) return false;
+			if (!this->H3()) return false;
+			if (!this->Bi()) return false;
 			if (!this->D3()) return false;
 			return true;
 		case 5:
