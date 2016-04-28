@@ -66,25 +66,25 @@ public:
 	RobotController& getController();
 	
 	/// <summary>
-	/// Determines if one cv::Rect intersect an another cv::Rect.
+	/// Determines if one cv::Rect intersect an another cv::Rect
 	/// </summary>
-	/// <param name="">The list of contours delimited the cv::Rect</param>
+	/// <param name="points">The list of contours delimited the cv::Rect</param>
 	/// <returns>If one cv::Rect intersects an another cv::Rect</returns>
-	bool isRectCollision(std::vector<SquareRubik>);
+	bool isRectCollision(std::vector<SquareRubik> points);
 		
 	/// <summary>
-	/// Gets the nb rect in other rect. @TODO
+	/// Gets the number of cv::Rect in other cv::Rect.
 	/// </summary>
-	/// <param name="">The .</param>
-	/// <returns></returns>
-	int getNbRectInOtherRect(std::vector<SquareRubik>);
+	/// <param name="points">The list of contours delimited the cv::Rect</param>
+	/// <returns>The number of collision between cv::Rect</returns>
+	int getNbRectInOtherRect(std::vector<SquareRubik> points);
 
 	/// <summary>
-	/// Determines if one cv::Rect is in an another cv::Rect. @TODO
+	/// Remove from points the bad cv::Rect including in an another one.
 	/// </summary>
-	/// <param name="">The list of contours delimited the cv::Rect</param>
-	/// <returns>If one cv::Rect is in an another cv::Rect</returns>
-	std::vector<SquareRubik> isRectInOtherRect(std::vector<SquareRubik>);
+	/// <param name="points">The list of contours delimited the cv::Rect</param>
+	/// <returns>The list of contours without cv::Rect in an another one</returns>
+	std::vector<SquareRubik> isRectInOtherRect(std::vector<SquareRubik> points);
 		
 	/// <summary>
 	/// Formats the structure in order to be formatted as the input of the algorithm.
