@@ -35,6 +35,8 @@ U2 : 0°
 #define robot_Bi "s"			//Put the balancer in reversed position
 #define robot_B "t"				//Put the balancer in standard position
 
+#define robot_init "z"
+
 /// <summary>
 /// Represents the state of the robot
 /// </summary>

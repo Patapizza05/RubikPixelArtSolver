@@ -41,7 +41,7 @@ void testRobotMovesMain() {
 	}
 
 	Rubik r(rubikColors);
-	r.F2();
+	r.U();
 	std::vector<std::string> moves = r.getMoves();
 	for (int i = 0; i < moves.size(); i++) {
 		std::cout << moves[i] << " ";
@@ -119,7 +119,11 @@ int main(int argc, char* argv[]) {
 	//testRobotMovesMain();
 	//Rubik::debug = true;
 	//testOneCubeSolveMain();
-	testRobotMovesMain();
+
+	Robot robot;
+	robot.initRobotMove();
+
+	//testRobotMovesMain();
 	getchar();
 	return 0;
 }

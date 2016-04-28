@@ -10,7 +10,7 @@
 #include <vector>
 
 #define NB_CAPTURE 6
-#define ROBOT_DEBUG 1
+#define ROBOT_DEBUG 0
 
 /// <summary>
 /// Class representing the robot
@@ -21,6 +21,12 @@ public:
 	/// Initializes a new instance of the <see cref="Robot"/> class.
 	/// </summary>
 	Robot(int=1, cv::String = "Initial State Rubik Camera", std::string = "COM3");
+
+	/// <summary>
+	/// Initializes the robot move.
+	/// </summary>
+	bool initRobotMove();
+
 	/// <summary>
 	/// Converts and sends the rubik moves to the robot. Fills the robotMoves array
 	/// </summary>

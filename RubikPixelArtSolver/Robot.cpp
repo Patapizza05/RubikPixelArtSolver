@@ -5,7 +5,7 @@ Robot::Robot(int camera_id, cv::String window_name, std::string port_name){
 	this->setCameraId(camera_id);
 	this->setSquareCount(0);
 	this->setWindowName(window_name);
-	this->controller = RobotController(port_name);
+	//this->controller = RobotController(port_name);
 
 	/* The order is : White - Green - Red - Blue - Orange - Yellow */
 	this->minColor = { Scalar(70, 10, 130), Scalar(60, 110, 110), Scalar(120, 120, 140), Scalar(75, 100, 100), Scalar(5, 150, 150), Scalar(20, 100, 100) };
@@ -17,6 +17,13 @@ void Robot::sendRubikMoves(std::vector<std::string> rubikMoves) {
 		this->addMove(rubikMoves[i]);
 	}
 	this->endMove();
+}
+
+bool Robot::initRobotMove() {
+		if (sendMessageAndRead(robot_init)) {
+			return true;
+		}
+		return false;
 }
 
 void Robot::printSentRobotMoves() {
@@ -665,6 +672,12 @@ void Robot::endMove() {
 	/*if (this->state.balancier) {
 		Bi();
 	}*/
+	if (this->state.rotator == 2) {
+		Ui();
+	}
+	if (this->state.rotator == 0) {
+		U();
+	}
 	this->previousRubikMove = "";
 }
 
