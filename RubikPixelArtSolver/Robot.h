@@ -73,6 +73,20 @@ public:
 	bool isRectCollision(std::vector<SquareRubik>);
 		
 	/// <summary>
+	/// Gets the nb rect in other rect. @TODO
+	/// </summary>
+	/// <param name="">The .</param>
+	/// <returns></returns>
+	int getNbRectInOtherRect(std::vector<SquareRubik>);
+
+	/// <summary>
+	/// Determines if one cv::Rect is in an another cv::Rect. @TODO
+	/// </summary>
+	/// <param name="">The list of contours delimited the cv::Rect</param>
+	/// <returns>If one cv::Rect is in an another cv::Rect</returns>
+	std::vector<SquareRubik> isRectInOtherRect(std::vector<SquareRubik>);
+		
+	/// <summary>
 	/// Formats the structure in order to be formatted as the input of the algorithm.
 	/// It'll change a vector<vector<SquareRubik>> to vector<vector<int>>. It only keep the color of each square.
 	/// </summary>

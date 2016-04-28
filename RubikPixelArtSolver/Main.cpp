@@ -41,7 +41,7 @@ void testRobotMovesMain() {
 	}
 
 	Rubik r(rubikColors);
-	r.U();
+	r.F2();
 	std::vector<std::string> moves = r.getMoves();
 	for (int i = 0; i < moves.size(); i++) {
 		std::cout << moves[i] << " ";
@@ -120,8 +120,41 @@ int main(int argc, char* argv[]) {
 	//Rubik::debug = true;
 	//testOneCubeSolveMain();
 
+	/*Robot robot;
+	robot.initRobotMove();*/
+
 	Robot robot;
-	robot.initRobotMove();
+
+	robot.getController().send('k');
+	robot.getController().send('o');
+	robot.getController().send('p');
+	/*//H3 - U - D3
+	robot.getController().send('g');
+	robot.getController().send('e');
+	robot.getController().send('h');
+
+	//Ui - H3 - U - D3
+	robot.getController().send('f');
+	robot.getController().send('g');
+	robot.getController().send('e');
+	robot.getController().send('h');
+
+	//Ui - H3 - U - D3
+	robot.getController().send('f');
+	robot.getController().send('g');
+	robot.getController().send('e');
+	robot.getController().send('h');
+
+	//Bi - H3 - B - D3
+	robot.getController().send('s');
+	robot.getController().send('g');
+	robot.getController().send('t');
+	robot.getController().send('h');
+
+	//H3 - U2 - D3
+	robot.getController().send('g');
+	robot.getController().send('d');
+	robot.getController().send('h');*/
 
 	//testRobotMovesMain();
 	getchar();

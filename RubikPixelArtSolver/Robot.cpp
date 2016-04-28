@@ -8,8 +8,8 @@ Robot::Robot(int camera_id, cv::String window_name, std::string port_name){
 	//this->controller = RobotController(port_name);
 
 	/* The order is : White - Green - Red - Blue - Orange - Yellow */
-	this->minColor = { Scalar(70, 10, 130), Scalar(60, 110, 110), Scalar(120, 120, 140), Scalar(75, 100, 100), Scalar(5, 150, 150), Scalar(20, 100, 100) };
-	this->maxColor = { Scalar(180, 110, 255), Scalar(100, 220, 250), Scalar(180, 250, 200), Scalar(130, 255, 255), Scalar(15, 235, 250), Scalar(40, 255, 255) };
+	this->minColor = { Scalar(70, 10, 130), Scalar(46, 100, 100), Scalar(120, 120, 140), Scalar(75, 100, 100), Scalar(5, 100, 100), Scalar(20, 100, 100) };
+	this->maxColor = { Scalar(180, 110, 255), Scalar(100, 255, 255), Scalar(180, 250, 200), Scalar(130, 255, 255), Scalar(15, 255, 255), Scalar(40, 255, 255) };
 }
 
 void Robot::sendRubikMoves(std::vector<std::string> rubikMoves) {
@@ -714,13 +714,13 @@ bool Robot::filterRect(Rect rec){
 	if (rec.x < 100 || rec.x > 450){
 		return false;
 	}
-	else if (rec.y < 30 || rec.y > 300){
+	else if (rec.y < 60 || rec.y > 300){
 		return false;
 	}
 
 	/* Keep only shape with a width and height between 60 and 75*/
-	if (rec.width >= 60 && rec.width <= 75){
-		if (rec.height >= 60 && rec.height <= 75){
+	if (rec.width >= 55 && rec.width <= 85){
+		if (rec.height >= 55 && rec.height <= 85){
 			return true;
 		}
 	}
@@ -763,6 +763,43 @@ bool Robot::isRectCollision(std::vector<SquareRubik> points){
 	}
 
 	return false;
+}
+
+int Robot::getNbRectInOtherRect(std::vector<SquareRubik> points){
+	int result = 0;
+	/* Detect if a cv::Rect is in an another cv::Rect */
+	for (int i = 0; i < points.size(); i++){
+		for (int j = i + 1; j < points.size(); j++){
+			if (((points.at(j).rect.x >= points.at(i).rect.x) && ((points.at(j).rect.x + points.at(j).rect.width) <= (points.at(i).rect.x + points.at(i).rect.width)))
+				&& ((points.at(j).rect.y >= points.at(i).rect.y) && ((points.at(j).rect.y + points.at(j).rect.height) <= (points.at(i).rect.y + points.at(i).rect.height)))){
+				result++;
+			}
+
+			if (((points.at(i).rect.x >= points.at(j).rect.x) && ((points.at(i).rect.x + points.at(i).rect.width) <= (points.at(j).rect.x + points.at(j).rect.width)))
+				&& ((points.at(i).rect.y >= points.at(j).rect.y) && ((points.at(i).rect.y + points.at(i).rect.height) <= (points.at(j).rect.y + points.at(j).rect.height)))){
+				result++;
+			}
+		}
+	}
+	return result;
+}
+
+std::vector<SquareRubik> Robot::isRectInOtherRect(std::vector<SquareRubik> points){
+	/* Detect if a cv::Rect is in an another cv::Rect */
+	for (int i = 0; i < points.size(); i++){
+		for (int j = i + 1; j < points.size(); j++){
+			if (((points.at(j).rect.x >= points.at(i).rect.x) && ((points.at(j).rect.x + points.at(j).rect.width) <= (points.at(i).rect.x + points.at(i).rect.width)))
+				&& ((points.at(j).rect.y >= points.at(i).rect.y) && ((points.at(j).rect.y + points.at(j).rect.height) <= (points.at(i).rect.y + points.at(i).rect.height)))){
+				points.erase(points.begin()+j);
+			}		
+
+			if (((points.at(i).rect.x >= points.at(j).rect.x) && ((points.at(i).rect.x + points.at(i).rect.width) <= (points.at(j).rect.x + points.at(j).rect.width)))
+				&& ((points.at(i).rect.y >= points.at(j).rect.y) && ((points.at(i).rect.y + points.at(i).rect.height) <= (points.at(j).rect.y + points.at(j).rect.height)))){
+				points.erase(points.begin() + i);
+			}
+		}
+	}
+	return points;
 }
 
 std::vector<std::vector<int>> Robot::formatToAlgorithm(std::vector<std::vector<SquareRubik>> sides) {
@@ -877,6 +914,7 @@ std::vector<std::vector<int>> Robot::launchCapture(){
 
 		imshow(this->getWindowName(), frame_RGB); // Display the RGB frame with the found squares
 
+
 		// If the camera doesn't detect the 9 squares, the user can press 's' to move to the next step
 		if (cv::waitKey(20) == 's'){
 			results.push_back(empty);
@@ -893,23 +931,31 @@ std::vector<std::vector<int>> Robot::launchCapture(){
 			cv::waitKey(2000);
 			cap.read(frame_RGB);*/
 		}
-		else if (this->getSquareCount() == 9 && !isRectCollision(points)) { // Found all cube of a side!
-			points = sortResult(points);
-			results.push_back(points);
-			
-			nb_capture++;
-			// Change the position of the Rubik's cube to get the next side
-			if (!this->setRobotPosition(nb_capture)){
-				throw RobotPositionException("Failed when changing position of the Rubik's cube");
-			}
-			else {
-				cap.read(frame_RGB);
-			}
+		else if (this->getSquareCount() - this->getNbRectInOtherRect(points) == 9) { // Found all cube of a side!
+			//if (this->getSquareCount() > 9) {
+				points = isRectInOtherRect(points);
+				this->setSquareCount(points.size());
+			//}
+			//&& !isRectCollision(points) @TODO PIERRE
 
-			/*// Debug Mode
-			cv::waitKey(2000);
-			cap.read(frame_RGB);*/
+			if (this->getSquareCount() == 9){
+				points = sortResult(points);
 
+				results.push_back(points);
+
+				nb_capture++;
+				// Change the position of the Rubik's cube to get the next side
+				if (!this->setRobotPosition(nb_capture)){
+					throw RobotPositionException("Failed when changing position of the Rubik's cube");
+				}
+				else {
+					cap.read(frame_RGB);
+				}
+
+				// Debug Mode
+				//cv::waitKey(2000);
+				//cap.read(frame_RGB);
+			}
 		}
 
 		contours.clear();
@@ -948,9 +994,9 @@ bool Robot::setRobotPosition(int id){
 			if (!this->D3()) return false;
 			return true;
 		case 4:
-			if (!this->B()) return false;
-			if (!this->H3()) return false;
 			if (!this->Bi()) return false;
+			if (!this->H3()) return false;
+			if (!this->B()) return false;
 			if (!this->D3()) return false;
 			return true;
 		case 5:
