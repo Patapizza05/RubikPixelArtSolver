@@ -3,24 +3,7 @@
 
 void openCVMain()
 {
-	Robot robot(1, "COM3");
-
-	/*if (robot.initPort()){
-		std::cout << "Communication is ready" << std::endl;
-
-		if (robot.send('d')) {
-			std::cout << "Movement done" << std::endl;
-		}
-
-		if (robot.send('c')) {
-			std::cout << "Movement done" << std::endl;
-		}
-	}
-	else {
-		std::cerr << "Communication is not ready" << std::endl;
-	}*/
-
-	//getchar();
+	Robot robot(1, "Initial Camera", "COM3");
 
 	try{
 		robot.launchCapture();
@@ -87,9 +70,9 @@ void testOneCubeSolveMain() {
 	}
 
 	RubikColor colors[9] = {
-		RubikColor::WHITE, RubikColor::WHITE, RubikColor::WHITE,
-		RubikColor::WHITE, RubikColor::WHITE, RubikColor::WHITE,
-		RubikColor::YELLOW, RubikColor::YELLOW, RubikColor::YELLOW
+		RubikColor::BLUE, RubikColor::BLUE, RubikColor::BLUE,
+		RubikColor::BLUE, RubikColor::YELLOW, RubikColor::BLUE,
+		RubikColor::BLUE, RubikColor::BLUE, RubikColor::BLUE
 	};
 
 	TestCampaign testCampaign(rubikColors);

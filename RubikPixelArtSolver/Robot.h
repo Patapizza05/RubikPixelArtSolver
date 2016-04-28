@@ -20,7 +20,7 @@ public:
 	/// <summary>
 	/// Initializes a new instance of the <see cref="Robot"/> class.
 	/// </summary>
-	Robot(int=0, cv::String = "Default Window Name");
+	Robot(int=1, cv::String = "Initial State Rubik Camera", std::string = "COM3");
 	/// <summary>
 	/// Converts and sends the rubik moves to the robot. Fills the robotMoves array
 	/// </summary>
