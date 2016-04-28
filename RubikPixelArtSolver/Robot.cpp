@@ -1,10 +1,11 @@
 #include "Robot.h"
 
-Robot::Robot(int camera_id, String window_name){
+Robot::Robot(int camera_id, cv::String window_name, std::string port_name){
 	this->state = RobotState(0, false, 1, _U);
 	this->setCameraId(camera_id);
 	this->setSquareCount(0);
 	this->setWindowName(window_name);
+	this->controller = RobotController(port_name);
 
 	/* The order is : White - Green - Red - Blue - Orange - Yellow */
 	this->minColor = { Scalar(70, 10, 130), Scalar(60, 110, 110), Scalar(120, 120, 140), Scalar(75, 100, 100), Scalar(5, 150, 150), Scalar(20, 100, 100) };
