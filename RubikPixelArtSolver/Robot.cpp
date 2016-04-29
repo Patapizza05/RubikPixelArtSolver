@@ -5,11 +5,10 @@ Robot::Robot(int camera_id, cv::String window_name, std::string port_name){
 	this->setCameraId(camera_id);
 	this->setSquareCount(0);
 	this->setWindowName(window_name);
-	//this->controller = RobotController(port_name);
 
 	/* The order is : White - Green - Red - Blue - Orange - Yellow */
-	this->minColor = { Scalar(70, 10, 130), Scalar(46, 100, 100), Scalar(120, 100, 100), Scalar(75, 100, 100), Scalar(5, 100, 100), Scalar(20, 100, 100) };
-	this->maxColor = { Scalar(180, 110, 255), Scalar(100, 255, 255), Scalar(180, 255, 255), Scalar(130, 255, 255), Scalar(15, 255, 255), Scalar(40, 255, 255) };
+	this->minColor = { Scalar(0, 0, 130), Scalar(46, 100, 100), Scalar(120, 100, 100), Scalar(75, 100, 100), Scalar(5, 100, 100), Scalar(20, 100, 100) };
+	this->maxColor = { Scalar(255, 110, 255), Scalar(100, 255, 255), Scalar(180, 255, 255), Scalar(130, 255, 255), Scalar(15, 255, 255), Scalar(40, 255, 255) };
 }
 
 void Robot::sendRubikMoves(std::vector<std::string> rubikMoves) {
@@ -714,7 +713,7 @@ bool Robot::filterRect(Rect rec){
 	if (rec.x < 200 || rec.x > 450){
 		return false;
 	}
-	else if (rec.y < 80 || rec.y > 300){
+	else if (rec.y < 80 || rec.y > 350){
 		return false;
 	}
 
