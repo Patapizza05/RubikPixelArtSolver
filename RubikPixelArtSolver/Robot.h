@@ -13,8 +13,8 @@
 
 //If you are not connected to the robot but want to test the moves anyway, put ROBOT_DEBUG to 1
 //If you want to make sure the characters sent are read, put ROBOT_DEBUG to 0
-#define ROBOT_DEBUG 1 //Robot disconnected (debug mode)
-//#define ROBOT_DEBUG 0 //Robot connected
+//#define ROBOT_DEBUG 1 //Robot disconnected (debug mode)
+#define ROBOT_DEBUG 0 //Robot connected
 
 /// <summary>
 /// Class representing the robot
