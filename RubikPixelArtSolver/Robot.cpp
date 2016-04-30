@@ -549,15 +549,25 @@ void Robot::goUp(int height) {
 
 void Robot::rotate(int rotation) {
 	if (rotation > 0) {
-		while (rotation > 0) {
-			U();
-			rotation--;
+		if (rotation == 2) {
+			U2_to_0();
+		}
+		else {
+			while (rotation > 0) {
+				U();
+				rotation--;
+			}
 		}
 	}
 	else {
-		while (rotation < 0) {
-			Ui();
-			rotation++;
+		if (rotation == -2) {
+			U0_to_2();
+		}
+		else {
+			while (rotation < 0) {
+				Ui();
+				rotation++;
+			}
 		}
 	}
 }
@@ -574,8 +584,8 @@ void Robot::addHeight(int height) {
 
 void Robot::addMove(std::string rubikMove) {
 
-	//Vérification du référentiel
-	//Si le mouvement est L, Li, B, Bi, D ou Di, le référentiel a changé.
+	//Verify the referential
+	//In case the last rubik move performed is L, Li, B, Bi, D or Di, the referential changed (because instead of turning one layer, we turn the 2 others)
 	if (this->previousRubikMove == _L || previousRubikMove == _B || previousRubikMove == _D) {
 		goUp(3 - this->state.height); //Go to top
 		Ui(); //Go back to previous referential
@@ -587,83 +597,89 @@ void Robot::addMove(std::string rubikMove) {
 
 	this->previousRubikMove = rubikMove;
 
-	RobotState state = RobotState::getState(rubikMove);
+	//Analyse what is the next move to perform
+	RobotState nextState = RobotState::getState(rubikMove);
 	
-	//Vérification du référentiel (Le balancier est donc géré)
-		//Si changement : hauteur = 0
-	if (state.referential != this->state.referential) {
+
+	/*
+	this->state : current state
+	state : next state
+	*/
+
+	//Verify the referential
+	if (nextState.referential != this->state.referential) { //If we have to change referential
 		if (this->state.referential == _U) {
-			if (state.referential == _F) {
-				resetHeight();
-				Bi();
+			if (nextState.referential == _F) { //From referential "U" on top to referential "F" on top
+				resetHeight(); //Put the cube back on the balancer (height 0)
+				Bi(); //Reverse the balancer
 			}
-			else if (state.referential == _R) {
-				if (this->state.rotator == 2) {
-					resetHeight();
-					Ui();
+			else if (nextState.referential == _R) { //From referential "U" on top to referential "R" on top
+				if (this->state.rotator == 2) { //If we can't perform robot_U
+					resetHeight(); //Put the cube down
+					Ui(); //perform robot_Ui (so we can perform robot_U again)
 				}
-				goUp(3 - this->state.height);
-				U(); D3(); Bi();
+				goUp(3 - this->state.height); //Put the cube back up totally
+				U(); D3(); Bi(); //change referential
 			}
 		}
 		else if (this->state.referential == _F) {
-			resetHeight();
-			if (state.referential == _U) {
-				B();
+			resetHeight(); //Put the cube down
+			if (nextState.referential == _U) { //From referential "F" on top to referential "U" on top
+				B(); //Balancer back to initial
 			}
-			else if (state.referential == _R) {
+			else if (nextState.referential == _R) { //From referential "F" on top to referential "R" on top
 				if (this->state.rotator == 2) {
-					Ui();
+					Ui(); //If we can't perform robot_U, perform robot_Ui (so we can perform robot_U again)
 				}
-				B(); H3(); U(); D3(); Bi();
+				B(); H3(); U(); D3(); Bi(); //change referential
 			}
 		}
-		else if (this->state.referential == _R) {
-			resetHeight();
-			if (this->state.rotator == 0) {
+		else if (this->state.referential == _R) { 
+			resetHeight(); //In any case, we have to put the cube back down
+			if (this->state.rotator == 0) { //If we can't perform robot_Ui, perform robot_U first
 				U();
 			}
-			B(); H3(); Ui();
-			if (state.referential == _U) {
+			B(); H3(); Ui(); //go to referential U
+			if (nextState.referential == _U) { //From referential "R" to "U"
 				//Done
 			}
-			else if (state.referential == _F) {
-				Bi();
+			else if (nextState.referential == _F) { //From referential "R" to "U" to "F"
+				Bi(); //Reverse the balancer
 			}
 		}
-		this->state.referential = state.referential;
+		this->state.referential = nextState.referential;
 	}
 
-	//Vérification mouvement
-	if (state.rotator == 1) {
-		if (this->state.rotator == 2) {
+	//Verify we can perform the moves
+	if (nextState.rotator == 1) {
+		if (this->state.rotator == 2) { //If we need to perform robot_U and we can't, perform robot_Ui first
 			resetHeight();
 			Ui();
 		}
 		//else : OK
 	}
-	else if (state.rotator == -1) {
+	else if (nextState.rotator == -1) { //If we need to perform robot_Ui and we can't, perform robot_U first
 		if (this->state.rotator == 0) {
 			resetHeight();
 			U();
 		}
 		//else : OK
 	}
-	else if (state.rotator == 2) {
-		if (this->state.rotator == 2) {
-			state.rotator = -2; //We can rotate backwards to perform U2
+	else if (nextState.rotator == 2) { //If we need to perform robot_U2
+		if (this->state.rotator == 2) { //If we can't even perform robot_U
+			nextState.rotator = -2; //We can rotate backwards to perform U2
 		}
-		else if (this->state.rotator == 1) {
+		else if (this->state.rotator == 1) { //If we can perform robot_U only once, perform robot_Ui (so now we can)
 			resetHeight();
 			Ui();
 		}
 	}
 
-	//Changement de la hauteur
-	addHeight(state.height);
+	//Go to height 1, 2 or 3 to perform the move
+	addHeight(nextState.height);
 
-	//Mouvement
-	rotate(state.rotator);
+	//Turn the cube
+	rotate(nextState.rotator);
 }
 
 void Robot::endMove() {

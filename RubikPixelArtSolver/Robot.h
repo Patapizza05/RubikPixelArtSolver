@@ -13,7 +13,8 @@
 
 //If you are not connected to the robot but want to test the moves anyway, put ROBOT_DEBUG to 1
 //If you want to make sure the characters sent are read, put ROBOT_DEBUG to 0
-#define ROBOT_DEBUG 1
+#define ROBOT_DEBUG 1 //Robot disconnected (debug mode)
+//#define ROBOT_DEBUG 0 //Robot connected
 
 /// <summary>
 /// Class representing the robot
@@ -192,6 +193,7 @@ private:
 	/// The state of the robot
 	/// </summary>
 	RobotState state;	
+
 	/// <summary>
 	/// Handles the communication with the Arduino card and therefore with the Robot's motors
 	/// </summary>
@@ -201,7 +203,6 @@ private:
 	/// Previous Rubik Move
 	/// </summary>
 	std::string previousRubikMove = "";
-
 
 	std::vector<Scalar> minColor;
 	std::vector<Scalar> maxColor;
