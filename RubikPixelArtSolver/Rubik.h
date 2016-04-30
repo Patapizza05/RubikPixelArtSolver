@@ -247,6 +247,11 @@ class Rubik {
 		void turnCubeLeft();
 
 		/// <summary>
+		/// Rotates the cube following the move U
+		/// </summary>
+		void rotateCubeU();
+
+		/// <summary>
 		/// Resolves the cube to have a layer with the specified colors, using HumanSolver class method
 		/// </summary>
 		/// <param name="colors">The colors.</param>

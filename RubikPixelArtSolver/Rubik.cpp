@@ -881,6 +881,37 @@ void Rubik::turnCubeLeft() { //White to green
 
 }
 
+void Rubik::rotateCubeU() {
+	U(false);
+	Di(false);
+	this->shift(this->middle, 4, 5, 3, 0);
+	this->shift(this->edges, 1, 10, 11, 15);
+	this->shift(this->edges, 23, 3, 13, 22);
+
+	std::map<std::string, std::string> tempMap(movesDictionary);
+	//Dictionary
+
+	movesDictionary[_R] = tempMap[_B];
+	movesDictionary[_Ri] = tempMap[_Bi];
+	movesDictionary[_R2] = tempMap[_B2];
+	movesDictionary[_L] = tempMap[_F];
+	movesDictionary[_Li] = tempMap[_Fi];
+	movesDictionary[_L2] = tempMap[_F2];
+	/*movesDictionary[_U] = tempMap[_U];
+	movesDictionary[_Ui] = tempMap[_Ui];
+	movesDictionary[_U2] = tempMap[_U2];
+	movesDictionary[_D] = tempMap[_D];
+	movesDictionary[_Di] = tempMap[_Di];
+	movesDictionary[_D2] = tempMap[_D2];*/
+	movesDictionary[_B] = tempMap[_L];
+	movesDictionary[_Bi] = tempMap[_Li];
+	movesDictionary[_B2] = tempMap[_L2];
+	movesDictionary[_F] = tempMap[_R];
+	movesDictionary[_Fi] = tempMap[_Ri];
+	movesDictionary[_F2] = tempMap[_R2];
+
+}
+
 void Rubik::setLockedEdge(int index, bool value) {
 	int edgeIndex = index % 12;
 	this->edges[edgeIndex]->setLocked(value);

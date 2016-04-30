@@ -30,7 +30,7 @@ void AbstractHumanStepSolver::resolveEdges(Rubik * pRubik, RubikColor colors[]) 
 
 		pRubik->setLockedEdge(12, TRUE);
 		solvedEdges++;
-		pRubik->U();
+		pRubik->rotateCubeU();
 
 		if (Rubik::debug) {
 			std::cout << std::endl;
@@ -60,7 +60,7 @@ void AbstractHumanStepSolver::resolveCorners(Rubik * pRubik, RubikColor colors[]
 		pRubik->setLockedCorner(16, true);
 
 		solvedCorners++;
-		pRubik->U();
+		pRubik->rotateCubeU();
 
 		if (Rubik::debug) {
 			std::cout << std::endl;

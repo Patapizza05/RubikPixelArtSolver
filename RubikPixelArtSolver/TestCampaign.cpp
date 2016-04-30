@@ -185,18 +185,18 @@ void TestCampaign::resolveOneCube(RubikColor colors[]) {
 	Rubik rubik = makeRubik();
 	rubik.resolve(colors, &robot);
 
-	/*Rubik rubik2 = makeRubik();
+	Rubik rubik2 = makeRubik();
 
 	std::vector<std::string> moves = rubik.getMoves();
 	rubik2.applyMoves(moves);
 
-	rubik2.changeReferential(colors[4]);*/
+	rubik2.changeReferential(colors[4]);
 
-	if (rubik/*2*/.verifyRubikColors(colors))
+	if (rubik2.verifyRubikColors(colors))
 	{
 		this->passed++;
 		this->nbMoves += rubik.getMoves().size();
-		robot.sendRubikMoves(/*moves*/rubik.getMoves());
+		robot.sendRubikMoves(rubik2.getMoves());
 		this->nbRobotMoves += robot.getRobotMoves().size();
 	}
 	else {
@@ -221,7 +221,7 @@ void TestCampaign::resolveOneCube(RubikColor colors[]) {
 
 		std::cout << setcolor(RubikColor::WHITE) << "---------------------------------------------" << std::endl;
 		std::cout << "Rubik2:" << std::endl;
-		rubik/*2*/.printCube();
+		rubik2.printCube();
 		throw ResolutionException("Incorrect resolution", colors);
 	}
 }

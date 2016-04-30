@@ -10,7 +10,10 @@
 #include <vector>
 
 #define NB_CAPTURE 6
-#define ROBOT_DEBUG 0
+
+//If you are not connected to the robot but want to test the moves anyway, put ROBOT_DEBUG to 1
+//If you want to make sure the characters sent are read, put ROBOT_DEBUG to 0
+#define ROBOT_DEBUG 1
 
 /// <summary>
 /// Class representing the robot
@@ -20,7 +23,7 @@ public:
 	/// <summary>
 	/// Initializes a new instance of the <see cref="Robot"/> class.
 	/// </summary>
-	Robot(int=1, cv::String = "Initial State Rubik Camera", std::string = "COM3");
+	Robot(int=0, cv::String = "Initial State Rubik Camera", std::string = "COM3");
 
 	/// <summary>
 	/// Initializes the robot move.
